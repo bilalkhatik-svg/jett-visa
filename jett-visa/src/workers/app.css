@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light, dark --prefersdark, corporate, cupcake --default;
+}
+@plugin "daisyui/theme" {
+  name: "corporate";
+  default: true;
+  --color-primary: #14ae5c;
+  --color-primary-content: #ffffff;
+  --color-secondary: #ffcd29;
+  --color-secondary-content: white;
+}
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+html,
+body {
+  @apply bg-white dark:bg-gray-950;
+
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+  }
+}
