@@ -1,10 +1,9 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
-  return (
-    <h1 className="text-5xl font-bold text-purple-600 text-center ">
-      Tailwind Fixed 💜
-    </h1>
+import HomeScreen from "@/pages/home-screen/HomeScreen";
 
-  );
+function Home() {
+  return <HomeScreen />;
 }
+
+export default Home;
