@@ -1,29 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-      {
-        protocol: 'http',
-        hostname: '**',
-      },
-    ],
-  },
-  async headers() {
+  async rewrites() {
     return [
       {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-        ],
+        source: '/api/v1/:path*',
+        destination: 'https://saas.dev.api.musafirbiz.com/api/v1/:path*',
       },
     ];
   },

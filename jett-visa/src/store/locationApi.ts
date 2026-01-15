@@ -1,4 +1,5 @@
-import { oauthBaseQuery } from "@/utility/oauthBaseQuery";
+import { IPFetchURL } from "@/utils/config";
+import { oauthBaseQuery } from "@/utils/oauthBaseQuery";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface LocationResponse {
@@ -20,16 +21,13 @@ interface GeoIPApiResponse {
 }
 
 const getIPBaseUrl = () => {
-    // In development, use relative path to leverage Next.js proxy
-    if (process.env.NODE_ENV === 'development') {
-        return '/ip-api';
+    // In development, use the local Next dev server URL explicitly.
+    if (process.env.NODE_ENV === "development") {
+        return "/ip-api";
     }
 
-    // Use environment variable or fallback to default IP service
-    const IPFetchURL = process.env.NEXT_PUBLIC_IP_FETCH_URL || 'https://api.ipify.org';
-    
     if (!IPFetchURL) {
-        console.warn("IPFetchURL is not defined");
+        console.warn("IPFetchURL is not defined",);
         return '';
     }
 
@@ -37,7 +35,7 @@ const getIPBaseUrl = () => {
         const url = new URL(IPFetchURL);
         return url.origin;
     } catch (error) {
-        console.error("Invalid IPFetchURL:", error);
+        console.error("Invalid IPFetchURL:",);
         return '';
     }
 };
@@ -54,7 +52,7 @@ export const ipApi = createApi({
     endpoints: (builder) => ({
         fetchIP: builder.query<IPResponse, void>({
             query: () => ({
-                url: "/json/",
+                url: "/json",
                 method: "GET",
             }),
         }),

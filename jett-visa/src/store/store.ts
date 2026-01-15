@@ -1,6 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { loginSlice } from "@/store/slice/loginSlice";
-import { locationSlice } from "@/store/slice/locationSlice";
 import localStorage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { visaCountryListApi } from "@/store/visaCountryListApi";
@@ -11,7 +10,8 @@ import { visaStaticContentApi } from "@/store/visaStaticContentApi";
 import { visaDestinationsApi } from "@/store/visaDestinationsApi"; 
 import { authorizationApi } from "@/store/authorizationApi"; 
 import { languageSlice } from '@/store/slice/languageSlice';
-import { notificationSlice } from '@/store/slice/notificationSlice';
+import { locationSlice } from '@/store/slice/locationSlice';
+// import { notificationSlice } from '@/store/slice/notificationSlice';
 import { visaTicketApi } from "./contactFormApi";
 
 const appReducer = combineReducers({
@@ -27,7 +27,7 @@ const appReducer = combineReducers({
   loginSlice: loginSlice.reducer,
   locationSlice: locationSlice.reducer,
   languageSlice: languageSlice.reducer,
-  notificationSlice: notificationSlice.reducer,
+//   notificationSlice: notificationSlice.reducer,
 
 
 })
@@ -59,7 +59,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
   reducer: persistedReducer,
   devTools: true,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(
+  middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }).concat(
     visaCountryListApi.middleware,
     visaModesApi.middleware,
     ipApi.middleware,

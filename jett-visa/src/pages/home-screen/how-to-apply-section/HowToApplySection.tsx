@@ -163,7 +163,7 @@ const HowToApplySection = React.memo(() => {
     <section className="max-w-[1120px] mx-auto px-8 py-5  md:px-8 md:py-5 sm:px-4 sm:py-4">
       <h3 className="font-poppins font-semibold text-[#00366B] text-3xl mb-4 md:text-3xl md:mb-4 sm:text-xl sm:mb-3">{t('how_to_apply')}</h3>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-3 md:grid-cols-3 md:gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-3 gap-6 md:grid-cols-3 md:gap-6bg-white lg:grid-cols-3 sm:grid-cols-1 sm:gap-3">
         {stepsWithIcons.map((item: typeof stepsWithIcons[0], index: number) => (
           <div key={item.imageAlt + index}>
             <InfoCard

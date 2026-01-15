@@ -7,7 +7,7 @@
 //   TextField,
 //   Typography,
 // } from "@mui/material";
-import { lazy, Suspense, useCallback, useEffect, useState, useRef } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState, useRef, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 // import { useNavigate } from "react-router-dom";
 import inspireMeGif from "@/assets/images/gif/inspireMeGif.gif";
@@ -29,31 +29,19 @@ import { useFetchIPQuery, useFetchGeoIPQuery } from "@/store/locationApi";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { setNationality, setResidency, setLocationData, setCountryIsoCode } from "@/store/slice/locationSlice";
 // import { ROUTES } from "@utility/constant";
-// import type { Country } from "@utility/types/nationality-residency/Country";
-
+import type { Country } from "@/utils/types/nationality-residency/Country";
 // Define types locally
-interface Country {
-  isoCode?: string;
-  name?: string;
-  residency?: string;
-  flag?: string;
-  [key: string]: any;
-}
-
 interface NationalityResidencySelectorRef {
   [key: string]: any;
 }
-
 // Simple helper function
 const getCountryVisaUrl = (residencyIso: string, destinationIso: string): string => {
   return `/visa?res=${residencyIso}&dest=${destinationIso}`;
 };
-
 // Mock ROUTES
 const ROUTES = {
   INSPIRE_ME: "/inspire-me"
 };
-
 // Simple navigate function
 const useNavigate = () => {
   return (path: string) => {
@@ -436,7 +424,8 @@ const HomeScreen = () => {
   
   // Fetch IP address
   const { data: ipData, error: ipError } = useFetchIPQuery();
-  const userIP = ipData?.ip || '';
+  // Memoize userIP to prevent unnecessary recalculations
+  const userIP = useMemo(() => ipData?.ip || '', [ipData?.ip]);
   
   // Log IP fetch errors
   useEffect(() => {
@@ -453,9 +442,11 @@ const HomeScreen = () => {
     }
   }, [ipError]);
   
-  // Fetch location based on IP
+  // Fetch location based on IP - RTK Query will cache based on userIP value
   const { data: geoIPData, isSuccess: isGeoIPSuccess, error: geoIPError } = useFetchGeoIPQuery(userIP, {
     skip: !userIP,
+    // Prevent refetching on remount if data exists
+    refetchOnMountOrArgChange: false,
   });
   
   // Log geoIP errors
@@ -812,26 +803,41 @@ const HomeScreen = () => {
             {
               countryListData?.response && !isMobile && (
                 <div
-                  className="relative block -ml-[30%]"
-                  style={{
-                    zIndex: 2,
-                    width: isTablet ? "80%" : "60%",
-                  }}
-                >
-                  <div className="w-full">
-                    <NationalityResidencySelector
-                      ref={nationalitySelectorRef}
-                      nationality={nationality}
-                      residency={residency}
-                      onNationalityChange={handleUpdateNationality}
-                      onResidencyChange={handleUpdateResidency}
-                      countryList={countryListData.response}
-                      isMobile={isMobile}
-                    />
-                  </div>
+                className="relative block -ml-[30%]"
+                style={{
+                  zIndex: 2,
+                  width: isTablet ? "80%" : "60%",
+                }}
+              >
+              
+   {/* {countryListData?.response && (
+                <div
+                className="
+                  relative flex
+                  justify-start
+                  z-[2]
+                  mt-3
+                  sm:mt-3
+                  md:mt-4
+                  w-full
+                  sm:w-full
+                  md:w-[80%]
+                  lg:w-[60%]
+                "
+              > */}
+                <div className="w-full">
+                  <NationalityResidencySelector
+                    ref={nationalitySelectorRef}
+                    nationality={nationality}
+                    residency={residency}
+                    onNationalityChange={handleUpdateNationality}
+                    onResidencyChange={handleUpdateResidency}
+                    countryList={countryListData.response}
+                    isMobile={isMobile}
+                  />
                 </div>
-              )
-            }
+              </div>
+            )}
             {/* Mobile VisaMode */}
             {isMobile && (
               <div className="relative w-full sm:block md:hidden" style={{ zIndex: 2 }}>
@@ -863,7 +869,6 @@ const HomeScreen = () => {
               className="
                 relative flex
                 justify-start
-                items-start
                 z-[2]
                 mt-3
                 sm:mt-3
@@ -872,7 +877,6 @@ const HomeScreen = () => {
                 sm:w-full
                 md:w-[80%]
                 lg:w-[60%]
-                ml-2
               "
             >
             

@@ -1,4 +1,4 @@
-import { oauthBaseQuery } from "@/utility/oauthBaseQuery";
+import { oauthBaseQuery } from "@/utils/oauthBaseQuery";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 
@@ -37,7 +37,7 @@ export const visaTopDestinationApi = createApi({
   endpoints: (builder) => ({
     fetchTopDestination: builder.query({
       query: ({ language, count }) => ({
-        url: "destination/topdestinations",
+        url: "visa/destination/topdestinations",
         method: "GET",
         params: {
           language,

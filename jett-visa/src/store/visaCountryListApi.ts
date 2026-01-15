@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { oauthBaseQuery } from "@/utility/oauthBaseQuery";
+import { oauthBaseQuery } from "@/utils/oauthBaseQuery";
 
 export const visaCountryListApi = createApi({
   reducerPath: "visaCountryListApi",
@@ -7,7 +7,7 @@ export const visaCountryListApi = createApi({
   endpoints: (builder) => ({
     fetchCountryList: builder.query({
       query: (language = "en-US") => ({
-        url: "countries/all",
+        url: "visa/countries/all",
         method: "GET",
         params: { language },
       }),

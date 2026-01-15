@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { oauthBaseQuery } from "@/utility/oauthBaseQuery";
+import { APIversion, BaseURL } from "@/utils/config";
+import { oauthBaseQuery } from "@/utils/oauthBaseQuery";
 
 export interface HowToApplyStep {
   step: number;
@@ -44,7 +45,7 @@ export const visaStaticContentApi = createApi({
   endpoints: (builder) => ({
     fetchStaticContent: builder.query<ApiResponse, { language: string; }>({
       query: ({ language } ) => ({
-        url: "meta/home/content",
+        url: "visa/meta/home/content",
         method: "GET",
         params: { language },
       }),

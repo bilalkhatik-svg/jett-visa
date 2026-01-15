@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import type { Language, LanguageState, SaveLanguagePayload } from '@utility/types/language/Language';
+import type { Language, LanguageState, SaveLanguagePayload } from '@/utils/types/language';
 import type { RootState } from '@/store/store';
 import USflagIcon from '@/assets/images/icons/usflagicon.webp'
 import UAEflagIcon from '@/assets/images/icons/uaeflagicon.webp'
@@ -12,13 +12,13 @@ const defaultLanguage: Language = {
   name: 'English',
   nativeName: 'English',
   region: 'US',
-  flag: USflagIcon,
+  flag: "",
   direction: 'ltr',
 };
 
 export const availableLanguages: Language[] = [
-  { code: 'en-US', name: 'English', nativeName: 'English', region: 'US', flag: USflagIcon, direction: 'ltr' },
-  { code: 'ar-AE', name: 'Arabic', nativeName: 'العربية', region: 'AE', flag: UAEflagIcon, direction: 'rtl' },
+  { code: 'en-US', name: 'English', nativeName: 'English', region: 'US', flag: "", direction: 'ltr' },
+  { code: 'ar-AE', name: 'Arabic', nativeName: 'العربية', region: 'AE', flag: "", direction: 'rtl' },
 ];
 
 const initialState: LanguageState = {

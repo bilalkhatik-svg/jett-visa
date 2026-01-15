@@ -1,16 +1,7 @@
 import I18nProvider from "@/components/I18nProvider";
-import StoreProvider from "@/components/StoreProvider";
-import "@/app/globals.css";
-import type { Metadata } from "next";
-// export const dynamic = 'force-dynamic';
-
-export const metadata: Metadata = {
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
-};
+import ReduxProvider from "@/components/ReduxProvider";
+import "./globals.css";
+import AppInit from "./providers/AppInit";
 
 export default function RootLayout({
   children,
@@ -20,9 +11,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="bg-white text-black">
-        <StoreProvider>
-          <I18nProvider>{children}</I18nProvider>
-        </StoreProvider>
+        <ReduxProvider>
+          <I18nProvider>
+            <AppInit />
+            {children}</I18nProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
