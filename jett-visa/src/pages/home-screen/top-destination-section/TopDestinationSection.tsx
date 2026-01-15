@@ -94,8 +94,13 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
   
   // Fetch top destinations
   const { data: topDestinationResponse, isLoading: isTopDestinationListPending } = useFetchTopDestinationQuery({
+<<<<<<< HEAD
     count: 8,
     language: i18n.language || 'en-US',
+=======
+    language: i18n.language || 'en-US',
+    count: 8,
+>>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
   });
   
   const topDestinationList = topDestinationResponse?.Response || staticTopDestinations;
@@ -144,17 +149,29 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
   return (
     <div className="max-w-[1120px] mx-auto px-8 py-5 bg-white md:px-8 md:py-5 sm:px-4 sm:py-4">
       <h3 className="font-poppins font-semibold text-[#00366B] text-3xl mb-4 md:text-3xl md:mb-4 sm:text-xl sm:mb-3">Top Destinations</h3>
+<<<<<<< HEAD
       <div className="grid grid-cols-4 gap-4 md:grid-cols-4 md:gap-4 lg:grid-cols-3 sm:grid-cols-2 sm:gap-3">
+=======
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-3 md:grid-cols-4 md:gap-4 lg:grid-cols-3">
+>>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
         {mappedDestinations.map((item, index) => (
           <div
             key={`${item.CountryCode}-${index}`}
             onClick={() => handleCardClick(item)}
+<<<<<<< HEAD
             className="relative h-64 rounded-2xl overflow-hidden group shadow-md cursor-pointer md:h-64 md:rounded-2xl lg:h-56 sm:h-40 sm:rounded-xl"
+=======
+            className="relative h-64 rounded-2xl overflow-hidden group shadow-md cursor-pointer md:h-64 md:rounded-2xl lg:h-56 sm:h-40 sm:max-h-40 sm:rounded-xl"
+>>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
           >
             <img
               src={item.imageUrl || "https://via.placeholder.com/300"}
               alt={item.name || "Destination"}
+<<<<<<< HEAD
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+=======
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 sm:max-h-40 sm:h-40"
+>>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
             <div className="absolute top-2 left-2 bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-xs text-white border border-white/30 md:text-xs sm:text-[10px]">

@@ -1,6 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { LocationResponse } from "@/store/locationApi";
+<<<<<<< HEAD
 import type { Country } from '@/utils/types/nationality-residency/Country';
+=======
+import type { Country } from '@/utility/types/nationality-residency/Country';
+>>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
 
 interface LocationState {
   ip: string;

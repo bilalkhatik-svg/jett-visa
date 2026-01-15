@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { oauthBaseQuery } from "@/utils/oauthBaseQuery";
+=======
+import { oauthBaseQuery } from "@/utility/oauthBaseQuery";
+>>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 export interface Destination {
@@ -49,7 +53,11 @@ export const visaDestinationsApi = createApi({
           params.isoCode2 = isoCode2;
         }
         return {
+<<<<<<< HEAD
           url: "visa/countries/destinations",
+=======
+          url: "countries/destinations",
+>>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
           method: "GET",
           params,
         };

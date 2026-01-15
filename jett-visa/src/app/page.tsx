@@ -1,4 +1,5 @@
 "use client";
+<<<<<<< HEAD
 
 import { useEffect } from "react";
 import { useFetchDestinationsQuery } from "@/store/visaDestinationsApi";
@@ -38,3 +39,13 @@ export default function Home() {
     </>
   )
 }
+=======
+
+import HomeScreen from "@/pages/home-screen/HomeScreen";
+
+function Home() {
+  return <HomeScreen />;
+}
+
+export default Home;
+>>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54

@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
+<<<<<<< HEAD
 import type { Language, LanguageState, SaveLanguagePayload } from '@/utils/types/language';
+=======
+import type { Language, LanguageState, SaveLanguagePayload } from '@utility/types/language/Language';
+>>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
 import type { RootState } from '@/store/store';
 import USflagIcon from '@/assets/images/icons/usflagicon.webp'
 import UAEflagIcon from '@/assets/images/icons/uaeflagicon.webp'
@@ -12,13 +16,22 @@ const defaultLanguage: Language = {
   name: 'English',
   nativeName: 'English',
   region: 'US',
+<<<<<<< HEAD
   flag: "",
+=======
+  flag: USflagIcon,
+>>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
   direction: 'ltr',
 };
 
 export const availableLanguages: Language[] = [
+<<<<<<< HEAD
   { code: 'en-US', name: 'English', nativeName: 'English', region: 'US', flag: "", direction: 'ltr' },
   { code: 'ar-AE', name: 'Arabic', nativeName: 'العربية', region: 'AE', flag: "", direction: 'rtl' },
+=======
+  { code: 'en-US', name: 'English', nativeName: 'English', region: 'US', flag: USflagIcon, direction: 'ltr' },
+  { code: 'ar-AE', name: 'Arabic', nativeName: 'العربية', region: 'AE', flag: UAEflagIcon, direction: 'rtl' },
+>>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
 ];
 
 const initialState: LanguageState = {

@@ -73,7 +73,11 @@ const WhyChooseMusafirSection = React.memo(() => {
     <section className="max-w-[1120px] mx-auto px-8 py-5 bg-white md:px-8 md:py-5 sm:px-4 sm:py-4">
       <h3 className="font-poppins font-semibold text-[#00366B] text-3xl mb-4 md:text-3xl md:mb-4 sm:text-xl sm:mb-3">{t('why_choose_musafir')}</h3>
 
+<<<<<<< HEAD
       <div className="grid grid-cols-3 gap-6 md:grid-cols-3 md:gap-6 lg:grid-cols-3 sm:grid-cols-1 sm:gap-3">
+=======
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-3 md:grid-cols-3 md:gap-6 lg:grid-cols-3">
+>>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
         {stepsWithIcons.map((item: typeof stepsWithIcons[0], index: number) => (
           <div key={item.imageAlt + index} className="min-w-0 w-full">
             <InfoCard
