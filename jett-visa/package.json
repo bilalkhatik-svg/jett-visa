@@ -3,32 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3000",
+    "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 3000",
+    "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
-<<<<<<< HEAD
     "crypto-js": "^4.2.0",
-=======
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
     "daisyui": "^5.5.14",
     "formik": "^2.4.9",
     "i18next": "^25.7.3",
     "i18next-browser-languagedetector": "^8.2.0",
-<<<<<<< HEAD
     "i18next-http-backend": "^3.0.2",
     "js-cookie": "^3.0.5",
     "next": "16.1.1",
     "notistack": "^3.0.2",
     "oauth-1.0a": "^2.2.6",
-=======
-    "js-cookie": "^3.0.5",
-    "next": "16.1.1",
-    "notistack": "^3.0.2",
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-i18next": "^16.5.1",
@@ -38,10 +29,7 @@
     "zustand": "^5.0.9"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@types/crypto-js": "^4.2.2",
-=======
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^19",

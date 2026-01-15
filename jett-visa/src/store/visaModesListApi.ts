@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { oauthBaseQuery } from "@/utils/oauthBaseQuery";
-=======
-import { oauthBaseQuery } from "@/utility/oauthBaseQuery";
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 interface VisaMode {

@@ -7,11 +7,7 @@
 //   TextField,
 //   Typography,
 // } from "@mui/material";
-<<<<<<< HEAD
 import { lazy, Suspense, useCallback, useEffect, useState, useRef, useMemo } from "react";
-=======
-import { lazy, Suspense, useCallback, useEffect, useState, useRef } from "react";
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
 import { useTranslation } from "react-i18next";
 // import { useNavigate } from "react-router-dom";
 import inspireMeGif from "@/assets/images/gif/inspireMeGif.gif";
@@ -33,45 +29,19 @@ import { useFetchIPQuery, useFetchGeoIPQuery } from "@/store/locationApi";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { setNationality, setResidency, setLocationData, setCountryIsoCode } from "@/store/slice/locationSlice";
 // import { ROUTES } from "@utility/constant";
-<<<<<<< HEAD
 import type { Country } from "@/utils/types/nationality-residency/Country";
 // Define types locally
 interface NationalityResidencySelectorRef {
   [key: string]: any;
 }
-=======
-// import type { Country } from "@utility/types/nationality-residency/Country";
-
-// Define types locally
-interface Country {
-  isoCode?: string;
-  name?: string;
-  residency?: string;
-  flag?: string;
-  [key: string]: any;
-}
-
-interface NationalityResidencySelectorRef {
-  [key: string]: any;
-}
-
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
 // Simple helper function
 const getCountryVisaUrl = (residencyIso: string, destinationIso: string): string => {
   return `/visa?res=${residencyIso}&dest=${destinationIso}`;
 };
-<<<<<<< HEAD
-=======
-
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
 // Mock ROUTES
 const ROUTES = {
   INSPIRE_ME: "/inspire-me"
 };
-<<<<<<< HEAD
-=======
-
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
 // Simple navigate function
 const useNavigate = () => {
   return (path: string) => {
@@ -454,12 +424,8 @@ const HomeScreen = () => {
   
   // Fetch IP address
   const { data: ipData, error: ipError } = useFetchIPQuery();
-<<<<<<< HEAD
   // Memoize userIP to prevent unnecessary recalculations
   const userIP = useMemo(() => ipData?.ip || '', [ipData?.ip]);
-=======
-  const userIP = ipData?.ip || '';
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
   
   // Log IP fetch errors
   useEffect(() => {
@@ -476,17 +442,11 @@ const HomeScreen = () => {
     }
   }, [ipError]);
   
-<<<<<<< HEAD
   // Fetch location based on IP - RTK Query will cache based on userIP value
   const { data: geoIPData, isSuccess: isGeoIPSuccess, error: geoIPError } = useFetchGeoIPQuery(userIP, {
     skip: !userIP,
     // Prevent refetching on remount if data exists
     refetchOnMountOrArgChange: false,
-=======
-  // Fetch location based on IP
-  const { data: geoIPData, isSuccess: isGeoIPSuccess, error: geoIPError } = useFetchGeoIPQuery(userIP, {
-    skip: !userIP,
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
   });
   
   // Log geoIP errors
@@ -843,7 +803,6 @@ const HomeScreen = () => {
             {
               countryListData?.response && !isMobile && (
                 <div
-<<<<<<< HEAD
                 className="relative block -ml-[30%]"
                 style={{
                   zIndex: 2,
@@ -879,28 +838,6 @@ const HomeScreen = () => {
                 </div>
               </div>
             )}
-=======
-                  className="relative block -ml-[30%]"
-                  style={{
-                    zIndex: 2,
-                    width: isTablet ? "80%" : "60%",
-                  }}
-                >
-                  <div className="w-full">
-                    <NationalityResidencySelector
-                      ref={nationalitySelectorRef}
-                      nationality={nationality}
-                      residency={residency}
-                      onNationalityChange={handleUpdateNationality}
-                      onResidencyChange={handleUpdateResidency}
-                      countryList={countryListData.response}
-                      isMobile={isMobile}
-                    />
-                  </div>
-                </div>
-              )
-            }
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
             {/* Mobile VisaMode */}
             {isMobile && (
               <div className="relative w-full sm:block md:hidden" style={{ zIndex: 2 }}>
@@ -932,10 +869,6 @@ const HomeScreen = () => {
               className="
                 relative flex
                 justify-start
-<<<<<<< HEAD
-=======
-                items-start
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
                 z-[2]
                 mt-3
                 sm:mt-3
@@ -944,10 +877,6 @@ const HomeScreen = () => {
                 sm:w-full
                 md:w-[80%]
                 lg:w-[60%]
-<<<<<<< HEAD
-=======
-                ml-2
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
               "
             >
             

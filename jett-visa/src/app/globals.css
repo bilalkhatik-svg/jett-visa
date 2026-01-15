@@ -1,47 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-<<<<<<< HEAD
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
-
-=======
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
-
+/* now it's legal to use layers */
 @layer base {
   body {
-    font-family: 'Poppins', sans-serif;
-  }
-  
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-  
-  * {
-    box-sizing: border-box;
+    @apply bg-white text-black;
   }
 }
-
-@layer utilities {
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Ensure text wraps properly in cards */
-  .text-wrap {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-<<<<<<< HEAD
-} 
-=======
-}
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54

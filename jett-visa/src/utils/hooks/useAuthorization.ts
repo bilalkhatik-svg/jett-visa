@@ -1,6 +1,8 @@
 import { useAuthorizeMutation } from '@/store/authorizationApi';
 import { useDispatch } from 'react-redux';
+import { useCallback } from 'react';
 import { setAuthorizationTokens } from '@/store/slice/loginSlice';
+import { saveAuthTokens } from '@/utils/authStorage';
 
 /**
  * Custom hook to handle authorization
@@ -11,19 +13,21 @@ export const useAuthorization = () => {
   const dispatch = useDispatch();
   const [authorize, { isLoading, error }] = useAuthorizeMutation();
 
-  const handleAuthorize = async (encryptedRequest: string, ipAddress?: string) => {
+  const handleAuthorize = useCallback(async (encryptedRequest: string, ipAddress?: string) => {
     try {
       const result = await authorize({ encryptedRequest, ipAddress }).unwrap();
      
       
       // Store the tokens in Redux
       if (result?.Response?.Auth1dot0) {
-        dispatch(setAuthorizationTokens({
+        const tokens = {
           ConsumerKey: result.Response.Auth1dot0.ConsumerKey,
           ConsumerSecret: result.Response.Auth1dot0.ConsumerSecret,
           AccessToken: result.Response.Auth1dot0.AccessToken,
-          
-        }));
+        };
+
+        dispatch(setAuthorizationTokens(tokens));
+        saveAuthTokens(tokens);
       }
        console.log("Authorization Result:", result);
       return result;
@@ -31,7 +35,7 @@ export const useAuthorization = () => {
       console.error('Authorization failed:', err);
       throw err;
     }
-  };
+  }, [authorize, dispatch]);
 
   return {
     authorize: handleAuthorize,
@@ -39,4 +43,3 @@ export const useAuthorization = () => {
     error,
   };
 };
-

@@ -78,11 +78,7 @@ export interface AuthorizationResponse {
 // Use environment variable or fallback to hardcoded URL
 // In development, this will use the proxy configured in next.config.ts
 const getAuthorizationBaseUrl = () => {
-<<<<<<< HEAD
   // In development, use relative path to leverage Next.js proxy (equivalent to import.meta.env.DEV)
-=======
-  // In development, use relative path to leverage Next.js proxy
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
   if (process.env.NODE_ENV === 'development') {
     return '/api/v1';
   }
@@ -113,10 +109,7 @@ export const authorizationApi = createApi({
           },
           Request: encryptedRequest,
         };
-<<<<<<< HEAD
         console.log("Authorization Request Body:", requestBody);
-=======
->>>>>>> e3f38b1df29a584bee40332dad12e59eae138b54
 
         return {
           url: "/token/authorize",

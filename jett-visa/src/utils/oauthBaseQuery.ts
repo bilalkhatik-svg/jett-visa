@@ -4,6 +4,8 @@ import { APIversion, BaseGatewayURL } from "@/utils/config";
 import type { RootState } from "@/store/store";
 import CryptoJS from "crypto-js";
 import OAuth from "oauth-1.0a";
+import { loadAuthTokens } from "@/utils/authStorage";
+import { setAuthorizationTokens } from "@/store/slice/loginSlice";
 
 export const oauthBaseQuery: BaseQueryFn<
   string | FetchArgs,
@@ -12,7 +14,15 @@ export const oauthBaseQuery: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   const state = api.getState() as RootState;
 
-  const authTokens = state.loginSlice?.authorizationTokens;
+  let authTokens = state.loginSlice?.authorizationTokens;
+
+  if (!authTokens?.AccessToken) {
+    const storedTokens = loadAuthTokens();
+    if (storedTokens?.AccessToken) {
+      authTokens = storedTokens;
+      api.dispatch(setAuthorizationTokens(storedTokens));
+    }
+  }
 
 
 
