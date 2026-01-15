@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* now it's legal to use layers */
+@layer base {
+  body {
+    @apply bg-white text-black;
+  }
+}
