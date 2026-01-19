@@ -5,7 +5,7 @@ import CalenderIcon from "@/assets/images/icons/calendericon.webp"
 import { useTranslation } from "react-i18next";
 // import { useLocation } from "@/utility/hooks/useLocation";
 // import { getTravelDateVisaUrl, formatDate } from "@/utility/helper";
-// import type { PendingAction } from "@/pages/home-screen/HomeScreen";
+// import type { PendingAction } from "@/components-library/home-screen/HomeScreen";
 // import { theme } from "@/theme";
 // import DesktopTravelDateCalendar from "@/components/core-module/travel-date-calendar/DesktopTravelDateCalendar";
 

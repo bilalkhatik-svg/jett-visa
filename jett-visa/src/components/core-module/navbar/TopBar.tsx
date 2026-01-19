@@ -108,7 +108,7 @@ const TopBar: React.FC<TopBarProps> = ({
         <button
           onClick={handleMenuClick}
           aria-label="Menu"
-          className={`p-0 ${isMobile ? 'w-[30px] h-[30px]' : 'w-[46px] h-[46px]'} bg-[#FAFAFA] hover:bg-[#F5F5F5] flex items-center justify-center relative`}
+          className={`p-0 ${isMobile ? 'w-[30px] h-[30px]' : 'w-[46px] h-[46px]'} hover:bg-[#F5F5F5] flex items-center justify-center relative`}
         >
           <img 
             src={menuIconSrc} 

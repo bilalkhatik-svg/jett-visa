@@ -1,78 +1,54 @@
+'use client';
+
 import React from 'react';
-import { Box, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import backArrowIcon from '@assets/images/arrow-left.png';
-import { ROUTES } from "@/utility/constant";
+import backArrowIcon from '@/assets/images/arrow-left.png';
+import Image from 'next/image';
 
 const AccountHeader: React.FC = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { t, i18n } = useTranslation();
 
   const isRTL = i18n.dir() === 'rtl';
 
   const handleBack = () => {
-    navigate(ROUTES.HOME);
+    router.push('/');
   };
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        height: '60px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        px: '30px',
-        bgcolor: 'white',
-        pt: '20px',
-        pb: '20px',
-        direction: i18n.dir(),
-      }}
+    <div
+      className="w-full h-[60px] flex items-center justify-between px-[30px] bg-white pt-5 pb-5"
+      dir={i18n.dir()}
     >
       {!isRTL && (
-        <Box
-          component="img"
+        <Image
           src={backArrowIcon}
+          alt="Back"
           onClick={handleBack}
-          sx={{
-            cursor: 'pointer',
-            width: '24px',
-            height: '24px',
-          }}
+          className="cursor-pointer w-6 h-6"
+          width={24}
+          height={24}
         />
       )}
 
-      <Typography
-        sx={{
-          fontFamily: 'Poppins',
-          fontWeight: 500,
-          fontSize: '16px',
-          lineHeight: '16px',
-          color: '#00366B',
-          textAlign: 'center',
-          flex: 1,
-        }}
+      <h1
+        className="font-['Poppins'] font-medium text-base leading-4 text-[#00366B] text-center flex-1"
       >
         {t('account')}
-      </Typography>
+      </h1>
 
       {isRTL && (
-        <Box
-          component="img"
+        <Image
           src={backArrowIcon}
+          alt="Back"
           onClick={handleBack}
-          sx={{
-            cursor: 'pointer',
-            width: '24px',
-            height: '24px',
-            transform: 'scaleX(-1)',
-          }}
+          className="cursor-pointer w-6 h-6 scale-x-[-1]"
+          width={24}
+          height={24}
         />
       )}
-
-
-    </Box>
+    </div>
   );
 };
 

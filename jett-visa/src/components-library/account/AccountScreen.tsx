@@ -15,6 +15,7 @@ import {
 } from "@/utility/mock/accountsMockData";
 import type { AccountMode, NavLink } from "@/utility/types/accounts/Accounts";
 import { useAppSelector } from "@/store/hooks";
+import FooterSection from "../home-screen/footer-section/FooterSection";
 
 const AccountScreen: React.FC = () => {
   const [mode, setMode] = useState<AccountMode>("guest");
@@ -98,7 +99,7 @@ const AccountScreen: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {loading ? <AccountSkeleton.AccountHeader /> : <AppHeader titleKey="account" />}
+      {loading ? <AccountSkeleton /> : <AppHeader titleKey="account" />}
 
       <div className="p-4 text-center bg-[#FFFBEA] border-b border-[#FFE58F]">
         <button
@@ -115,32 +116,32 @@ const AccountScreen: React.FC = () => {
       <div className="flex-1 max-w-sm mx-auto w-full px-0">
         {isAuthenticated
           ? loading
-            ? <AccountSkeleton.ProfileHeader />
+            ? <AccountSkeleton />
             : user && <ProfileHeader user={user} />
           : null}
 
         {!isAuthenticated
           ? loading
-            ? <AccountSkeleton.GuestBanner />
+            ? <AccountSkeleton />
             : <GuestHeaderBanner />
           : null}
 
         {!isAuthenticated
           ? loading
-            ? <AccountSkeleton.GuestButtons />
+            ? <AccountSkeleton />
             : navigationLinks.guest && (
               <NavList links={navigationLinks.guest} isGuestButtons />
             )
           : null}
 
         {loading ? (
-          <AccountSkeleton.NavCard />
+          <AccountSkeleton />
         ) : (
           <NavList links={mainLinks} card user={guestUserData} />
         )}
 
         {loading ? (
-          <AccountSkeleton.TermsPrivacy />
+          <AccountSkeleton />
         ) : (
           <TermsPrivacyList
             links={termsLinks}
@@ -149,9 +150,10 @@ const AccountScreen: React.FC = () => {
         )}
 
         {loading ? (
-          <AccountSkeleton.Footer />
+          <AccountSkeleton />
         ) : (
-          <FooterMeta metadata={applicationMetadata} />
+          // <FooterMeta metadata={applicationMetadata} />
+          <FooterSection/>
         )}
       </div>
     </div>

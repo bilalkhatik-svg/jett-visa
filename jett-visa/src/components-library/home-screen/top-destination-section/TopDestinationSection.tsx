@@ -132,7 +132,7 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
     return (
       <div className="max-w-[1120px] mx-auto px-6 py-5 bg-white">
         <h3 className="font-poppins font-semibold text-[#00366B] text-2xl md:text-3xl mb-4">Top Destinations</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-4">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="h-48 bg-gray-200 animate-pulse rounded-2xl"></div>
           ))}
@@ -144,7 +144,7 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
   return (
     <div className="max-w-[1120px] mx-auto px-8 py-5 bg-white md:px-8 md:py-5 sm:px-4 sm:py-4">
       <h3 className="font-poppins font-semibold text-[#00366B] text-3xl mb-4 md:text-3xl md:mb-4 sm:text-xl sm:mb-3">Top Destinations</h3>
-      <div className="grid grid-cols-4 gap-4 md:grid-cols-4 md:gap-4 lg:grid-cols-3 sm:grid-cols-2 sm:gap-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-4">
         {mappedDestinations.map((item, index) => (
           <div
             key={`${item.CountryCode}-${index}`}

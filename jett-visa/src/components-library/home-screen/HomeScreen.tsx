@@ -90,7 +90,7 @@ const TopBarSkeleton = () => <div className="h-16 bg-gray-200 animate-pulse"></d
 const MobileBottomDrawerSkeleton = () => <div className="h-96 bg-gray-200 animate-pulse"></div>;
 
 // Simple component placeholders
-const FooterSection = () => <footer className="bg-gray-800 text-white p-8">Footer</footer>;
+// const FooterSection = () => <footer className="bg-gray-800 text-white p-8">Footer</footer>;
 const MobileBottomDrawer = ({ modalOpen, setModalOpen, children, sx }: any) => {
   if (!modalOpen) return null;
   return (
@@ -304,6 +304,7 @@ import DesktopSearchDropdown from "./search-destination/DesktopSearchDropdown";
 import OfferSection from "./offer-section/OfferSection";
 import homeBgImage from "@/assets/images/homeBgImage.webp";
 import scrollBgImage from "@/assets/images/scrollBgImage.png";
+import FooterSection from "./footer-section/FooterSection";
 
 const SearchDestination = lazy(
   () => import("./search-destination/SearchDestination")
@@ -876,7 +877,7 @@ const HomeScreen = () => {
                 w-full
                 sm:w-full
                 md:w-[80%]
-                lg:w-[60%]
+                
               "
             >
             

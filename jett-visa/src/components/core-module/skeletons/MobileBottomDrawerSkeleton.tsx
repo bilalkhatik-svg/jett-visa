@@ -1,14 +1,14 @@
-import { Box, Skeleton } from '@mui/material'
+import React from 'react';
 
-const MobileBottomDrawerSkeleton = () => {
+const MobileBottomDrawerSkeleton: React.FC = () => {
     return (
-        <Box sx={{ p: 2 }}>
-            <Skeleton variant="text" width="60%" height={25} />
-            <Skeleton variant="rectangular" width="100%" height={42} sx={{ mt: 2 }} />
-            <Skeleton variant="rectangular" width="100%" height={50} sx={{ mt: 2 }} />
-            <Skeleton variant="rectangular" width="100%" height={50} sx={{ mt: 2 }} />
-        </Box>
-    )
-}
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white shadow-lg">
+            <div className="animate-pulse space-y-3">
+                <div className="h-12 bg-gray-200 rounded"></div>
+                <div className="h-12 bg-gray-200 rounded"></div>
+            </div>
+        </div>
+    );
+};
 
-export default MobileBottomDrawerSkeleton
+export default MobileBottomDrawerSkeleton;

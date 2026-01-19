@@ -14,7 +14,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
   description,
 }) => {
   return (
-    <div className="card bg-base-100 border border-[#DBE9F8] rounded-xl sm:rounded-[25px] p-3 sm:p-4 md:p-5 h-full overflow-hidden">
+    <div className="card bg-base-100 border border-[#DBE9F8] rounded-xl bg-[#FAFAFA] sm:rounded-[25px] p-3 sm:p-4 md:p-5 h-full overflow-hidden">
       <div className="flex items-start gap-3 min-w-0">
         {/* Icon container */}
         <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-b from-[#F2F2F8] to-transparent flex items-center justify-center shrink-0 flex-shrink-0">
