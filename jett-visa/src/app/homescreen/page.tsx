@@ -1,7 +1,5 @@
-// "use client";
-
-import HomeScreen from "@/pages/home-screen/HomeScreen";
+import HomeScreenClient from "@/components/HomeScreenClient";
 
 export default function HomeScreenPage() {
-  return <HomeScreen />;
+  return <HomeScreenClient />;
 }

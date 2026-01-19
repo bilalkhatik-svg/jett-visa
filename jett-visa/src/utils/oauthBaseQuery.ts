@@ -58,6 +58,7 @@ export const oauthBaseQuery: BaseQueryFn<
     !authTokens?.ConsumerSecret ||
     !authTokens?.AccessToken
   ) {
+    console.warn("[OAuth] Making request without auth tokens:", endpoint);
     rawBaseQuery = fetchBaseQuery({
       baseUrl,
       prepareHeaders: (headers) => {
@@ -66,6 +67,9 @@ export const oauthBaseQuery: BaseQueryFn<
       },
     });
   } else {
+    if (process.env.NODE_ENV === 'development') {
+      console.log("[OAuth] Request with tokens:", endpoint);
+    }
     /** -----------------------------------------------------
    *  OAuth 1.0a Signature (same as your fetch version)
    * ----------------------------------------------------- */

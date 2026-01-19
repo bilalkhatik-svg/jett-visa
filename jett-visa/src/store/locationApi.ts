@@ -52,7 +52,7 @@ export const ipApi = createApi({
     endpoints: (builder) => ({
         fetchIP: builder.query<IPResponse, void>({
             query: () => ({
-                url: "/json",
+                url: "/json/",
                 method: "GET",
             }),
         }),

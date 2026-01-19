@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import leftArrowIcon from '@/assets/images/icons/Polygon2.webp';
 import rightArrowIcon from '@/assets/images/icons/Polygon1.webp';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/utils/i18nStub';
 
 // Mock data
 const continents = ['Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'];
