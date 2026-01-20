@@ -69,10 +69,25 @@ const WhyChooseMusafirSection = React.memo(() => {
   }));
 
   return (
-    <section className="w-full">
+    <section className="w-full max-w-[1120px] mx-auto opacity-100" >
       <h2 className="font-poppins font-semibold text-[#003B71] text-2xl mb-8 sm:text-xl sm:mb-6">{t('why_choose_musafir')}</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-4">
+      {/* Desktop: Horizontal cards in 2 columns */}
+      <div className="hidden md:grid md:grid-cols-2" style={{ gap: '20px' }}>
+        {stepsWithIcons.map((item: typeof stepsWithIcons[0], index: number) => (
+          <InfoCard
+            key={item.imageAlt + index}
+            imageSrc={item.imageSrc}
+            imageAlt={item.imageAlt}
+            title={item.title}
+            description={item.description}
+            variant="horizontal"
+          />
+        ))}
+      </div>
+
+      {/* Mobile: Vertical cards */}
+      <div className="grid grid-cols-1 gap-4 md:hidden">
         {stepsWithIcons.map((item: typeof stepsWithIcons[0], index: number) => (
           <div key={item.imageAlt + index} className="h-full">
             <InfoCard
@@ -80,6 +95,7 @@ const WhyChooseMusafirSection = React.memo(() => {
               imageAlt={item.imageAlt}
               title={item.title}
               description={item.description}
+              variant="vertical"
             />
           </div>
         ))}

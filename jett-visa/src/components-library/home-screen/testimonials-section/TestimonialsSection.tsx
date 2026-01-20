@@ -77,8 +77,8 @@ const TestimonialsSection = React.memo(() => {
     const starIconSrc = typeof StarIcon === 'string' ? StarIcon : (StarIcon as any)?.src || StarIcon;
 
     return (
-        <section className="w-full">
-            <h2 className="font-poppins font-semibold text-[#003B71] text-2xl mb-8 sm:text-xl sm:mb-6">{t('testimonials')}</h2>
+        <section className="w-full max-w-[1120px] mx-auto opacity-100" >
+            <h2 className="font-poppins font-semibold text-[#003669] text-2xl mb-8 sm:text-xl sm:mb-6">{t('testimonials')}</h2>
 
             <div className="flex overflow-x-auto gap-6 pb-4 scrollbar-hide md:gap-6 sm:gap-4 snap-x snap-mandatory">
                 {testimonials.map((testimonial: Testimonial, index: number) => (

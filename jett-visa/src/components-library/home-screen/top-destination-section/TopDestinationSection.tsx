@@ -145,7 +145,7 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-[1120px] mx-auto opacity-100" >
       <div className="flex justify-between items-center mb-6 sm:mb-5">
         <h2 className="font-poppins font-semibold text-[#003B71] text-2xl sm:text-xl">Top destinations</h2>
         <button className="text-sm text-[#0066CC] font-medium hover:underline transition-all sm:text-xs">View all</button>

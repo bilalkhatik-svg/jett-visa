@@ -72,7 +72,8 @@ const FaqSection: React.FC = () => {
       : (DownArrowIcon as any)?.src || DownArrowIcon;
 
   return (
-    <div className="w-full">
+   // <section className="w-full max-w-[1120px] mx-auto opacity-100" style={{minHeight:'324px'}}>
+    <div className="w-full max-w-[1120px] mx-auto opacity-100">
       {/* Title */}
       <h2 className="font-poppins font-semibold text-[#003B71] text-2xl mb-6 sm:text-xl sm:mb-5">
         {t("faqs")}
@@ -121,6 +122,7 @@ const FaqSection: React.FC = () => {
         })}
       </div>
     </div>
+   // </section>
   );
 };
 

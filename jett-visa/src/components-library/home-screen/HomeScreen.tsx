@@ -965,14 +965,14 @@ const HomeScreen = () => {
         <TopDestinationsSkeleton numberOfItems={8} />
       ) : (
         <div className="w-full">
-          <div className="max-w-7xl mx-auto md:ml-[6%] px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:overflow-hidden">
+          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 md:overflow-hidden">
             <TopDestinationSection onPreFlowNavigation={handlePreFlowNavigation} />
           </div>
         </div>
       )}
       {
         !isMobile && (
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
             <OfferSection />
           </div>
         )
@@ -980,7 +980,7 @@ const HomeScreen = () => {
       {isFindVisaLoading ? (
         <FindVisaWidgetSkeleton />
       ) : (
-        <div className="w-full bg-gradient-to-b from-white to-[#F8FAFC] py-12 sm:py-16">
+        <div className="w-full bg-gradient-to-b from-white to-[#F8FAFC] pt-12 sm:pt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <FindVisaWidget onPreFlowNavigation={handlePreFlowNavigation} />
           </div>
@@ -989,8 +989,8 @@ const HomeScreen = () => {
       {isHowToApplyLoading ? (
         <HowToApplySectionSkeleton />
       ) : (
-        <div className="w-full bg-[#EBF2FF] py-12 sm:py-16 ">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:ml-[6%]">
+        <div className="w-full bg-[#EBF2FF] pt-12 sm:pt-16 ">
+          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
             <HowToApplySection />
           </div>
         </div>
@@ -998,8 +998,8 @@ const HomeScreen = () => {
       {isWhyChooseLoading ? (
         <WhyChooseMusafirSectionSkeleton />
       ) : (
-        <div className="w-full py-12 sm:py-16 bg-white md:ml-[10%]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full pt-12 sm:pt-16 bg-white">
+          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
             <WhyChooseMusafirSection />
           </div>
         </div>
@@ -1007,8 +1007,8 @@ const HomeScreen = () => {
       {isTestimonialsLoading ? (
         <TestimonialsSectionSkeleton />
       ) : (
-        <div className="w-full py-12 sm:py-16 bg-[#F8FAFC] ">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:ml-[6%]">
+        <div className="w-full pt-12 sm:pt-16 bg-[#F8FAFC] ">
+          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
             <TestimonialsSection />
           </div>
         </div>
@@ -1016,7 +1016,7 @@ const HomeScreen = () => {
       {isFaqLoading ? (
         <FaqSectionSkeleton />
       ) : (
-        <div className="w-full py-12 sm:py-16 bg-white">
+        <div className="w-full pt-12 sm:pt-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:ml-[6%]">
             <FaqSection />
           </div>

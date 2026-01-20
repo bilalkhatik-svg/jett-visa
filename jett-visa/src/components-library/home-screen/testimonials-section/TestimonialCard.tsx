@@ -14,7 +14,16 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 }) => {
   return (
     <div className="min-w-[280px] sm:min-w-[260px] md:min-w-[320px] lg:min-w-[340px] bg-white rounded-2xl border border-[#E5E7EB] p-6 flex flex-col gap-4 shadow-sm hover:shadow-md transition-all sm:p-5">
-      <p className="text-sm font-normal text-[#374151] leading-relaxed flex-1 sm:text-xs">{content}</p>
+      <p 
+        className="font-poppins font-medium text-[#003669] leading-none flex-1 sm:text-sm"
+        style={{ 
+          fontSize: '18px',
+          lineHeight: '100%',
+          letterSpacing: '0%'
+        }}
+      >
+        {content}
+      </p>
 
       <div className="flex items-center justify-between border-t border-[#F3F4F6] pt-3">
         <div className="text-sm font-semibold text-[#003B71] sm:text-xs">{author}</div>

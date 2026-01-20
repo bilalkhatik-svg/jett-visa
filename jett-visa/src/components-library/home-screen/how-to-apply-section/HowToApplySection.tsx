@@ -162,12 +162,12 @@ const HowToApplySection = React.memo(() => {
   }));
 
   return (
-    <section className="w-full">
+    <section className="w-full max-w-[1120px] mx-auto opacity-100" style={{minHeight:'324px'}}>
       <h2 className="font-poppins font-semibold text-[#003B71] text-2xl mb-8 sm:text-xl sm:mb-6">{t('how_to_apply')}</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-4">
-        {stepsWithIcons.map((item: typeof stepsWithIcons[0], index: number) => (
-          <div key={item.imageAlt + index} className="h-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-y-8">
+  {stepsWithIcons.map((item, index) => (
+    <div key={index} className="w-[256px] h-[240px]">
             <InfoCard
               imageSrc={item.imageSrc}
               imageAlt={item.imageAlt}
