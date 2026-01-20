@@ -46,18 +46,51 @@ const VisaMode = ({ showDestinationModal }: VisaModeProps) => {
   ];
 
   return (
-    <div className="mt-1 w-full max-w-full flex flex-wrap justify-start gap-8 md:gap-8 lg:gap-4 sm:max-w-[327px] sm:justify-center sm:gap-3">
-      {items?.map((item, index) => (
-        <div key={index} className="text-center flex flex-col items-center">
-          <button
-            onClick={() => handleButtonClick(item?.key)}
-            className={`flex items-center justify-center rounded-lg transition-all w-20 h-20 md:w-20 md:h-20 sm:w-16 sm:h-16 ${activeKey === item.key ? 'ring-2 ring-blue-500 shadow-md' : 'hover:ring-1 hover:ring-gray-300'}`}
-          >
-            <img src={item.img} alt={item.label} className="block object-contain w-16 h-16 md:w-16 md:h-16 sm:w-12 sm:h-12" />
-          </button>
+    <div className="w-full max-w-full flex flex-wrap justify-center gap-6 sm:justify-center sm:gap-5 md:justify-start md:gap-8 lg:gap-4 md:ml-[-0.5%] mt-[2%]">
 
-          <div className="text-base text-[#00366B] mt-1 font-medium whitespace-nowrap md:text-base lg:text-sm sm:text-xs">{item.label}</div>
-        </div>
+      {items?.map((item, index) => (
+        // <div key={index} className="text-center flex flex-col items-center gap-2">
+        //   <button
+        //     onClick={() => handleButtonClick(item?.key)}
+        //     className={`flex items-center justify-center rounded-[12px] transition-all duration-200 ${
+        //       activeKey === item.key 
+        //         ? 'bg-[#E8F4F8] shadow-lg' 
+        //         : 'bg-[#E8F4F8] hover:bg-[#D0E8F5]'
+        //     } w-[72px] h-[72px] sm:w-[72px] sm:h-[72px] md:w-20 md:h-20`}
+        //   >
+        //     <img src={item.img} alt={item.label} className="block object-contain w-10 h-10 sm:w-10 sm:h-10 md:w-14 md:h-14" />
+        //   </button>
+
+        //   <div className={`font-poppins font-medium whitespace-nowrap text-xs sm:text-xs md:text-sm ${
+        //     activeKey === item.key ? 'text-[#0066CC]' : 'text-[#374151]'
+        //   }`}>
+        //     {item.label}
+        //   </div>
+        // </div>
+        <div key={index} className="text-center flex flex-col items-center gap-2">
+  <button
+    onClick={() => handleButtonClick(item?.key)}
+    className={`flex items-center justify-center rounded-[12px] transition-all duration-200
+      ${
+        activeKey === item.key
+          ? 'bg-[#E8F4F8] shadow-lg border-2 border-[#0066CC]'
+          : 'bg-[#E8F4F8] hover:bg-[#D0E8F5] border-2 border-transparent'
+      }
+      w-[72px] h-[72px] sm:w-[72px] sm:h-[72px] md:w-20 md:h-20
+    `}
+  >
+    <img
+      src={item.img}
+      alt={item.label}
+      className="block object-contain w-10 h-10 sm:w-10 sm:h-10 md:w-14 md:h-14"
+    />
+  </button>
+
+  <div className="font-poppins font-medium whitespace-nowrap text-xs sm:text-xs md:text-sm text-[#0066CC]">
+    {item.label}
+  </div>
+</div>
+
       ))}
     </div>
   );

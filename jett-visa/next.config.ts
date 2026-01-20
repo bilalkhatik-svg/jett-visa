@@ -28,6 +28,10 @@ const nextConfig: NextConfig = {
         source: '/api/v1/:path*',
         destination: 'https://saas.dev.api.musafirbiz.com/api/v1/:path*',
       },
+      {
+        source: '/ip-api/:path*',
+        destination: 'https://ipapi.co/:path*',
+      },
     ];
   },
   // Disable prerendering for development - components won't be treated as pages
