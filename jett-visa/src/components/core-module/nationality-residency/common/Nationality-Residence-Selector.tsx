@@ -2,14 +2,15 @@
 
 import { useFetchCountryListQuery } from '@/store/visaCountryListApi';
 import { useDebounce } from '@/utils/hooks/useDebounce';
-import { Country } from '@/utils/types/country/Country';
+import type { ICountry } from "@/utils/types/nationality-residency/Country";
 import { useMemo, useState } from 'react';
 
 interface Props {
-  nationality?: Country | null;
-  residency?: Country | null;
-  onNationalityChange?: (country: Country) => void;
-  onResidencyChange?: (country: Country) => void;
+  countryList?: ICountry[];
+  nationality?: ICountry | null;
+  residency?: ICountry | null;
+  onNationalityChange?: (country: ICountry) => void;
+  onResidencyChange?: (country: ICountry) => void;
   isMobile?: boolean;
 }
 
@@ -27,7 +28,7 @@ const NationalityResidencySelector = ({
 
   const debouncedSearch = useDebounce(search, 300);
 
-  const countryList: Country[] = data?.response ?? [];
+  const countryList: ICountry[] = data?.response ?? [];
 
   const filteredList = useMemo(() => {
     if (!debouncedSearch) return countryList;
@@ -37,7 +38,7 @@ const NationalityResidencySelector = ({
     );
   }, [countryList, debouncedSearch]);
 
-  const handleSelect = (item: Country) => {
+  const handleSelect = (item: ICountry) => {
     if (openType === 'nationality') {
       onNationalityChange?.(item);
     } else if (openType === 'residency') {

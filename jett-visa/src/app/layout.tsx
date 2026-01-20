@@ -3,7 +3,6 @@ import ReduxProvider from "@/components/ReduxProvider";
 import StructuredData from "@/components/StructuredData";
 import "./globals.css";
 import AppInit from "./providers/AppInit";
-import type {Metadata} from "next";
 
 export const metadata: Metadata = {
   title: {

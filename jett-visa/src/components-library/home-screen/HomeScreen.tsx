@@ -1,12 +1,5 @@
 "use client";
 
-// import {
-//   Box,
-//   InputAdornment,
-//   styled,
-//   TextField,
-//   Typography,
-// } from "@mui/material";
 import {
   lazy,
   Suspense,
@@ -17,20 +10,12 @@ import {
   useMemo,
 } from "react";
 import { useTranslation } from "@/utils/i18nStub";
-// import { useNavigate } from "react-router-dom";
 import inspireMeGif from "@/assets/images/gif/inspireMeGif.gif";
 import SearchIcon2 from "@/assets/images/icons/search.png";
 import planeImage from "@/assets/images/planeImage.png";
 import planeMark from "@/assets/images/planeMark.png";
-// import { FooterSection, MobileBottomDrawer, VisaTypeSection } from "@/components";
 import FindVisaWidget from "@/components/core-module/find-visa/FindVisaWidget";
-// import BottomConfirmBar from "@components/core-module/nationality-residency/common/BottomConfirmBar";
-// import UpdateResidencyDialog from "@components/core-module/nationality-residency/modals/UpdateResidencyDialog";
-// import NationalityResidencySelector, { type NationalityResidencySelectorRef } from "@components/core-module/nationality-residency/NationalityResidencySelector";
 import TopBar from "@/components/core-module/navbar/TopBar";
-// import MobileBottomDrawerSkeleton from "@components/core-module/skeletons/MobileBottomDrawerSkeleton";
-// import TravelDateCalender from "@components/core-module/travel-date-calendar/TravelDateCalender";
-// import OtherVisaTypes from "@components/core-module/visa-type/OtherVisaTypes";
 import { i18n } from "@/utils/i18nStub";
 import { useFetchCountryListQuery } from "@/store/visaCountryListApi";
 import { useFetchIPQuery, useFetchGeoIPQuery } from "@/store/locationApi";
@@ -42,7 +27,7 @@ import {
   setCountryIsoCode,
 } from "@/store/slice/locationSlice";
 // import { ROUTES } from "@utility/constant";
-import type { Country } from "@/utils/types/nationality-residency/Country";
+import type { ICountry } from "@/utils/types/nationality-residency/Country";
 // Define types locally
 interface NationalityResidencySelectorRef {
   [key: string]: any;
@@ -72,19 +57,6 @@ import TestimonialsSection from "./testimonials-section/TestimonialsSection";
 import SearchTravelDate from "./travel-date-section/SearchTravelDate";
 import VisaMode from "./visa-selection-options/VisaSelectionOptions";
 import WhyChooseMusafirSection from "./why-choose-musafir-section/WhyChooseMusafirSection";
-// import HeroSectionSkeleton from "@/components/core-module/skeletons/HeroSectionSkeleton";
-// import TopDestinationsSkeleton from "@components/core-module/skeletons/TopDestinationsSkeleton";
-// import FindVisaWidgetSkeleton from "@components/core-module/skeletons/FindVisaWidgetSkeleton";
-// import HowToApplySectionSkeleton from "@components/core-module/skeletons/HowToApplySectionSkeleton";
-// import WhyChooseMusafirSectionSkeleton from "@components/core-module/skeletons/WhyChooseMusafirSkeleton";
-// import TestimonialsSectionSkeleton from "@components/core-module/skeletons/TestimonialsSectionSkeleton";
-// import FaqSectionSkeleton from "@components/core-module/skeletons/FaqSectionSkeleton";
-// import FooterSkeleton from "@components/core-module/skeletons/FooterSkeleton";
-// import BottomConfirmBarSkeleton from "@components/core-module/skeletons/BottomConfirmBarSkeleton";
-// import { getCountryVisaUrl } from "@/utility/helper";
-// import TopBarSkeleton from "@components/core-module/skeletons/TopBarSkeleton";
-// import { useMediaQuery } from "@mui/material";
-
 // Simple skeleton components
 const HeroSectionSkeleton = () => (
   <div className="h-96 bg-gray-200 animate-pulse"></div>
@@ -442,14 +414,14 @@ const HomeScreen = () => {
   const countryIsoCode = locationState.countryIsoCode;
 
   const handleUpdateNationality = useCallback(
-    (country: Country) => {
+    (country: ICountry) => {
       dispatch(setNationality(country));
     },
     [dispatch],
   );
 
   const handleUpdateResidency = useCallback(
-    (country: Country) => {
+    (country: ICountry) => {
       dispatch(setResidency(country));
     },
     [dispatch],
@@ -478,7 +450,7 @@ const HomeScreen = () => {
   const isRTL = i18n.language === "ar" || i18n.language === "ar-AE";
   useEffect(() => {
     if (!isCountryListSuccess || !countryListData?.response) return;
-    const currentResidency = residency as Country | null;
+    const currentResidency = residency as ICountry | null;
     if (currentResidency && currentResidency.isoCode) return;
     const residencyText = (
       locationResponse as any
@@ -489,7 +461,7 @@ const HomeScreen = () => {
     const residencyIsoCode =
       residencyIsoCodeValue ||
       (locationResponse as any)?.response?.countryIsoCode?.toLocaleLowerCase();
-    const residencyData = countryListData.response.find((item: Country) => {
+    const residencyData = countryListData.response.find((item: ICountry) => {
       if (
         residencyIsoCode &&
         item.isoCode &&
@@ -577,8 +549,8 @@ const HomeScreen = () => {
           }
           break;
         case "search":
-          const currentResidencyForSearch = residency as Country | null;
-          const destination = action.destination as Country | undefined;
+          const currentResidencyForSearch = residency as ICountry | null;
+          const destination = action.destination as ICountry | undefined;
           if (
             destination &&
             currentResidencyForSearch &&
@@ -600,8 +572,8 @@ const HomeScreen = () => {
 
   const handlePreFlowNavigation = useCallback(
     (action: PendingAction): boolean => {
-      const currentNationality = nationality as Country | null;
-      const currentResidency = residency as Country | null;
+      const currentNationality = nationality as ICountry | null;
+      const currentResidency = residency as ICountry | null;
       if (
         !currentNationality ||
         !currentNationality.isoCode ||
@@ -621,7 +593,7 @@ const HomeScreen = () => {
   );
 
   const handleConfirmUpdate = useCallback(
-    (newNationality: Country, newResidency: Country) => {
+    (newNationality: ICountry, newResidency: ICountry) => {
       handleUpdateNationality(newNationality);
       handleUpdateResidency(newResidency);
       if (newResidency?.isoCode) {
@@ -745,7 +717,7 @@ const HomeScreen = () => {
         ) : (
           <TopBar
             variant="home"
-            flagIcon={(residency as Country | null)?.flag}
+            flagIcon={(residency as ICountry | null)?.flag}
             isLoggedIn={false}
             onFlagClick={handleFlagClick}
             onLogoClick={() => {}}
@@ -1081,13 +1053,13 @@ const HomeScreen = () => {
             <BottomConfirmBar
               residency={
                 residency
-                  ? (residency as unknown as Country).residency ||
-                    (residency as unknown as Country).name ||
+                  ? (residency as unknown as ICountry).residency ||
+                    (residency as unknown as ICountry).name ||
                     ""
                   : ""
               }
               flagUrl={
-                residency ? (residency as unknown as Country).flag : undefined
+                residency ? (residency as unknown as ICountry).flag : undefined
               }
               onConfirmClick={handleConfirmBarClick}
               nationalitySelectorRef={nationalitySelectorRef}
