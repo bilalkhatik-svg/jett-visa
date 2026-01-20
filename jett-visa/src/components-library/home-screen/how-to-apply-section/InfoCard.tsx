@@ -1,13 +1,7 @@
 "use client";
 
+import { InfoCardProps } from "@/utils/types/how-to-apply/Index";
 import React from "react";
-
-type InfoCardProps = {
-  imageSrc: string;
-  imageAlt: string;
-  title: string;
-  description: string;
-};
 
 const InfoCard: React.FC<InfoCardProps> = ({
   imageSrc,
@@ -29,10 +23,11 @@ const InfoCard: React.FC<InfoCardProps> = ({
 
         {/* Text content */}
         <div className="flex flex-col gap-1.5 sm:gap-2 min-w-0 flex-1 overflow-hidden">
-          <h4 className="text-base sm:text-lg md:text-xl font-semibold text-[#00366B] font-poppins break-words">
+          <h2 className="text-[18px] font-semibold text-[#00366B] font-poppins break-words">
             {title}
-          </h4>
-          <p className="text-xs sm:text-sm md:text-base text-[#003669] font-poppins leading-relaxed break-words">
+          </h2>
+
+          <p className="text-[16px] font-normal text-[#003669] font-poppins leading-relaxed break-words">
             {description}
           </p>
         </div>

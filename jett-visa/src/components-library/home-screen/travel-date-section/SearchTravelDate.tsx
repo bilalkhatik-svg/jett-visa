@@ -7,11 +7,8 @@ import CalenderIcon from "@/assets/images/icons/calendericon.webp"
 import { useTranslation } from "@/utils/i18nStub";
 // import { useLocation } from "@/utility/hooks/useLocation";
 // import { getTravelDateVisaUrl, formatDate } from "@/utility/helper";
-<<<<<<<< HEAD:jett-visa/src/features/home-screen/travelDateSection/SearchTravelDate.tsx
-// import type { PendingAction } from "@/features/home-screen/HomeScreen";
-========
+
 // import type { PendingAction } from "@/components-library/home-screen/HomeScreen";
->>>>>>>> 0f1ee9dd767d1707b6f0517bfcaf4a5fc9484625:jett-visa/src/components-library/home-screen/travel-date-section/SearchTravelDate.tsx
 // import { theme } from "@/theme";
 // import DesktopTravelDateCalendar from "@/components/core-module/travel-date-calendar/DesktopTravelDateCalendar";
 

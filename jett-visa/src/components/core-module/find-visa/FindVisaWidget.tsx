@@ -11,11 +11,7 @@ import circleBackgroundImage from '@/assets/images/circlebg.webp';
 import arcImage from '@/assets/images/Ellipse.webp';
 import lineImage from '@/assets/images/lineimage.webp';
 import CardImg from '@/assets/images/germany-card-img.webp';
-<<<<<<< HEAD
-import type { PendingAction } from '@/features/home-screen/HomeScreen';
-=======
 import type { PendingAction } from '@/components-library/home-screen/HomeScreen';
->>>>>>> 0f1ee9dd767d1707b6f0517bfcaf4a5fc9484625
 
 // Mock data
 const continents = ['Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'];

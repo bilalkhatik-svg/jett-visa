@@ -30,29 +30,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-<<<<<<< HEAD
   // Disable prerendering for development - components won't be treated as pages
-=======
-
-  // Add security headers for better SEO ranking
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on'
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN'
-          },
-        ],
-      },
-    ];
-  },
->>>>>>> 0f1ee9dd767d1707b6f0517bfcaf4a5fc9484625
 };
 
 export default nextConfig;

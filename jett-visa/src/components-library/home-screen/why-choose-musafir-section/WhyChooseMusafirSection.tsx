@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import InfoCard from '../howToApplySection/InfoCard';
+import InfoCard from '../how-to-apply-section/InfoCard';
 // import { useVisaStaticContent } from '@utility/hooks/useVisaStaticContent';
 import ClickIcon from "@/assets/images/icons/clickIcon.png";
 import StarShieldIcon from "@/assets/images/icons/starShieldIcon.png";
