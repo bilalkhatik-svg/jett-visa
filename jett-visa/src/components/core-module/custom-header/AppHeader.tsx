@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/utils/i18nStub';
 import ArrowBackIcon from '@/assets/images/arrow-left.png';
 
 interface AppHeaderProps {
@@ -15,7 +15,7 @@ export const AppHeader = React.memo<AppHeaderProps>(
   ({ title, titleKey, onBackClick }) => {
     const { t, i18n } = useTranslation();
     const router = useRouter();
-    const isRTL = i18n.dir() === 'rtl';
+    const isRTL = typeof i18n.dir === 'function' ? i18n.dir() === 'rtl' : i18n.language?.startsWith('ar');
 
     const handleBack = () => {
       if (onBackClick) {
@@ -31,7 +31,7 @@ export const AppHeader = React.memo<AppHeaderProps>(
     return (
       <header
         className="w-full flex justify-center h-[60px] relative items-center bg-gradient-to-b from-blue-50 to-white"
-        style={{ direction: i18n.dir() }}
+        style={{ direction: typeof i18n.dir === 'function' ? i18n.dir() : (i18n.language?.startsWith('ar') ? 'rtl' : 'ltr') }}
       >
         <div className="w-[315px] mx-auto flex items-center justify-between px-0">
           {!isRTL && (

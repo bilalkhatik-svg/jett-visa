@@ -1,40 +1,55 @@
-"use client";
+import type { Metadata } from "next";
+import HomeScreenClient from "@/components/HomeScreenClient";
 
-import { useEffect } from "react";
-import { useFetchDestinationsQuery } from "@/store/visaDestinationsApi";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/store/store";
-import searchIcon from "@/assets/images/icons/search.png";
-import downArrowIcon from "@/assets/images/icons/downArrowIcon.png";
-import favoriteLocationIcon from "@/assets/images/icons/favorite-location.png";
-import documentIcon from "@/assets/images/icons/documenticon.webp";
-import rightArrowIcon from "@/assets/images/icons/rightArrowIcon.png";
-import arrowLeftIcon from "@/assets/images/icons/arrowLeft.webp";
-import arrowRightIcon from "@/assets/images/icons/arrowrighticon.webp";
-import checkIcon from "@/assets/images/icons/checkicon.webp";
-import formIcon from "@/assets/images/icons/formIcon.png";
-import { useAppDispatch } from "@/store/hooks";
-import { useTranslation } from "react-i18next";
-import { loadLanguageFromStorage } from "@/store/slice/languageSlice";
-import { useAuthorization } from "@/utils/hooks/useAuthorization";
-import HomeScreen from "@/pages/home-screen/HomeScreen";
+export const metadata: Metadata = {
+  title: "Search & Apply for Visa Online - Jett Visa",
+  description: "Search for visa requirements to 190+ countries. Get instant visa approval, check processing times, and apply online. Trusted by thousands of travelers worldwide.",
+  keywords: [
+    "visa application",
+    "online visa",
+    "tourist visa",
+    "business visa",
+    "visa requirements",
+    "travel visa",
+    "visa processing",
+    "e-visa",
+    "visa on arrival"
+  ],
+  openGraph: {
+    title: "Search & Apply for Visa Online - Jett Visa",
+    description: "Search for visa requirements to 190+ countries. Get instant visa approval, check processing times, and apply online.",
+    type: "website",
+    url: "/",
+  },
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Home() {
-  
-  // Convert StaticImageData to string for img src
-  // const searchIconSrc = typeof searchIcon === 'string' ? searchIcon : (searchIcon as any)?.src || searchIcon;
-  // const downArrowIconSrc = typeof downArrowIcon === 'string' ? downArrowIcon : (downArrowIcon as any)?.src || downArrowIcon;
-  // const favoriteLocationIconSrc = typeof favoriteLocationIcon === 'string' ? favoriteLocationIcon : (favoriteLocationIcon as any)?.src || favoriteLocationIcon;
-  // const documentIconSrc = typeof documentIcon === 'string' ? documentIcon : (documentIcon as any)?.src || documentIcon;
-  // const rightArrowIconSrc = typeof rightArrowIcon === 'string' ? rightArrowIcon : (rightArrowIcon as any)?.src || rightArrowIcon;
-  // const arrowLeftIconSrc = typeof arrowLeftIcon === 'string' ? arrowLeftIcon : (arrowLeftIcon as any)?.src || arrowLeftIcon;
-  // const arrowRightIconSrc = typeof arrowRightIcon === 'string' ? arrowRightIcon : (arrowRightIcon as any)?.src || arrowRightIcon;
-  // const checkIconSrc = typeof checkIcon === 'string' ? checkIcon : (checkIcon as any)?.src || checkIcon;
-  // const formIconSrc = typeof formIcon === 'string' ? formIcon : (formIcon as any)?.src || formIcon;
-
   return (
     <>
-      <HomeScreen/>
+      {/* SEO-optimized hidden content for crawlers */}
+      <noscript>
+        <div className="sr-only">
+          <h1>Visa Application Services - Search & Apply Online</h1>
+          <p>
+            Find visa requirements for over 190 countries. Fast, secure, and hassle-free visa processing.
+            Check eligibility, processing times, and fees instantly.
+          </p>
+          <h2>Popular Visa Destinations</h2>
+          <ul>
+            <li>USA Visa Application</li>
+            <li>UK Visa Requirements</li>
+            <li>Schengen Visa</li>
+            <li>Canada Visitor Visa</li>
+            <li>Australia Tourist Visa</li>
+            <li>Dubai UAE Visa</li>
+          </ul>
+        </div>
+      </noscript>
+      
+      <HomeScreenClient />
     </>
-  )
+  );
 }

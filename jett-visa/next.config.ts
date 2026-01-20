@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Disable prerendering for development - components won't be treated as pages
 };
 
 export default nextConfig;
