@@ -14,23 +14,23 @@ const InfoCard: React.FC<InfoCardProps> = ({
   description,
 }) => {
   return (
-    <div className="card bg-base-100 border border-[#DBE9F8] rounded-xl bg-[#FAFAFA] sm:rounded-[25px] p-3 sm:p-4 md:p-5 h-full overflow-hidden">
-      <div className="flex items-start gap-3 min-w-0">
+    <div className="bg-white border border-[#E5E7EB] rounded-2xl p-5 h-full hover:shadow-lg transition-all duration-300 sm:p-4">
+      <div className="flex flex-col items-start gap-4">
         {/* Icon container */}
-        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-b from-[#F2F2F8] to-transparent flex items-center justify-center shrink-0 flex-shrink-0">
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EBF2FF] to-[#F8FAFC] flex items-center justify-center shrink-0">
           <img
             src={imageSrc}
             alt={imageAlt}
-            className="w-6 h-6 sm:w-[31px] sm:h-[31px] object-contain"
+            className="w-7 h-7 object-contain"
           />
         </div>
 
         {/* Text content */}
-        <div className="flex flex-col gap-1.5 sm:gap-2 min-w-0 flex-1 overflow-hidden">
-          <h4 className="text-base sm:text-lg md:text-xl font-semibold text-[#00366B] font-poppins break-words">
+        <div className="flex flex-col gap-2">
+          <h4 className="text-lg font-semibold text-[#003B71] font-poppins leading-snug sm:text-base">
             {title}
           </h4>
-          <p className="text-xs sm:text-sm md:text-base text-[#003669] font-poppins leading-relaxed break-words">
+          <p className="text-sm text-[#4B5563] font-poppins leading-relaxed sm:text-xs">
             {description}
           </p>
         </div>

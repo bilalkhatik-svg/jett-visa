@@ -72,52 +72,54 @@ const FaqSection: React.FC = () => {
       : (DownArrowIcon as any)?.src || DownArrowIcon;
 
   return (
-    <div className="max-w-[1120px] mx-auto bg-white px-8 py-5 sm:px-4 sm:py-4">
+    <div className="w-full">
       {/* Title */}
-      <h3 className="font-poppins font-semibold text-[#00366B] text-[28px] sm:text-[20px] mb-4 sm:mb-3">
+      <h2 className="font-poppins font-semibold text-[#003B71] text-2xl mb-6 sm:text-xl sm:mb-5">
         {t("faqs")}
-      </h3>
+      </h2>
 
-      {faqs.map((faq, index) => {
-        const isExpanded = expanded === index;
+      <div className="space-y-2">
+        {faqs.map((faq, index) => {
+          const isExpanded = expanded === index;
 
-        return (
-          <div key={index} className="border-b border-[#F2F2F2]">
-            {/* Question row */}
-            <button
-              type="button"
-              onClick={() => toggleExpand(index)}
-              aria-expanded={isExpanded}
-              className="w-full flex items-center justify-between py-3 text-left focus:outline-none"
-            >
-              <span className="font-poppins font-medium text-[#00366B] text-[18px] sm:text-[14px] leading-[18px]">
-                {faq.question}
-              </span>
+          return (
+            <div key={index} className="border border-[#E5E7EB] rounded-xl bg-white overflow-hidden hover:shadow-sm transition-all">
+              {/* Question row */}
+              <button
+                type="button"
+                onClick={() => toggleExpand(index)}
+                aria-expanded={isExpanded}
+                className="w-full flex items-center justify-between px-5 py-4 text-left focus:outline-none hover:bg-gray-50 transition-colors sm:px-4 sm:py-3"
+              >
+                <span className="font-poppins font-medium text-[#003B71] text-base leading-relaxed pr-4 sm:text-sm">
+                  {faq.question}
+                </span>
 
-              <img
-                src={downArrowIconSrc}
-                alt="expand"
-                className={`w-6 h-6 transition-transform duration-200 ${
-                  isExpanded ? "rotate-180" : "rotate-0"
+                <img
+                  src={downArrowIconSrc}
+                  alt="expand"
+                  className={`w-5 h-5 transition-transform duration-300 flex-shrink-0 sm:w-4 sm:h-4 ${
+                    isExpanded ? "rotate-180" : "rotate-0"
+                  }`}
+                />
+              </button>
+
+              {/* Answer */}
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  isExpanded
+                    ? "max-h-[400px] opacity-100"
+                    : "max-h-0 opacity-0"
                 }`}
-              />
-            </button>
-
-            {/* Answer */}
-            <div
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                isExpanded
-                  ? "max-h-[300px] opacity-100"
-                  : "max-h-0 opacity-0"
-              }`}
-            >
-              <p className="pb-3 font-poppins text-[#707478] text-[16px] sm:text-[12px] leading-[18px]">
-                {faq.answer}
-              </p>
+              >
+                <p className="px-5 pb-4 font-poppins text-[#6B7280] text-sm leading-relaxed sm:px-4 sm:pb-3 sm:text-xs">
+                  {faq.answer}
+                </p>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };

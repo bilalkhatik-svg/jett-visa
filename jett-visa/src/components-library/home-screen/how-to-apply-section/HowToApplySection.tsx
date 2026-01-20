@@ -93,38 +93,39 @@
 // export default HowToApplySection;
 import React from 'react';
 import InfoCard from '../how-to-apply-section/InfoCard';
-import { useFetchStaticContentQuery } from '@/store/visaStaticContentApi';
-import ClickIcon from "@/assets/images/icons/clickIcon.png";
-import StarShieldIcon from "@/assets/images/icons/starShieldIcon.png";
-import PhoneIcon from "@/assets/images/icons/phoneIcon.png";
-import HistoryIcon from "@/assets/images/icons/historyIcon.png";
+import { useFetchStaticContentQuery, type HowToApplyStep } from '@/store/visaStaticContentApi';
+import FavoriteLocationIcon from "@/assets/images/icons/favorite-location.png";
+import BookMarkIcon from "@/assets/images/icons/bookmark.png";
+import PencilIcon from "@/assets/images/icons/pencil.png";
+import OptionDoneIcon from "@/assets/images/icons/option-done.png";
 import { useTranslation } from 'react-i18next';
 
-// Define type locally
-interface UniqueValueProposition {
-  icon: string;
-  title: string;
-  description: string;
-}
-
-// Static test data - will be replaced with API integration later
-const staticUniqueValuePropositions: UniqueValueProposition[] = [
-    {
-        icon: "icon-quick-trusted.png",
-        title: "Quick & Trusted",
-        description: "Fast processing times with trusted service backed by years of experience."
-      },
-      {
-        icon: "icon-online-guided.png",
-        title: "Online Guided Process",
-        description: "Step-by-step guidance throughout your visa application journey."
-      },
-      {
-        icon: "icon-transparent-pricing.png",
-        title: "Transparent Pricing",
-        description: "No hidden fees. Clear pricing with all costs upfront."
-      },
-      
+// Static fallback data
+const staticHowToApplySteps: HowToApplyStep[] = [
+  {
+    step: 1,
+    icon: "favorite-location.png",
+    title: "Choose Destination",
+    description: "Select your desired country and visa type."
+  },
+  {
+    step: 2,
+    icon: "bookmark.png",
+    title: "Upload Documents",
+    description: "Securely upload all required documents online."
+  },
+  {
+    step: 3,
+    icon: "pencil.png",
+    title: "Review & Apply",
+    description: "Our experts review your application before submission."
+  },
+  {
+    step: 4,
+    icon: "option-done.png",
+    title: "Get Visa",
+    description: "Receive your visa and prepare for your trip."
+  }
 ];
 
 const HowToApplySection = React.memo(() => {
@@ -137,35 +138,36 @@ const HowToApplySection = React.memo(() => {
   
   // Use API data if available, otherwise fall back to static data
   const apiContent = staticContentResponse?.response?.[0];
-  const uniqueValuePropositions = apiContent?.uniqueValuePropositions || staticUniqueValuePropositions;
+  const howToApplySteps = apiContent?.howToApply || staticHowToApplySteps;
 
   // Convert StaticImageData to string for iconMap
-  const clickIconSrc = typeof ClickIcon === 'string' ? ClickIcon : (ClickIcon as any)?.src || ClickIcon;
-  const starShieldIconSrc = typeof StarShieldIcon === 'string' ? StarShieldIcon : (StarShieldIcon as any)?.src || StarShieldIcon;
-  const phoneIconSrc = typeof PhoneIcon === 'string' ? PhoneIcon : (PhoneIcon as any)?.src || PhoneIcon;
-  const historyIconSrc = typeof HistoryIcon === 'string' ? HistoryIcon : (HistoryIcon as any)?.src || HistoryIcon;
+  const getSrc = (img: any) => typeof img === 'string' ? img : img?.src || img;
+  
+  const favoriteLocationIconSrc = getSrc(FavoriteLocationIcon);
+  const bookMarkIconSrc = getSrc(BookMarkIcon);
+  const pencilIconSrc = getSrc(PencilIcon);
+  const optionDoneIconSrc = getSrc(OptionDoneIcon);
 
   const iconMap: Record<string, string> = {
-    "icon-visa-discovery.png": clickIconSrc,
-    "icon-quick-trusted.png": starShieldIconSrc,
-    "icon-online-guided.png": phoneIconSrc,
-    "icon-transparent-pricing.png": historyIconSrc,
-    "icon-encryption.png": historyIconSrc,
+    "favorite-location.png": favoriteLocationIconSrc,
+    "bookmark.png": bookMarkIconSrc,
+    "pencil.png": pencilIconSrc,
+    "option-done.png": optionDoneIconSrc,
   };
 
-  const stepsWithIcons = uniqueValuePropositions.map((step: UniqueValueProposition) => ({
+  const stepsWithIcons = howToApplySteps.map((step: HowToApplyStep) => ({
     ...step,
-    imageSrc: iconMap[step.icon] || clickIconSrc,
-    imageAlt: step.title || "Musafir Advantage",
+    imageSrc: iconMap[step.icon] || favoriteLocationIconSrc,
+    imageAlt: step.title || "How to Apply Step",
   }));
 
   return (
-    <section className="max-w-[1120px] mx-auto px-8 py-5  md:px-8 md:py-5 sm:px-4 sm:py-4">
-      <h3 className="font-poppins font-semibold text-[#00366B] text-3xl mb-4 md:text-3xl md:mb-4 sm:text-xl sm:mb-3">{t('how_to_apply')}</h3>
+    <section className="w-full">
+      <h2 className="font-poppins font-semibold text-[#003B71] text-2xl mb-8 sm:text-xl sm:mb-6">{t('how_to_apply')}</h2>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-1 sm:gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-4">
         {stepsWithIcons.map((item: typeof stepsWithIcons[0], index: number) => (
-          <div key={item.imageAlt + index}>
+          <div key={item.imageAlt + index} className="h-full">
             <InfoCard
               imageSrc={item.imageSrc}
               imageAlt={item.imageAlt}

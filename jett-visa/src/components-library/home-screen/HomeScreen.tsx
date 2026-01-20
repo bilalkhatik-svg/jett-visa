@@ -28,7 +28,7 @@ import { useFetchCountryListQuery } from "@/store/visaCountryListApi";
 import { useFetchIPQuery, useFetchGeoIPQuery } from "@/store/locationApi";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { setNationality, setResidency, setLocationData, setCountryIsoCode } from "@/store/slice/locationSlice";
-// import { ROUTES } from "@utility/constant";
+import { ROUTES } from "@/utility/constant";
 import type { Country } from "@/utils/types/nationality-residency/Country";
 // Define types locally
 interface NationalityResidencySelectorRef {
@@ -37,10 +37,6 @@ interface NationalityResidencySelectorRef {
 // Simple helper function
 const getCountryVisaUrl = (residencyIso: string, destinationIso: string): string => {
   return `/visa?res=${residencyIso}&dest=${destinationIso}`;
-};
-// Mock ROUTES
-const ROUTES = {
-  INSPIRE_ME: "/inspire-me"
 };
 // Simple navigate function
 const useNavigate = () => {
@@ -133,7 +129,7 @@ const dummyCities = [
   { code: 'KZ', name: 'Kazakhstani', flag: 'https://flagcdn.com/w20/kz.png' },
   { code: 'KE', name: 'Kenyan', flag: 'https://flagcdn.com/w20/ke.png' },
   { code: 'KP', name: 'North Korean', flag: 'https://flagcdn.com/w20/kp.png' },
-]; 
+];
 
 const NationalityResidencySelector = ({
   nationality,
@@ -150,51 +146,134 @@ const NationalityResidencySelector = ({
     item.name.toLowerCase().includes(search.toLowerCase())
   );
   return (
-    <div className="relative w-full max-w-full sm:max-w-md mx-auto z-50">
-      <div className={`flex items-center justify-between rounded-[10px] bg-gradient-to-br from-white/80 to-white/60 backdrop-blur-md shadow-sm ${
-        isMobile ? 'px-3 py-2.5' : 'px-4 py-3'
-      }`}>
-    
-        {/* Nationality trigger */}
-        <div
-          className="flex items-center gap-2 sm:gap-3 cursor-pointer flex-1 min-w-0"
-          onClick={() => setOpenNationality(prev => !prev)}
-        >
-          <span className={`text-gray-400 whitespace-nowrap ${isMobile ? 'text-xs' : 'text-sm'}`}>Nationality</span>
-          <svg
-            className={`text-gray-500 transition-transform flex-shrink-0 ${
-              isMobile ? 'w-3 h-3' : 'w-4 h-4'
-            } ${openNationality ? 'rotate-180' : ''}`}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            viewBox="0 0 24 24"
+    <div className="relative w-full max-w-full sm:max-w-full md:max-w-md mx-0 sm:mx-0 md:mx-auto z-[100]">
+      <div
+  className={`flex items-center justify-between rounded-[12px] bg-[#E8F4F8] shadow-sm border-0 ${
+    isMobile ? 'px-4 py-3' : 'px-4 py-3'
+  } md:ml-[-21%] md:bg-gradient-to-br md:from-white/80 md:to-white/60 md:backdrop-blur-md`}
+>
+
+
+        {/* Nationality trigger - wrapped in relative container */}
+        <div className="relative flex-1 min-w-0">
+          <div
+            className="flex items-center gap-2 sm:gap-2 cursor-pointer"
+            onClick={() => setOpenNationality(prev => !prev)}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
+            {nationality ? (
+              <>
+                <img
+                  src={nationality.flag}
+                  alt={nationality.name}
+                  className={`rounded-full flex-shrink-0 object-cover ${isMobile ? 'w-5 h-5' : 'w-5 h-5'}`}
+                />
+                <div className="flex flex-col leading-tight min-w-0">
+                  <span className={`text-[#6B7280] font-poppins ${isMobile ? 'text-xs' : 'text-sm'}`}>Nationality</span>
+                  <span className={`font-semibold text-[#1F2937] truncate font-poppins ${isMobile ? 'text-sm' : 'text-base'}`}>
+                    {nationality.name}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <span className={`text-[#6B7280] whitespace-nowrap font-poppins ${isMobile ? 'text-sm' : 'text-sm'}`}>Nationality</span>
+            )}
+            <svg
+              className={`text-[#6B7280] transition-transform flex-shrink-0 ${isMobile ? 'w-4 h-4' : 'w-4 h-4'
+                } ${openNationality ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+
+          {/* Nationality dropdown - positioned relative to nationality section */}
+          {openNationality && (
+            <div className={`absolute ${isMobile ? 'left-0 right-0' : '-left-4'} mt-2 rounded-[20px] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] border-0 z-[9999] overflow-hidden ${isMobile ? 'w-full' : 'w-[280px]'
+              }`}>
+
+              {/* Header */}
+              <div className={`${isMobile ? 'px-5 pt-5 pb-3' : 'px-6 pt-6 pb-3'}`}>
+                <h3 className={`font-semibold text-[#003B71] font-poppins ${isMobile ? 'text-base' : 'text-lg'}`}>
+                  Search nationality
+                </h3>
+              </div>
+
+              {/* Search */}
+              <div className={`${isMobile ? 'px-5 pb-4' : 'px-6 pb-4'}`}>
+                <div className="relative">
+                  <input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className={`w-full rounded-lg border border-[#E5E7EB] bg-white pl-4 pr-11 py-3 text-[#374151] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#0066CC] focus:border-transparent transition-all ${isMobile ? 'h-11 text-sm' : 'h-12 text-base'
+                      }`}
+                    placeholder="I"
+                  />
+                  <svg
+                    className={`absolute right-4 top-1/2 -translate-y-1/2 text-[#0066CC] ${isMobile ? 'w-5 h-5' : 'w-5 h-5'
+                      }`}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* List */}
+              <div className={`overflow-y-auto ${isMobile ? 'max-h-[240px]' : 'max-h-[300px]'} pb-2`}>
+                {filteredList.map(item => (
+                  <div
+                    key={item.code}
+                    onClick={() => {
+                      onNationalityChange?.(item);
+                      setOpenNationality(false);
+                      setSearch('');
+                    }}
+                    className={`flex items-center gap-3 cursor-pointer hover:bg-[#F3F4F6] transition-colors ${isMobile ? 'px-5 py-3' : 'px-6 py-3.5'
+                      }`}
+                  >
+                    <img
+                      src={item.flag}
+                      alt={item.name}
+                      className={`rounded-full flex-shrink-0 object-cover ${isMobile ? 'w-5 h-5' : 'w-6 h-6'}`}
+                    />
+                    <span className={`text-[#1F2937] font-normal font-poppins ${isMobile ? 'text-sm' : 'text-base'}`}>
+                      {item.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Divider */}
-        <div className={`h-6 sm:h-8 w-px bg-gray-200 ${isMobile ? 'mx-2' : 'mx-4 sm:mx-6'}`} />
+        <div className={`h-8 w-px bg-gray-200 ${isMobile ? 'mx-3' : 'mx-4 sm:mx-6'}`} />
 
         {/* Residency */}
         <div
-          className="flex items-center gap-2 sm:gap-3 cursor-pointer flex-1 min-w-0"
+          className="flex items-center gap-2 sm:gap-2 cursor-pointer flex-1 min-w-0"
           onClick={onResidencyChange}
         >
           <img
             src="https://flagcdn.com/w20/in.png"
             alt="India"
-            className={`rounded-full flex-shrink-0 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`}
+            className={`rounded-full flex-shrink-0 object-cover ${isMobile ? 'w-5 h-5' : 'w-5 h-5'}`}
           />
           <div className="flex flex-col leading-tight min-w-0">
-            <span className={`text-gray-400 ${isMobile ? 'text-xs' : 'text-sm'}`}>Residency</span>
-            <span className={`font-semibold text-gray-900 truncate ${isMobile ? 'text-xs' : 'text-base'}`}>
+            <span className={`text-[#6B7280] font-poppins ${isMobile ? 'text-xs' : 'text-sm'}`}>Residency</span>
+            <span className={`font-semibold text-[#1F2937] truncate font-poppins ${isMobile ? 'text-sm' : 'text-base'}`}>
               India
             </span>
           </div>
           <svg
-            className={`text-gray-500 flex-shrink-0 ${isMobile ? 'w-3 h-3 ml-0.5' : 'w-4 h-4 ml-1'}`}
+            className={`text-[#6B7280] flex-shrink-0 ${isMobile ? 'w-4 h-4 ml-0.5' : 'w-4 h-4 ml-1'}`}
             fill="none"
             stroke="currentColor"
             strokeWidth={2}
@@ -204,71 +283,6 @@ const NationalityResidencySelector = ({
           </svg>
         </div>
       </div>
-
-      {/* Nationality dropdown */}
-      {openNationality && (
-        <div className={`absolute ${isMobile ? 'left-0 right-0' : 'left-0'} mt-3 rounded-2xl bg-white shadow-xl border border-gray-100 z-[9999] ${
-          isMobile ? 'w-full' : 'w-[320px]'
-        }`}>
-          
-          {/* Header */}
-          <div className={`${isMobile ? 'px-4 pt-4 pb-2' : 'px-5 pt-5 pb-3'}`}>
-            <h3 className={`font-semibold text-[#0B3C6F] ${isMobile ? 'text-base' : 'text-lg'}`}>
-              Search nationality
-            </h3>
-          </div>
-
-          {/* Search */}
-          <div className={`${isMobile ? 'px-4 pb-3' : 'px-5 pb-4'}`}>
-            <div className="relative">
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className={`w-full rounded-full border-2 border-gray-200 pl-4 pr-10 focus:outline-none focus:border-blue-400 ${
-                  isMobile ? 'h-10 text-sm' : 'h-12'
-                }`}
-                placeholder="Search..."
-              />
-              <svg
-                className={`absolute right-4 top-1/2 -translate-y-1/2 text-blue-500 ${
-                  isMobile ? 'w-4 h-4' : 'w-5 h-5'
-                }`}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-              </svg>
-            </div>
-          </div>
-
-          {/* List */}
-          <div className={`overflow-y-auto ${isMobile ? 'max-h-[200px]' : 'max-h-[280px]'}`}>
-            {filteredList.map(item => (
-              <div
-                key={item.code}
-                onClick={() => {
-                  onNationalityChange?.(item);
-                  setOpenNationality(false);
-                }}
-                className={`flex items-center gap-3 sm:gap-4 cursor-pointer hover:bg-blue-50 transition ${
-                  isMobile ? 'px-4 py-2.5' : 'px-5 py-3'
-                }`}
-              >
-                <img
-                  src={item.flag}
-                  alt={item.name}
-                  className={`rounded-full flex-shrink-0 ${isMobile ? 'w-5 h-5' : 'w-6 h-6'}`}
-                />
-                <span className={`text-[#1E5AA8] font-medium ${isMobile ? 'text-sm' : 'text-base'}`}>
-                  {item.name}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
@@ -283,19 +297,19 @@ const OtherVisaTypes = ({ onPreFlowNavigation }: any) => (
 // Simple useMediaQuery replacement
 const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState(false);
-  
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    
+
     const mediaQuery = window.matchMedia(query.replace('@media ', ''));
     setMatches(mediaQuery.matches);
-    
+
     const handler = (event: MediaQueryListEvent) => setMatches(event.matches);
     mediaQuery.addEventListener('change', handler);
-    
+
     return () => mediaQuery.removeEventListener('change', handler);
   }, [query]);
-  
+
   return matches;
 };
 import arrowLeft from "@/assets/images/icons/arrowLeft.webp";
@@ -324,10 +338,10 @@ export interface PendingAction {
 // Simple SearchField component using Tailwind
 const SearchField = ({ isMobile, placeholder, onClick, value, ...props }: any) => {
   const searchIcon2Src = typeof SearchIcon2 === 'string' ? SearchIcon2 : (SearchIcon2 as any)?.src || SearchIcon2;
-  
+
   return (
-    <div 
-      className={`relative w-full max-w-[315px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[590px] my-3`}
+    <div
+      className={`relative w-full`}
       onClick={onClick}
     >
       <input
@@ -336,16 +350,16 @@ const SearchField = ({ isMobile, placeholder, onClick, value, ...props }: any) =
         value={value}
         readOnly
         disabled
-        className="w-full h-[42px] md:h-[52px] px-4 pr-10 bg-white rounded-[14px] border-2 border-[#F2F2F8] text-[#B5B5B5] text-sm cursor-pointer"
+        className="w-full h-[48px] sm:h-[48px] md:h-[52px] px-4 pr-12 bg-white rounded-[12px] border border-gray-200 text-[#9CA3AF] text-sm sm:text-sm font-poppins cursor-pointer shadow-sm"
         style={{ pointerEvents: 'none' }}
         {...props}
       />
       <img
         src={searchIcon2Src}
-        width={14}
-        height={14}
+        width={16}
+        height={16}
         alt="searchIcon"
-        className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
+        className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none w-4 h-4"
       />
     </div>
   );
@@ -375,16 +389,16 @@ const HomeScreen = () => {
   const isTablet = useMediaQuery("(max-width:900px) and (min-width:601px)");
   const heroSectionRef = useRef<HTMLDivElement>(null);
   const nationalitySelectorRef = useRef<NationalityResidencySelectorRef>(null);
-  
+
   const { t, i18n: i18nInstance } = useTranslation();
   const dispatch = useAppDispatch();
-  
+
   // Fetch country list
   const { data: countryListResponse, isSuccess: isCountryListSuccess, error: countryListError } = useFetchCountryListQuery(
     i18nInstance.language || 'en-US'
   );
   const countryListData = countryListResponse?.response ? { response: countryListResponse.response } : { response: [] };
-  
+
   // Log API errors for debugging
   useEffect(() => {
     if (countryListError) {
@@ -392,14 +406,14 @@ const HomeScreen = () => {
       const error = countryListError as any;
       const status = error?.status || error?.originalStatus;
       const errorData = error?.data;
-      
+
       // Check if error object is truly empty (no meaningful data)
       const hasStatus = status !== undefined && status !== null;
-      const hasData = errorData !== undefined && errorData !== null && 
-                     (typeof errorData !== 'object' || Object.keys(errorData || {}).length > 0);
+      const hasData = errorData !== undefined && errorData !== null &&
+        (typeof errorData !== 'object' || Object.keys(errorData || {}).length > 0);
       const hasMessage = error?.message || error?.error || errorData?.message || errorData?.error?.message;
       const hasOtherProps = error?.statusText || error?.data?.url || error?.originalStatus;
-      
+
       // Only log if there's meaningful error information
       if (hasStatus || hasData || hasMessage || hasOtherProps) {
         const errorDetails: Record<string, any> = {};
@@ -411,9 +425,9 @@ const HomeScreen = () => {
           errorDetails.message = error?.message || errorData?.message || errorData?.error?.message;
         }
         if (error?.data?.url) errorDetails.url = error.data.url;
-        
+
         // console.error('[HomeScreen] Country list API error:', errorDetails);
-        
+
         // If it's a 401, log a helpful message
         if (status === 401) {
           console.warn('[HomeScreen] 401 Unauthorized - OAuth tokens are missing. Please authorize first.');
@@ -422,12 +436,12 @@ const HomeScreen = () => {
       // Silently ignore empty error objects - they're likely from RTK Query's internal state management
     }
   }, [countryListError]);
-  
+
   // Fetch IP address
   const { data: ipData, error: ipError } = useFetchIPQuery();
   // Memoize userIP to prevent unnecessary recalculations
   const userIP = useMemo(() => ipData?.ip || '', [ipData?.ip]);
-  
+
   // Log IP fetch errors
   useEffect(() => {
     if (ipError) {
@@ -442,14 +456,14 @@ const HomeScreen = () => {
       // console.error('[HomeScreen] IP fetch error:', errorDetails);
     }
   }, [ipError]);
-  
+
   // Fetch location based on IP - RTK Query will cache based on userIP value
   const { data: geoIPData, isSuccess: isGeoIPSuccess, error: geoIPError } = useFetchGeoIPQuery(userIP, {
     skip: !userIP,
     // Prevent refetching on remount if data exists
     refetchOnMountOrArgChange: false,
   });
-  
+
   // Log geoIP errors
   useEffect(() => {
     if (geoIPError) {
@@ -461,34 +475,34 @@ const HomeScreen = () => {
         originalStatus: (geoIPError as any)?.originalStatus,
         fullError: geoIPError,
       };
-      console.error('[HomeScreen] GeoIP API error:', errorDetails);
-      
+      // console.error('[HomeScreen] GeoIP API error:', errorDetails);
+
       // If it's a 401, log a helpful message
       if ((geoIPError as any)?.status === 401 || (geoIPError as any)?.originalStatus === 401) {
         console.warn('[HomeScreen] 401 Unauthorized - OAuth tokens are missing. Please authorize first.');
       }
     }
   }, [geoIPError]);
-  
+
   // Get location data from Redux store
   const locationState = useAppSelector((state) => state.locationSlice);
   const nationality = locationState.nationality;
   const residency = locationState.residency;
   const locationResponse = locationState.locationResponse;
   const countryIsoCode = locationState.countryIsoCode;
-  
+
   const handleUpdateNationality = useCallback((country: Country) => {
     dispatch(setNationality(country));
   }, [dispatch]);
-  
+
   const handleUpdateResidency = useCallback((country: Country) => {
     dispatch(setResidency(country));
   }, [dispatch]);
-  
+
   const handleUpdateCountryIsoCode = useCallback((code: string) => {
     dispatch(setCountryIsoCode(code));
   }, [dispatch]);
-  
+
   // Update location data when geoIP data is fetched
   useEffect(() => {
     if (isGeoIPSuccess && geoIPData?.response && userIP) {
@@ -704,16 +718,16 @@ const HomeScreen = () => {
 
   return (
     <div
-      className="w-full flex flex-col items-center bg-white"
+      className="w-full flex flex-col items-center bg-gradient-to-b from-[#F8FAFC] to-white min-h-screen md:overflow-x-hidden"
       style={{ borderBottom: '2px solid transparent' }}
     >
       <div
-        className="relative w-full"
+        className="relative w-full bg-white shadow-sm"
         style={{ zIndex: 1100 }}
       >
         {isTopBarLoading ? (
-           <TopBarSkeleton />
-    
+          <TopBarSkeleton />
+
         ) : (
           <TopBar
             variant="home"
@@ -730,7 +744,7 @@ const HomeScreen = () => {
       </div>
 
       {isTopBarFixed && (
-        <div className="h-[60px]" />
+        <div className="h-[72px]" />
       )}
 
       {isHeroLoading ? (
@@ -738,56 +752,74 @@ const HomeScreen = () => {
       ) : (
         <div
           ref={heroSectionRef}
-          className="w-full"
+          className="w-full bg-white"
         >
           <div
-            className="relative w-full flex flex-col justify-center border-b border-[#1976d2] rounded-b-[20px] pb-[30px] pt-10 px-4 min-h-auto items-center sm:pb-[30px] sm:pt-10 sm:px-4 sm:min-h-auto sm:items-center md:pb-10 md:pt-[60px] md:px-[60px] md:min-h-[547px] lg:px-[120px] xl:px-[180px]"
+            className={`relative w-full flex flex-col rounded-b-3xl ${
+              isMobile 
+                ? 'pb-10 pt-6 px-5 min-h-[auto] justify-start' 
+                : 'pb-12 pt-16 px-12 min-h-[600px] justify-center items-center lg:px-20 xl:px-32 2xl:px-40'
+            }`}
             style={{
-              backgroundImage: isMobile 
-                ? `linear-gradient(200deg, #e7c0eeff, #a0e0e3ff 100%),linear-gradient(to top right, #dbd68fff 0%, transparent 50%)`
+              backgroundImage: isMobile
+                ? `linear-gradient(135deg, #E8F4F8 0%, #F0F9FF 100%)`
                 : `url(${homeBgImageSrc})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
-              backgroundBlendMode: "screen",
+              backgroundBlendMode: "soft-light",
               zIndex: 2,
             }}
           >
             {!isMobile && !isTablet && (
               <div
-                className="absolute top-0 left-0 right-0 bottom-0.5 rounded-br-[20px] overflow-hidden pointer-events-none"
+                className="absolute top-0 left-0 right-0 bottom-0 rounded-b-3xl overflow-hidden pointer-events-none"
                 style={{ zIndex: 0 }}
               >
                 <div
-                  className="absolute bottom-0 right-0 w-[45%] h-screen pointer-events-none"
+                  className="absolute bottom-0 right-0 w-[50%] h-full pointer-events-none opacity-90"
                   style={{
                     backgroundImage: `url(${scrollBgImageSrc})`,
                     backgroundSize: "cover",
-                    backgroundPosition: "center",
+                    backgroundPosition: "center right",
                     backgroundRepeat: "no-repeat",
                     zIndex: 1,
-                }}
+                  }}
                 />
                 <div className="pointer-events-auto">
-                  <ScrollingDestinationImages isMobile={isMobile} isTablet={isTablet}/>
+                  <ScrollingDestinationImages isMobile={isMobile} isTablet={isTablet} />
                 </div>
               </div>
             )}
             {/* ===== Header ===== */}
-            <div className="flex items-center mb-0 mt-3 ml-2 gap-2 relative md:mb-0 md:mt-3 md:ml-2 sm:mb-4 sm:mt-2 sm:ml-0" style={{ zIndex: 2, width: isMobile ? "100%" : isTablet ? "80%" : "60%" }}>
+            <div
+              className={`flex items-center gap-2 relative ${
+                isMobile ? 'w-full mt-8 mb-6 justify-center' : 'self-start mb-4'
+              }`}
+              style={{
+                zIndex: 2,
+                width: isMobile ? "100%" : isTablet ? "85%" : "65%",
+              }}
+            >
               <div className="relative inline-block">
                 <img
                   src={planeMarkSrc}
                   alt="plane mark"
-                  className="block w-[362px] h-[64px] md:w-[362px] md:h-[64px] lg:w-[280px] sm:w-[140px] sm:h-auto"
+                  className={isMobile ? "block w-[180px] h-[40px]" : "block w-[320px] h-[58px] md:w-[320px] md:h-[58px] lg:w-[280px]"}
                   style={{
                     transform: isRTL ? "scaleX(-1)" : "none",
                   }}
                 />
-                <div className="absolute top-[60%] left-[40%] -translate-x-[30%] -translate-y-1/2 text-center w-full flex md:flex sm:block sm:top-[30%] sm:left-1/2">
-                  <span className="text-[#003669] font-poppins font-bold text-4xl leading-none md:text-4xl lg:text-[30px] sm:font-normal sm:text-[22px]">
+                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-center gap-1 ${
+                  isMobile ? 'flex-col items-center gap-0.5' : 'items-baseline'
+                }`}>
+                  <span className={`text-[#003B71] font-poppins font-semibold leading-tight text-center ${
+                    isMobile ? 'text-lg' : 'text-3xl lg:text-[28px]'
+                  }`}>
                     {t("search")}.
                   </span>
-                  <span className="text-[#003669] font-poppins whitespace-nowrap font-black text-4xl leading-none mt-0.5 md:text-4xl lg:text-[30px] sm:font-bold sm:text-[22px]">
+                  <span className={`text-[#003B71] font-poppins whitespace-nowrap font-bold leading-tight text-center ${
+                    isMobile ? 'text-lg' : 'text-3xl lg:text-[28px]'
+                  }`}>
                     {t("visa")}. {t("go")}.
                   </span>
                 </div>
@@ -795,37 +827,22 @@ const HomeScreen = () => {
               <img
                 src={planeImageSrc}
                 alt="plane"
-                className="block w-[108px] mb-[50px] -ml-[35px] md:w-[108px] md:mb-[50px] md:-ml-[35px] lg:w-[80px] sm:w-[50px] sm:mb-[30px] sm:-ml-2"
+                className={isMobile ? "block w-[60px] mb-8 -ml-5" : "block w-[100px] mb-12 -ml-8 md:w-[100px] md:mb-12 md:-ml-8 lg:w-[85px]"}
                 style={{
                   transform: isRTL ? "scaleX(-1)" : "none",
                 }}
               />
             </div>
-            {
-              countryListData?.response && !isMobile && (
-                <div
-                className="relative block -ml-[30%]"
+
+            {/* Nationality & Residency Selector - Desktop/Tablet Only */}
+            {countryListData?.response && !isMobile && (
+              <div
+                className="relative block mb-3 self-start"
                 style={{
-                  zIndex: 2,
-                  width: isTablet ? "80%" : "60%",
+                  zIndex: 100,
+                  width: isTablet ? "85%" : "65%",
                 }}
               >
-              
-   {/* {countryListData?.response && (
-                <div
-                className="
-                  relative flex
-                  justify-start
-                  z-[2]
-                  mt-3
-                  sm:mt-3
-                  md:mt-4
-                  w-full
-                  sm:w-full
-                  md:w-[80%]
-                  lg:w-[60%]
-                "
-              > */}
                 <div className="w-full">
                   <NationalityResidencySelector
                     ref={nationalitySelectorRef}
@@ -839,65 +856,54 @@ const HomeScreen = () => {
                 </div>
               </div>
             )}
-            {/* Mobile VisaMode */}
+
+            {/* Visa Mode Options - Mobile Only */}
             {isMobile && (
-              <div className="relative w-full sm:block md:hidden" style={{ zIndex: 2 }}>
-                    <VisaMode showDestinationModal={toggleModal} />
+              <div className="relative w-full mb-6" style={{ zIndex: 2 }}>
+                <VisaMode showDestinationModal={toggleModal} />
               </div>
             )}
-            
+
+            {/* Search by country or city - Mobile Only - Always visible */}
+            {isMobile && (
+              <div className="relative w-full" style={{ zIndex: 2 }}>
+                <SearchField
+                  isMobile={isMobile}
+                  placeholder={t("search_by_country_or_city")}
+                  value=""
+                  onClick={() => toggleModal(true, "searchDestination")}
+                />
+              </div>
+            )}
+
             {/* Desktop/Tablet VisaMode */}
             {!isMobile && (
               <div
-              className="
-                relative hidden md:block
-                z-[2]
-                mt-[3%]
-                -ml-[5%]
-                w-[60%]
-                tablet:w-[80%]
-              "
-            >
-                  <VisaMode showDestinationModal={toggleModal} />
+                className="relative hidden md:block z-[2] mb-3 self-start"
+                style={{
+                  width: isTablet ? "85%" : "65%",
+                }}
+              >
+                <VisaMode showDestinationModal={toggleModal} />
               </div>
             )}
 
-            {/* Nationality and Residency Selector - Above destination search */}
-          
-
-            {modalType === "searchDestination" && (
+            {/* Desktop/Tablet Search Destination */}
+            {!isMobile && modalType === "searchDestination" && (
               <div
-              className="
-                relative flex
-                justify-start
-                z-[2]
-                mt-3
-                sm:mt-3
-                md:mt-4
-                w-full
-                sm:w-full
-                md:w-[80%]
-                
-              "
-            >
-            
-                {isMobile ? (
-                  <SearchField
-                    isMobile={isMobile}
-                    placeholder={t("search_by_country_or_city")}
-                    value={t("search_by_country_or_city")}
-                    onClick={() => toggleModal(true, "searchDestination")}
-                  />
-                ) : (
-                  <DesktopSearchDropdown
-                    isMobile={isMobile}
-                    t={t}
-                    onPreFlowNavigation={handlePreFlowNavigation}
-                    countryList={countryListData?.response || []}
-                    widthByBreakpoint={{ md: "400px", lg: "500px", xl: "590px" }}
+                className="relative flex justify-start z-[2] mb-4 self-start"
+                style={{
+                  width: isTablet ? "85%" : "65%",
+                }}
+              >
+                <DesktopSearchDropdown
+                  isMobile={isMobile}
+                  t={t}
+                  onPreFlowNavigation={handlePreFlowNavigation}
+                  countryList={countryListData?.response || []}
+                  widthByBreakpoint={{ md: "400px", lg: "500px", xl: "590px" }}
                   dropdownWidth="391px"
-                  />
-                )}
+                />
               </div>
             )}
             {modalType === "visaMode" && (
@@ -918,19 +924,19 @@ const HomeScreen = () => {
             {/* ===== Inspire Me Button ===== */}
             <div
               onClick={handleInspireMeClick}
-              className="absolute bottom-[-25px] left-1/2 -translate-x-1/2 rounded-[30px] p-0.5 cursor-pointer inline-block transition-all duration-300 hover:shadow-lg md:bottom-[-25px] sm:bottom-[-20px]"
+              className="absolute bottom-[-30px] left-1/2 -translate-x-1/2 rounded-full p-[2px] cursor-pointer inline-block transition-all duration-300 hover:shadow-xl hover:scale-105 md:bottom-[-30px] sm:bottom-[-25px] z-10"
               style={{
-                background: "radial-gradient(133.33% 145.92% at 0% 0%, #D536F6 0%, #75ECF3 100%)",
+                background: "linear-gradient(135deg, #D536F6 0%, #75ECF3 100%)",
               }}
             >
-              <div className="rounded-[28px] px-2 py-1 flex items-center justify-center bg-white md:px-2 md:py-1 sm:px-1.5 sm:py-0.5">
+              <div className="rounded-full px-4 py-2 flex items-center justify-center gap-2 bg-white md:px-4 md:py-2 sm:px-3 sm:py-1.5">
                 <img
                   src={inspireMeGifSrc}
                   alt="Inspire Me Gif"
-                  className="mr-0 w-[35px] h-[30px] md:w-[35px] md:h-[30px] sm:w-8 sm:h-6"
+                  className="w-[32px] h-[28px] md:w-[32px] md:h-[28px] sm:w-7 sm:h-6"
                 />
                 <span
-                  className="text-sm font-medium mr-1 md:text-sm md:mr-1 sm:text-xs sm:mr-0.5"
+                  className="text-sm font-semibold whitespace-nowrap md:text-sm sm:text-xs"
                   style={{
                     background: "linear-gradient(135deg, #D536F6, #0AB1BA)",
                     WebkitBackgroundClip: "text",
@@ -942,12 +948,12 @@ const HomeScreen = () => {
                 {!isMobile && (
                   <img
                     src={arrowLeftSrc}
-                      alt="arrowLeft"
-                    className="mr-1 ml-0.5 w-6 h-6 md:block sm:hidden"
+                    alt="arrowLeft"
+                    className="w-5 h-5 md:block sm:hidden"
                     style={{
-                        transform: isRTL ? "scaleX(-1)" : "none",
-                      }}
-                    />
+                      transform: isRTL ? "scaleX(-1)" : "none",
+                    }}
+                  />
                 )}
               </div>
             </div>
@@ -959,62 +965,70 @@ const HomeScreen = () => {
         <TopDestinationsSkeleton numberOfItems={8} />
       ) : (
         <div className="w-full">
-          <TopDestinationSection onPreFlowNavigation={handlePreFlowNavigation} />
+          <div className="max-w-7xl mx-auto md:ml-[6%] px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:overflow-hidden">
+            <TopDestinationSection onPreFlowNavigation={handlePreFlowNavigation} />
+          </div>
         </div>
       )}
       {
         !isMobile && (
-          <div>
-           <OfferSection/>
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <OfferSection />
           </div>
         )
       }
       {isFindVisaLoading ? (
         <FindVisaWidgetSkeleton />
       ) : (
-        <div className="w-full">
-          <FindVisaWidget onPreFlowNavigation={handlePreFlowNavigation} />
+        <div className="w-full bg-gradient-to-b from-white to-[#F8FAFC] py-12 sm:py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <FindVisaWidget onPreFlowNavigation={handlePreFlowNavigation} />
+          </div>
         </div>
       )}
       {isHowToApplyLoading ? (
         <HowToApplySectionSkeleton />
       ) : (
-        <div className="w-full" style={{ background: 'rgba(235, 242, 255, 1)' }}>
-          <HowToApplySection />
+        <div className="w-full bg-[#EBF2FF] py-12 sm:py-16 ">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:ml-[6%]">
+            <HowToApplySection />
+          </div>
         </div>
       )}
       {isWhyChooseLoading ? (
         <WhyChooseMusafirSectionSkeleton />
       ) : (
-        <div className="w-full">
-          <WhyChooseMusafirSection />
+        <div className="w-full py-12 sm:py-16 bg-white md:ml-[10%]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <WhyChooseMusafirSection />
+          </div>
         </div>
       )}
       {isTestimonialsLoading ? (
         <TestimonialsSectionSkeleton />
       ) : (
-        <div className="w-full">
-          <TestimonialsSection />
+        <div className="w-full py-12 sm:py-16 bg-[#F8FAFC] ">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:ml-[6%]">
+            <TestimonialsSection />
+          </div>
         </div>
       )}
       {isFaqLoading ? (
         <FaqSectionSkeleton />
       ) : (
-        <div className="w-full">
-          <FaqSection />
+        <div className="w-full py-12 sm:py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:ml-[6%]">
+            <FaqSection />
+          </div>
         </div>
       )}
       {isFooterLoading ? (
         <FooterSkeleton />
       ) : (
-        <div className="w-full">
+        <div className="w-full bg-gradient-to-b from-white to-[#F8FAFC] pt-12">
           <FooterSection />
         </div>
       )}
-      <div
-        className="flex-grow w-full bg-white rounded-t-[20px]"
-        style={{ marginTop: "25px" }}
-      />
       <MobileBottomDrawer
         modalOpen={showModal}
         setModalOpen={toggleModal}

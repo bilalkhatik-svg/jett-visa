@@ -130,11 +130,14 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
   // Simple TopDestinationList replacement - replace with component when available
   if (isTopDestinationListPending) {
     return (
-      <div className="max-w-[1120px] mx-auto px-6 py-5 bg-white">
-        <h3 className="font-poppins font-semibold text-[#00366B] text-2xl md:text-3xl mb-4">Top Destinations</h3>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-4">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-48 bg-gray-200 animate-pulse rounded-2xl"></div>
+      <div className="w-full">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="font-poppins font-semibold text-[#003B71] text-2xl sm:text-xl">Top destinations</h2>
+          <button className="text-sm text-[#0066CC] font-medium hover:underline">View all</button>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-3">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <div key={i} className="h-56 bg-gray-200 animate-pulse rounded-2xl sm:h-48"></div>
           ))}
         </div>
       </div>
@@ -142,31 +145,66 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
   }
 
   return (
-    <div className="max-w-[1120px] mx-auto px-8 py-5 bg-white md:px-8 md:py-5 sm:px-4 sm:py-4">
-      <h3 className="font-poppins font-semibold text-[#00366B] text-3xl mb-4 md:text-3xl md:mb-4 sm:text-xl sm:mb-3">Top Destinations</h3>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-4">
+    <div className="w-full">
+      <div className="flex justify-between items-center mb-6 sm:mb-5">
+        <h2 className="font-poppins font-semibold text-[#003B71] text-2xl sm:text-xl">Top destinations</h2>
+        <button className="text-sm text-[#0066CC] font-medium hover:underline transition-all sm:text-xs">View all</button>
+      </div>
+      <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-4">
         {mappedDestinations.map((item, index) => (
           <div
             key={`${item.CountryCode}-${index}`}
             onClick={() => handleCardClick(item)}
-            className="relative h-64 rounded-2xl overflow-hidden group shadow-md cursor-pointer md:h-64 md:rounded-2xl lg:h-56 sm:h-40 sm:rounded-xl"
+            className="relative h-60 rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl cursor-pointer transition-all duration-300"
           >
             <img
               src={item.imageUrl || "https://via.placeholder.com/300"}
               alt={item.name || "Destination"}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div className="absolute top-2 left-2 bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-xs text-white border border-white/30 md:text-xs sm:text-[10px]">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+            <div className="absolute top-3 left-3 bg-white/25 backdrop-blur-sm px-3 py-1 rounded-lg text-xs font-medium text-white border border-white/40">
               {item.VisaType || "E-Visa"}
             </div>
-            <div className="absolute bottom-3 left-3 right-3 text-white">
-              <h3 className="font-bold text-base md:text-base sm:text-sm">{item.name}</h3>
-              <div className="flex justify-between items-center mt-1">
-                <p className="text-xs opacity-80 md:text-xs sm:text-[10px]">
+            <div className="absolute bottom-4 left-3 right-3 text-white">
+              <h3 className="font-bold text-lg mb-1">{item.name}</h3>
+              <div className="flex justify-between items-center">
+                <p className="text-xs font-medium opacity-90">
                   Starts ₹{item.StartingPrice || "N/A"}
                 </p>
-                <span className="text-[10px] bg-white/20 backdrop-blur-md px-2 py-0.5 rounded border border-white/20 md:text-[10px] md:px-2 sm:text-[9px] sm:px-1.5">
+                <span className="text-[10px] font-medium bg-white/25 backdrop-blur-sm px-2.5 py-1 rounded-md border border-white/30">
+                  {item.GetVisaDays} {item.unit || "days"}
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Mobile Horizontal Scroll */}
+      <div className="flex md:hidden overflow-x-auto gap-3 pb-2 snap-x snap-mandatory -mx-5 px-5 scrollbar-hide">
+        {mappedDestinations.map((item, index) => (
+          <div
+            key={`${item.CountryCode}-mobile-${index}`}
+            onClick={() => handleCardClick(item)}
+            className="relative min-w-[160px] h-48 rounded-xl overflow-hidden shadow-lg cursor-pointer snap-start flex-shrink-0"
+          >
+            <img
+              src={item.imageUrl || "https://via.placeholder.com/300"}
+              alt={item.name || "Destination"}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+            <div className="absolute top-2 left-2 bg-white/25 backdrop-blur-sm px-2 py-0.5 rounded-lg text-[10px] font-medium text-white border border-white/40">
+              {item.VisaType || "E-Visa"}
+            </div>
+            <div className="absolute bottom-3 left-2 right-2 text-white">
+              <h3 className="font-bold text-sm mb-1">{item.name}</h3>
+              <div className="flex justify-between items-center">
+                <p className="text-[10px] font-medium opacity-90">
+                  Starts ₹{item.StartingPrice || "N/A"}
+                </p>
+                <span className="text-[9px] font-medium bg-white/25 backdrop-blur-sm px-2 py-0.5 rounded-md border border-white/30">
                   {item.GetVisaDays} {item.unit || "days"}
                 </span>
               </div>

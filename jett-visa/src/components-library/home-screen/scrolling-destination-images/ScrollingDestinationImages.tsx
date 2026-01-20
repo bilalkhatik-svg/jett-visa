@@ -110,7 +110,8 @@ const ScrollingDestinationImages: React.FC<ScrollingDestinationImagesProps> = ({
                                         src={imageUrl}
                                         alt={countryName}
                                         loading="lazy"
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover opacity-70"
+                                       
                                     />
                                 </div>
                             );

@@ -1,20 +1,13 @@
 import React from 'react';
 import InfoCard from '../how-to-apply-section/InfoCard';
-// import { useVisaStaticContent } from '@utility/hooks/useVisaStaticContent';
+import { useFetchStaticContentQuery, type UniqueValueProposition } from '@/store/visaStaticContentApi';
 import ClickIcon from "@/assets/images/icons/clickIcon.png";
 import StarShieldIcon from "@/assets/images/icons/starShieldIcon.png";
 import PhoneIcon from "@/assets/images/icons/phoneIcon.png";
 import HistoryIcon from "@/assets/images/icons/historyIcon.png";
 import { useTranslation } from 'react-i18next';
 
-// Define type locally
-interface UniqueValueProposition {
-  icon: string;
-  title: string;
-  description: string;
-}
-
-// Static test data - will be replaced with API integration later
+// Static fallback data
 const staticUniqueValuePropositions: UniqueValueProposition[] = [
   {
     icon: "icon-visa-discovery.png",
@@ -44,10 +37,16 @@ const staticUniqueValuePropositions: UniqueValueProposition[] = [
 ];
 
 const WhyChooseMusafirSection = React.memo(() => {
-  const { t } = useTranslation();
-  // const { uniqueValuePropositions } = useVisaStaticContent();
-  // Using static data for testing - replace with API hook when ready
-  const uniqueValuePropositions = staticUniqueValuePropositions;
+  const { t, i18n } = useTranslation();
+  
+  // Fetch static content from API
+  const { data: staticContentResponse, isLoading } = useFetchStaticContentQuery({
+    language: i18n.language || 'en-US',
+  });
+  
+  // Use API data if available, otherwise fall back to static data
+  const apiContent = staticContentResponse?.response?.[0];
+  const uniqueValuePropositions = apiContent?.uniqueValuePropositions || staticUniqueValuePropositions;
 
   // Convert StaticImageData to string for iconMap
   const clickIconSrc = typeof ClickIcon === 'string' ? ClickIcon : (ClickIcon as any)?.src || ClickIcon;
@@ -70,12 +69,12 @@ const WhyChooseMusafirSection = React.memo(() => {
   }));
 
   return (
-    <section className="max-w-[1120px] mx-auto px-8 py-5 bg-white md:px-8 md:py-5 sm:px-4 sm:py-4">
-      <h3 className="font-poppins font-semibold text-[#00366B] text-3xl mb-4 md:text-3xl md:mb-4 sm:text-xl sm:mb-3">{t('why_choose_musafir')}</h3>
+    <section className="w-full">
+      <h2 className="font-poppins font-semibold text-[#003B71] text-2xl mb-8 sm:text-xl sm:mb-6">{t('why_choose_musafir')}</h2>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-1 sm:gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-3 lg:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-4">
         {stepsWithIcons.map((item: typeof stepsWithIcons[0], index: number) => (
-          <div key={item.imageAlt + index} className="min-w-0 w-full">
+          <div key={item.imageAlt + index} className="h-full">
             <InfoCard
               imageSrc={item.imageSrc}
               imageAlt={item.imageAlt}

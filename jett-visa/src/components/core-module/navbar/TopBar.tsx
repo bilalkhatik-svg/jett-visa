@@ -64,16 +64,16 @@ const TopBar: React.FC<TopBarProps> = ({
   const menuIconSrc = getImageSrc(menuIcon);
   
   const Logo = (
-    <div className="flex justify-between gap-1 px-4 sm:px-6 md:px-12 lg:px-24 xl:px-[180px]">
+    <div className="flex justify-between gap-2 items-center">
       <img
         src={logoSrc}
         alt="Muzafir Logo"
         onClick={onLogoClick}
-        className={`cursor-pointer select-none ${isMobile ? 'h-[18px] w-[134px]' : 'h-[25px] w-[183px]'}`}
+        className={`cursor-pointer select-none object-contain ${isMobile ? 'h-[20px] w-auto' : 'h-[28px] w-auto'}`}
       />
       {variant === "inner" && extraText && (
         <span
-          className={`text-base font-semibold flex items-center leading-none mt-1 bg-gradient-to-r from-[#D536F6] to-[#0AB1BA] bg-clip-text text-transparent ${isRTL ? '[transform:rotateY(180deg)]' : ''}`}
+          className={`text-base font-semibold flex items-center leading-none bg-gradient-to-r from-[#D536F6] to-[#0AB1BA] bg-clip-text text-transparent ${isRTL ? '[transform:rotateY(180deg)]' : ''}`}
         >
           {extraText}
         </span>
@@ -82,16 +82,17 @@ const TopBar: React.FC<TopBarProps> = ({
   );
 
   const IconsBox = (
-    <div className="flex flex-row items-center gap-3 px-4 sm:px-6 md:px-12 lg:px-24 xl:px-[180px]">
+    <div className="flex flex-row items-center gap-4">
+
       {!isMobile ? (
         <div className="flex-grow" />
       ) : (
         <button
           onClick={onFlagClick}
           aria-label="Update nationality and residency"
-          className="p-0 w-[30px] h-[30px] bg-white hover:bg-white rounded-full flex items-center justify-center"
+          className="p-0 w-[32px] h-[32px] bg-white hover:bg-gray-50 rounded-full flex items-center justify-center border border-gray-200 transition-all"
         >
-          <img src={flagIcon} alt="Country flag" className="w-5 h-5 rounded-full" />
+          <img src={flagIcon} alt="Country flag" className="w-5 h-5 rounded-full object-cover" />
         </button>
       )}
 
@@ -99,23 +100,23 @@ const TopBar: React.FC<TopBarProps> = ({
         <button
           onClick={onProfileClick}
           aria-label="User profile"
-          className="ml-0 bg-white text-[#0066CC] w-[30px] h-[30px] rounded-full text-base font-semibold relative hover:bg-white hover:text-[#0066CC]"
+          className="ml-0 bg-white text-[#0066CC] w-[32px] h-[32px] rounded-full text-base font-semibold relative hover:bg-gray-50 hover:text-[#0066CC] border border-gray-200 transition-all"
         >
           {userInitial}
-          <span className="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-[#0066CC] rounded-full" />
+          <span className="absolute top-1 right-1 w-2 h-2 bg-[#0066CC] rounded-full" />
         </button>
       ) : (
         <button
           onClick={handleMenuClick}
           aria-label="Menu"
-          className={`p-0 ${isMobile ? 'w-[30px] h-[30px]' : 'w-[46px] h-[46px]'} hover:bg-[#F5F5F5] flex items-center justify-center relative`}
+          className={`p-0 ${isMobile ? 'w-[32px] h-[32px]' : 'w-[48px] h-[48px]'} hover:bg-gray-50 rounded-full bg-white flex items-center justify-center relative transition-all`}
         >
           <img 
             src={menuIconSrc} 
             alt="Menu" 
-            className={isMobile ? 'w-[18px] h-[18px]' : 'w-6 h-6'} 
+            className={isMobile ? 'w-[20px] h-[20px]' : 'w-6 h-6'} 
           />
-          <span className={`absolute top-0.5 ${isMobile ? 'right-0.5 w-1.5 h-1.5' : 'right-1 w-2 h-2'} bg-[#0066CC] rounded-full`} />
+          <span className={`absolute ${isMobile ? 'top-1 right-1 w-1.5 h-1.5' : 'top-1.5 right-1.5 w-2 h-2'} bg-[#0066CC] rounded-full`} />
         </button>
       )}
     </div>
@@ -125,15 +126,11 @@ const TopBar: React.FC<TopBarProps> = ({
     <header
       className={`w-full transition-all duration-300 ${
         isFixed 
-          ? 'fixed top-0 z-50 rounded-b-[20px] border-b border-[#1976d2] shadow-[0_2px_8px_rgba(0,0,0,0.08)] bg-transparent' 
-          : 'absolute top-0 z-50 bg-transparent'
+          ? 'fixed top-0 z-50 rounded-b-3xl shadow-sm bg-white backdrop-blur-sm' 
+          : 'absolute top-0 z-50  bg-opacity-95'
       }`}
-      style={isFixed ? {
-        background: 'linear-gradient(200deg, #e7c0eeff, #bfe1fc 100%), linear-gradient(to top right, #dbd68fff 0%, transparent 50%)',
-        backgroundBlendMode: 'screen',
-      } : undefined}
     >
-      <nav className={`min-h-[60px] py-3 px-4 sm:py-4 sm:px-6 md:py-5 md:px-[30px] flex ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+      <nav className={`min-h-[72px] py-4 px-6 sm:px-8 md:px-12 lg:px-20 xl:px-32 2xl:px-40 flex items-center ${isRTL ? 'flex-row-reverse' : 'flex-row'} max-w-[1920px] mx-auto`}>
         {variant === "inner" ? (
           <>
             {isRTL ? (
