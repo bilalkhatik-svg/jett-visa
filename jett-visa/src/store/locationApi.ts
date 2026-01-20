@@ -52,7 +52,7 @@ export const ipApi = createApi({
     endpoints: (builder) => ({
         fetchIP: builder.query<IPResponse, void>({
             query: () => ({
-                url: "/json/",
+                url: "https://ipapi.co/json/",
                 method: "GET",
             }),
         }),
@@ -65,7 +65,7 @@ export const locationApi = createApi({
     endpoints: (builder) => ({
         fetchGeoIP: builder.query<GeoIPApiResponse, string>({
             query: (ip) => ({
-                url: "geoip",
+                url: "visa/geoip",
                 method: "GET",
                 params: { ip },
             }),

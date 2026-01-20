@@ -1,8 +1,8 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://jett-visa.com';
-
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://jettvisa.com';
+  
   return [
     {
       url: baseUrl,
@@ -11,7 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${baseUrl}/get-help`,
+      url: `${baseUrl}/accounts`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,

@@ -44,7 +44,7 @@ export const visaStaticContentApi = createApi({
   baseQuery: oauthBaseQuery,
   endpoints: (builder) => ({
     fetchStaticContent: builder.query<ApiResponse, { language: string; }>({
-      query: ({ language } ) => ({
+      query: ({ language }) => ({
         url: "visa/meta/home/content",
         method: "GET",
         params: { language },
