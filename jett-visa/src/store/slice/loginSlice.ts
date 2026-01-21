@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { clearAuthTokens } from '@/utils/authStorage';
 
 interface AuthTokens {
   ConsumerKey?: string;
@@ -33,6 +34,8 @@ export const loginSlice = createSlice({
       state.authShareToken = '';
       state.userLoginInfo = {};
       state.authorizationTokens = undefined;
+      // Also clear from localStorage
+      clearAuthTokens();
     },
     setAuthTokens: (state, action) => {
       state.token = action.payload;

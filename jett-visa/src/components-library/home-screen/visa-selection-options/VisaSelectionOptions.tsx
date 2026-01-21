@@ -1,9 +1,11 @@
+"use client";
+
 import { useState } from "react";
 import destinationImage from "@/assets/images/destinationImage.png";
 import travelDateImage from "@/assets/images/travelDateImage.png";
 import visaModeImage from "@/assets/images/visaModeImage.png";
-// import type { ModalTypes } from "@pages/home-screen/HomeScreen";
-import { useTranslation } from "react-i18next";
+// import type { ModalTypes } from "@features/home-screen/HomeScreen";
+import { useTranslation } from "@/utils/i18nStub";
 
 // Define type locally
 export type ModalTypes = "searchDestination" | "visaMode" | "travelDate" | "";

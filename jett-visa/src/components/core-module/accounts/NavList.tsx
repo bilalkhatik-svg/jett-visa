@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import type { NavLink } from "@/utility/types/accounts/Accounts";
+import type { NavLink } from "@/utils/types/account/accounts";
 import RightArrowIcon from "@/assets/images/icons/arrowrighticon.webp";
 import { useTranslation } from "react-i18next";
 
@@ -21,8 +21,7 @@ const NavList: React.FC<NavListProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
-  const isRTL = i18n.dir() === "rtl";
-
+  const isRTL = i18n?.dir ? i18n.dir() === 'rtl' : false;
   const handleClick = (link: NavLink) => {
     if (link.onClick) {
       link.onClick();

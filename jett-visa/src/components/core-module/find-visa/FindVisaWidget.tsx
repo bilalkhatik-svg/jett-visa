@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/utils/i18nStub';
 import { useFetchDestinationsQuery } from '@/store/visaDestinationsApi';
 import { useFetchCountryListQuery } from '@/store/visaCountryListApi';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';

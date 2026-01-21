@@ -17,7 +17,7 @@ const FooterSection: React.FC = React.memo(() => {
   return (
     <div
       className="relative px-[30px] w-full min-w-screen flex flex-col items-center overflow-hidden"
-      dir={i18n.dir()}
+      dir={isRTL ? "rtl" : "ltr"}
       style={{ minHeight: isMobile ? 314 : 240 }}
     >
       {/* Background Images */}

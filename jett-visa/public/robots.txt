@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://jett-visa.com/sitemap.xml
+
+# Disallow admin or private pages (if any)
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/

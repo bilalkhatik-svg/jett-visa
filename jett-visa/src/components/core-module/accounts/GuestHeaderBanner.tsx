@@ -12,7 +12,7 @@ import cloud4 from "@/assets/images/cloud4.webp";
 
 const GuestHeaderBanner: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.dir() === "rtl";
+  const isRTL = i18n?.dir ? i18n.dir() === 'rtl' : false;
 
   // Convert StaticImageData to string
   const bgCloudsSrc = typeof bgClouds === 'string' ? bgClouds : (bgClouds as any)?.src || bgClouds;

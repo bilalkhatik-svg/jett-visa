@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import type { User } from '@/utility/types/accounts/Accounts';
+import type { User } from '@/utils/types/account/accounts';
 import { useTranslation } from 'react-i18next';
 import CheckCircle from '@/assets/images/icons/checkcircle.webp';
 

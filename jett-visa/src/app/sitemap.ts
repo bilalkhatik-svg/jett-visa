@@ -17,19 +17,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/get-help`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/inspire-me`,
+      url: `${baseUrl}/accounts`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
-      priority: 0.8,
+      priority: 0.5,
     },
-    // Add more routes as needed
+    // Add more pages as needed
   ];
 }
-
-

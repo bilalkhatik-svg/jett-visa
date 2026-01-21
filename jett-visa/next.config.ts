@@ -34,25 +34,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-
-  // Add security headers for better SEO ranking
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on'
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN'
-          },
-        ],
-      },
-    ];
-  },
+  // Disable prerendering for development - components won't be treated as pages
 };
 
 export default nextConfig;

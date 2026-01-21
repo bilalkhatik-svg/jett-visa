@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import type { NavLink } from "@/utility/types/accounts/Accounts";
+import type { NavLink } from "@/utils/types/account/accounts";
 import RightArrowIcon from "@/assets/images/icons/arrowrighticon.webp";
 import { useTranslation } from "react-i18next";
 
@@ -14,7 +14,7 @@ interface TermsPrivacyProps {
 const TermsPrivacyList: React.FC<TermsPrivacyProps> = ({ links, appVersion }) => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
-  const isRTL = i18n.dir() === "rtl";
+ const isRTL = i18n?.dir ? i18n.dir() === 'rtl' : false;
 
   // Convert StaticImageData to string
   const rightArrowIconSrc = typeof RightArrowIcon === 'string' ? RightArrowIcon : (RightArrowIcon as any)?.src || RightArrowIcon;

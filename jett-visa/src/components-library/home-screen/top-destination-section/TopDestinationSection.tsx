@@ -1,8 +1,10 @@
+"use client";
+
 import { useMemo } from "react";
 import { useFetchTopDestinationQuery } from "@/store/visaTopDestinationApi";
 import { useAppSelector } from "@/store/hooks";
-import { useTranslation } from "react-i18next";
-// import type { PendingAction } from "@pages/home-screen/HomeScreen";
+import { useTranslation } from "@/utils/i18nStub";
+// import type { PendingAction } from "@features/home-screen/HomeScreen";
 // import type { TopDestinationItem } from "@/utility/types/top-destination/TopDestinationItem";
 
 // Define types locally

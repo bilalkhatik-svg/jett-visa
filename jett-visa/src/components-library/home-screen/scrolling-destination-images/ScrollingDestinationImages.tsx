@@ -1,7 +1,9 @@
+"use client";
+
 import React from 'react';
 // import { useTopDestination } from '@/utility/hooks/useTopDestination';
 // import type { TopDestination } from '@/utility/hooks/useTopDestination';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/utils/i18nStub';
 
 interface TopDestination {
     IsoCode2?: string;
@@ -70,7 +72,8 @@ const ScrollingDestinationImages: React.FC<ScrollingDestinationImagesProps> = ({
     const isTopDestinationListPending = false;
 
     const { i18n } = useTranslation();
-    const isRTL = i18n.dir() === "rtl";
+    // Safely check RTL - handle SSR case
+    const isRTL = typeof i18n.dir === 'function' ? i18n.dir() === "rtl" : i18n.language?.startsWith('ar');
 
     if (isMobile || isTablet || isTopDestinationListPending || !topDestinationList || topDestinationList.length === 0) {
         return null;

@@ -1,10 +1,13 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import monthIcon from "@/assets/images/icons/monthIcon.png";
 import rightAwayIcon from "@/assets/images/icons/rightAwayIcon.png";
 import CalenderIcon from "@/assets/images/icons/calendericon.webp"
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@/utils/i18nStub";
 // import { useLocation } from "@/utility/hooks/useLocation";
 // import { getTravelDateVisaUrl, formatDate } from "@/utility/helper";
+
 // import type { PendingAction } from "@/components-library/home-screen/HomeScreen";
 // import { theme } from "@/theme";
 // import DesktopTravelDateCalendar from "@/components/core-module/travel-date-calendar/DesktopTravelDateCalendar";

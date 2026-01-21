@@ -1,8 +1,10 @@
+"use client";
+
 import React from 'react';
 import TestimonialCard from './TestimonialCard';
 import StarIcon from '@/assets/images/icons/ratingStarIcon.png';
 // import { testimonialsArabicMock, testimonialsMock } from '@utility/mock/testimonialsMock';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/utils/i18nStub';
 
 // Define testimonial type
 interface Testimonial {

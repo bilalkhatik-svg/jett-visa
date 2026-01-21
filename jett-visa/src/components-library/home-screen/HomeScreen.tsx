@@ -1,296 +1,185 @@
 "use client";
 
-// import {
-//   Box,
-//   InputAdornment,
-//   styled,
-//   TextField,
-//   Typography,
-// } from "@mui/material";
-import { lazy, Suspense, useCallback, useEffect, useState, useRef, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-// import { useNavigate } from "react-router-dom";
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+} from "react";
+import { useTranslation } from "@/utils/i18nStub";
 import inspireMeGif from "@/assets/images/gif/inspireMeGif.gif";
 import SearchIcon2 from "@/assets/images/icons/search.png";
 import planeImage from "@/assets/images/planeImage.png";
 import planeMark from "@/assets/images/planeMark.png";
-// import { FooterSection, MobileBottomDrawer, VisaTypeSection } from "@/components";
 import FindVisaWidget from "@/components/core-module/find-visa/FindVisaWidget";
-// import BottomConfirmBar from "@components/core-module/nationality-residency/common/BottomConfirmBar";
-// import UpdateResidencyDialog from "@components/core-module/nationality-residency/modals/UpdateResidencyDialog";
-// import NationalityResidencySelector, { type NationalityResidencySelectorRef } from "@components/core-module/nationality-residency/NationalityResidencySelector";
 import TopBar from "@/components/core-module/navbar/TopBar";
-// import MobileBottomDrawerSkeleton from "@components/core-module/skeletons/MobileBottomDrawerSkeleton";
-// import TravelDateCalender from "@components/core-module/travel-date-calendar/TravelDateCalender";
-// import OtherVisaTypes from "@components/core-module/visa-type/OtherVisaTypes";
-import i18n from "@/i18n";
+import { i18n } from "@/utils/i18nStub";
 import { useFetchCountryListQuery } from "@/store/visaCountryListApi";
 import { useFetchIPQuery, useFetchGeoIPQuery } from "@/store/locationApi";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
-import { setNationality, setResidency, setLocationData, setCountryIsoCode } from "@/store/slice/locationSlice";
-import { ROUTES } from "@/utility/constant";
-import type { Country } from "@/utils/types/nationality-residency/Country";
+import {
+  setNationality,
+  setResidency,
+  setLocationData,
+  setCountryIsoCode,
+} from "@/store/slice/locationSlice";
+// import { ROUTES } from "@utility/constant";
+import type { ICountry } from "@/utils/types/nationality-residency/Country";
 // Define types locally
 interface NationalityResidencySelectorRef {
   [key: string]: any;
 }
 // Simple helper function
-const getCountryVisaUrl = (residencyIso: string, destinationIso: string): string => {
+const getCountryVisaUrl = (
+  residencyIso: string,
+  destinationIso: string,
+): string => {
   return `/visa?res=${residencyIso}&dest=${destinationIso}`;
+};
+// Mock ROUTES
+const ROUTES = {
+  INSPIRE_ME: "/inspire-me",
 };
 // Simple navigate function
 const useNavigate = () => {
   return (path: string) => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       window.location.href = path;
     }
   };
 };
-import FaqSection from './faq-section/FaqSection';
-import HowToApplySection from './how-to-apply-section/HowToApplySection';
-import TestimonialsSection from './testimonials-section/TestimonialsSection';
-import TopDestinationSection from "./top-destination-section/TopDestinationSection";
+import FaqSection from "./faq-section/FaqSection";
+import HowToApplySection from "./how-to-apply-section/HowToApplySection";
+import TestimonialsSection from "./testimonials-section/TestimonialsSection";
 import SearchTravelDate from "./travel-date-section/SearchTravelDate";
 import VisaMode from "./visa-selection-options/VisaSelectionOptions";
-import WhyChooseMusafirSection from './why-choose-musafir-section/WhyChooseMusafirSection';
-// import HeroSectionSkeleton from "@/components/core-module/skeletons/HeroSectionSkeleton";
-// import TopDestinationsSkeleton from "@components/core-module/skeletons/TopDestinationsSkeleton";
-// import FindVisaWidgetSkeleton from "@components/core-module/skeletons/FindVisaWidgetSkeleton";
-// import HowToApplySectionSkeleton from "@components/core-module/skeletons/HowToApplySectionSkeleton";
-// import WhyChooseMusafirSectionSkeleton from "@components/core-module/skeletons/WhyChooseMusafirSkeleton";
-// import TestimonialsSectionSkeleton from "@components/core-module/skeletons/TestimonialsSectionSkeleton";
-// import FaqSectionSkeleton from "@components/core-module/skeletons/FaqSectionSkeleton";
-// import FooterSkeleton from "@components/core-module/skeletons/FooterSkeleton";
-// import BottomConfirmBarSkeleton from "@components/core-module/skeletons/BottomConfirmBarSkeleton";
-// import { getCountryVisaUrl } from "@/utility/helper";
-// import TopBarSkeleton from "@components/core-module/skeletons/TopBarSkeleton";
-// import { useMediaQuery } from "@mui/material";
-
+import WhyChooseMusafirSection from "./why-choose-musafir-section/WhyChooseMusafirSection";
 // Simple skeleton components
-const HeroSectionSkeleton = () => <div className="h-96 bg-gray-200 animate-pulse"></div>;
-const TopDestinationsSkeleton = ({ numberOfItems = 8 }: { numberOfItems?: number }) => (
+const HeroSectionSkeleton = () => (
+  <div className="h-96 bg-gray-200 animate-pulse"></div>
+);
+const TopDestinationsSkeleton = ({
+  numberOfItems = 8,
+}: {
+  numberOfItems?: number;
+}) => (
   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
     {Array.from({ length: numberOfItems }).map((_, i) => (
       <div key={i} className="h-48 bg-gray-200 animate-pulse rounded-2xl"></div>
     ))}
   </div>
 );
-const FindVisaWidgetSkeleton = () => <div className="h-64 bg-gray-200 animate-pulse"></div>;
-const HowToApplySectionSkeleton = () => <div className="h-64 bg-gray-200 animate-pulse"></div>;
-const WhyChooseMusafirSectionSkeleton = () => <div className="h-64 bg-gray-200 animate-pulse"></div>;
-const TestimonialsSectionSkeleton = () => <div className="h-64 bg-gray-200 animate-pulse"></div>;
-const FaqSectionSkeleton = () => <div className="h-64 bg-gray-200 animate-pulse"></div>;
-const FooterSkeleton = () => <div className="h-64 bg-gray-200 animate-pulse"></div>;
-const BottomConfirmBarSkeleton = () => <div className="h-20 bg-gray-200 animate-pulse"></div>;
-const TopBarSkeleton = () => <div className="h-16 bg-gray-200 animate-pulse"></div>;
-const MobileBottomDrawerSkeleton = () => <div className="h-96 bg-gray-200 animate-pulse"></div>;
+const FindVisaWidgetSkeleton = () => (
+  <div className="h-64 bg-gray-200 animate-pulse"></div>
+);
+const HowToApplySectionSkeleton = () => (
+  <div className="h-64 bg-gray-200 animate-pulse"></div>
+);
+const WhyChooseMusafirSectionSkeleton = () => (
+  <div className="h-64 bg-gray-200 animate-pulse"></div>
+);
+const TestimonialsSectionSkeleton = () => (
+  <div className="h-64 bg-gray-200 animate-pulse"></div>
+);
+const FaqSectionSkeleton = () => (
+  <div className="h-64 bg-gray-200 animate-pulse"></div>
+);
+const FooterSkeleton = () => (
+  <div className="h-64 bg-gray-200 animate-pulse"></div>
+);
+const BottomConfirmBarSkeleton = () => (
+  <div className="h-20 bg-gray-200 animate-pulse"></div>
+);
+const TopBarSkeleton = () => (
+  <div className="h-16 bg-gray-200 animate-pulse"></div>
+);
+const MobileBottomDrawerSkeleton = () => (
+  <div className="h-96 bg-gray-200 animate-pulse"></div>
+);
 
 // Simple component placeholders
 // const FooterSection = () => <footer className="bg-gray-800 text-white p-8">Footer</footer>;
 const MobileBottomDrawer = ({ modalOpen, setModalOpen, children, sx }: any) => {
   if (!modalOpen) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end" onClick={() => setModalOpen(false)}>
-      <div className="bg-white w-full rounded-t-lg" style={sx} onClick={(e) => e.stopPropagation()}>
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end"
+      onClick={() => setModalOpen(false)}
+    >
+      <div
+        className="bg-white w-full rounded-t-lg"
+        style={sx}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex justify-end p-2">
-          <button onClick={() => setModalOpen(false)} className="text-gray-500 text-xl">✕</button>
+          <button
+            onClick={() => setModalOpen(false)}
+            className="text-gray-500 text-xl"
+          >
+            ✕
+          </button>
         </div>
-        <div className="overflow-y-auto" style={{ height: 'calc(100% - 40px)' }}>
+        <div
+          className="overflow-y-auto"
+          style={{ height: "calc(100% - 40px)" }}
+        >
           {children}
         </div>
       </div>
     </div>
   );
 };
-const VisaTypeSection = ({ showOthers, setShowOthers, onPreFlowNavigation }: any) => (
-  <div className="p-4">Visa Type Section</div>
-);
-const BottomConfirmBar = ({ residency, flagUrl, onConfirmClick, nationalitySelectorRef }: any) => (
+const VisaTypeSection = ({
+  showOthers,
+  setShowOthers,
+  onPreFlowNavigation,
+}: any) => <div className="p-4">Visa Type Section</div>;
+const BottomConfirmBar = ({
+  residency,
+  flagUrl,
+  onConfirmClick,
+  nationalitySelectorRef,
+}: any) => (
   <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex items-center justify-between">
     <span>{residency}</span>
-    <button onClick={onConfirmClick} className="bg-blue-500 text-white px-4 py-2 rounded">Confirm</button>
+    <button
+      onClick={onConfirmClick}
+      className="bg-blue-500 text-white px-4 py-2 rounded"
+    >
+      Confirm
+    </button>
   </div>
 );
-const UpdateResidencyDialog = ({ open, onClose, initialNationality, initialResidency, onConfirm, onFlagUpdate }: any) => {
+const UpdateResidencyDialog = ({
+  open,
+  onClose,
+  initialNationality,
+  initialResidency,
+  onConfirm,
+  onFlagUpdate,
+}: any) => {
   if (!open) return null;
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
       <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
         <h2 className="text-xl font-bold mb-4">Update Residency</h2>
-        <button onClick={onClose} className="text-gray-500">Close</button>
+        <button onClick={onClose} className="text-gray-500">
+          Close
+        </button>
       </div>
     </div>
   );
 };
 
-const dummyCities = [
-  { code: 'IQ', name: 'Iraqi', flag: 'https://flagcdn.com/w20/iq.png' },
-  { code: 'JM', name: 'Jamaican', flag: 'https://flagcdn.com/w20/jm.png' },
-  { code: 'KZ', name: 'Kazakhstani', flag: 'https://flagcdn.com/w20/kz.png' },
-  { code: 'KE', name: 'Kenyan', flag: 'https://flagcdn.com/w20/ke.png' },
-  { code: 'KP', name: 'North Korean', flag: 'https://flagcdn.com/w20/kp.png' },
-];
-
-const NationalityResidencySelector = ({
-  nationality,
-  residency,
-  onNationalityChange,
-  onResidencyChange,
-  isMobile = false,
-}: any) => {
-
-  const [openNationality, setOpenNationality] = useState(false);
-  const [search, setSearch] = useState('');
-
-  const filteredList = dummyCities.filter(item =>
-    item.name.toLowerCase().includes(search.toLowerCase())
-  );
-  return (
-    <div className="relative w-full sm:max-w-full z-[100]" style={{ maxWidth: isMobile ? '100%' : '590px' }}>
-      <div
-  className={`flex justify-between rounded-[12px] bg-[#E8F4F8] shadow-sm border-0 ${
-    isMobile ? 'px-4 py-3' : 'px-4'
-  } md:bg-gradient-to-br md:from-white/80 md:to-white/60 md:backdrop-blur-md`}
-  style={{ height: isMobile ? 'auto' : '72px' }}
->
-
-
-        {/* Nationality trigger - wrapped in relative container */}
-        <div className="relative flex-1 min-w-0">
-          <div
-            className="flex items-center gap-2 sm:gap-2 cursor-pointer"
-            onClick={() => setOpenNationality(prev => !prev)}
-          >
-            {nationality ? (
-              <>
-                <img
-                  src={nationality.flag}
-                  alt={nationality.name}
-                  className={`rounded-full flex-shrink-0 object-cover ${isMobile ? 'w-5 h-5' : 'w-5 h-5'}`}
-                />
-                <div className="flex flex-col leading-tight min-w-0">
-                  <span className={`text-[#6B7280] font-poppins ${isMobile ? 'text-xs' : 'text-sm'}`}>Nationality</span>
-                  <span className={`font-semibold text-[#1F2937] truncate font-poppins ${isMobile ? 'text-sm' : 'text-base'}`}>
-                    {nationality.name}
-                  </span>
-                </div>
-              </>
-            ) : (
-              <span className={`text-[#6B7280] whitespace-nowrap font-poppins ${isMobile ? 'text-sm' : 'text-sm'}`}>Nationality</span>
-            )}
-            <svg
-              className={`text-[#6B7280] transition-transform flex-shrink-0 ${isMobile ? 'w-4 h-4' : 'w-4 h-4'
-                } ${openNationality ? 'rotate-180' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-
-          {/* Nationality dropdown - positioned relative to nationality section */}
-          {openNationality && (
-            <div className={`absolute ${isMobile ? 'left-0 right-0' : '-left-4'} mt-2 rounded-[20px] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] border-0 z-[9999] overflow-hidden ${isMobile ? 'w-full' : 'w-[280px]'
-              }`}>
-
-              {/* Header */}
-              <div className={`${isMobile ? 'px-5 pt-5 pb-3' : 'px-6 pt-6 pb-3'}`}>
-                <h3 className={`font-semibold text-[#003B71] font-poppins ${isMobile ? 'text-base' : 'text-lg'}`}>
-                  Search nationality
-                </h3>
-              </div>
-
-              {/* Search */}
-              <div className={`${isMobile ? 'px-5 pb-4' : 'px-6 pb-4'}`}>
-                <div className="relative">
-                  <input
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className={`w-full rounded-lg border border-[#E5E7EB] bg-white pl-4 pr-11 py-3 text-[#374151] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#0066CC] focus:border-transparent transition-all ${isMobile ? 'h-11 text-sm' : 'h-12 text-base'
-                      }`}
-                    placeholder="I"
-                  />
-                  <svg
-                    className={`absolute right-4 top-1/2 -translate-y-1/2 text-[#0066CC] ${isMobile ? 'w-5 h-5' : 'w-5 h-5'
-                      }`}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                  >
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="M21 21l-4.35-4.35" />
-                  </svg>
-                </div>
-              </div>
-
-              {/* List */}
-              <div className={`overflow-y-auto ${isMobile ? 'max-h-[240px]' : 'max-h-[300px]'} pb-2`}>
-                {filteredList.map(item => (
-                  <div
-                    key={item.code}
-                    onClick={() => {
-                      onNationalityChange?.(item);
-                      setOpenNationality(false);
-                      setSearch('');
-                    }}
-                    className={`flex gap-3 cursor-pointer hover:bg-[#F3F4F6] transition-colors ${isMobile ? 'px-5 py-3' : 'px-6 py-3.5'
-                      }`}
-                  >
-                    <img
-                      src={item.flag}
-                      alt={item.name}
-                      className={`rounded-full flex-shrink-0 object-cover ${isMobile ? 'w-5 h-5' : 'w-6 h-6'}`}
-                    />
-                    <span className={`text-[#1F2937] font-normal font-poppins ${isMobile ? 'text-sm' : 'text-base'}`}>
-                      {item.name}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Divider */}
-        <div className={`h-8 w-px bg-gray-200 ${isMobile ? 'mx-3' : 'mx-4 sm:mx-6'}`} />
-
-        {/* Residency */}
-        <div
-          className="flex gap-2 sm:gap-2 cursor-pointer flex-1 min-w-0"
-          onClick={onResidencyChange}
-        >
-          <img
-            src="https://flagcdn.com/w20/in.png"
-            alt="India"
-            className={`rounded-full flex-shrink-0 object-cover ${isMobile ? 'w-5 h-5' : 'w-5 h-5'}`}
-          />
-          <div className="flex flex-col leading-tight min-w-0">
-            <span className={`text-[#6B7280] font-poppins ${isMobile ? 'text-xs' : 'text-sm'}`}>Residency</span>
-            <span className={`font-semibold text-[#1F2937] truncate font-poppins ${isMobile ? 'text-sm' : 'text-base'}`}>
-              India
-            </span>
-          </div>
-          <svg
-            className={`text-[#6B7280] flex-shrink-0 ${isMobile ? 'w-4 h-4 ml-0.5' : 'w-4 h-4 ml-1'}`}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const TravelDateCalender = ({ selectedDate, setSelectedDate, setShowCalender, onPreFlowNavigation }: any) => (
-  <div className="p-4">Travel Date Calendar</div>
-);
+const TravelDateCalender = ({
+  selectedDate,
+  setSelectedDate,
+  setShowCalender,
+  onPreFlowNavigation,
+}: any) => <div className="p-4">Travel Date Calendar</div>;
 const OtherVisaTypes = ({ onPreFlowNavigation }: any) => (
   <div className="p-4">Other Visa Types</div>
 );
@@ -300,35 +189,33 @@ const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
-    const mediaQuery = window.matchMedia(query.replace('@media ', ''));
+    const mediaQuery = window.matchMedia(query.replace("@media ", ""));
     setMatches(mediaQuery.matches);
 
     const handler = (event: MediaQueryListEvent) => setMatches(event.matches);
-    mediaQuery.addEventListener('change', handler);
+    mediaQuery.addEventListener("change", handler);
 
-    return () => mediaQuery.removeEventListener('change', handler);
+    return () => mediaQuery.removeEventListener("change", handler);
   }, [query]);
 
   return matches;
 };
 import arrowLeft from "@/assets/images/icons/arrowLeft.webp";
 import ScrollingDestinationImages from "./scrolling-destination-images/ScrollingDestinationImages";
-import DesktopSearchDropdown from "./search-destination/DesktopSearchDropdown";
 import OfferSection from "./offer-section/OfferSection";
 import homeBgImage from "@/assets/images/homeBgImage.webp";
 import scrollBgImage from "@/assets/images/scrollBgImage.png";
 import FooterSection from "./footer-section/FooterSection";
-
-const SearchDestination = lazy(
-  () => import("./search-destination/SearchDestination")
-);
+import NationalityResidencySelector from "@/components/core-module/nationality-residency/common/Nationality-Residence-Selector";
+import DesktopSearchDropdown from "./search-destination/DesktopSearchDropdown";
+import TopDestinationSection from "./top-destination-section/TopDestinationSection";
 
 export type ModalTypes = "searchDestination" | "visaMode" | "travelDate" | "";
 
 export interface PendingAction {
-  type: 'navigate' | 'search' | string;
+  type: "navigate" | "search" | string;
   url?: string;
   destination?: any;
   mode?: string;
@@ -342,12 +229,8 @@ const SearchField = ({ isMobile, placeholder, onClick, value, ...props }: any) =
 
   return (
     <div
-      className={`relative`}
+      className={`relative w-full`}
       onClick={onClick}
-      style={{ 
-        width: isMobile ? '100%' : '590px',
-        maxWidth: '100%'
-      }}
     >
       <input
         type="text"
@@ -355,9 +238,7 @@ const SearchField = ({ isMobile, placeholder, onClick, value, ...props }: any) =
         value={value}
         readOnly
         disabled
-        className={`w-full px-4 pr-12 bg-white rounded-[12px] border border-gray-200 text-[#9CA3AF] text-sm sm:text-sm font-poppins cursor-pointer shadow-sm ${
-          isMobile ? 'h-[48px]' : 'h-[72px]'
-        }`}
+        className="w-full h-[48px] sm:h-[48px] md:h-[52px] px-4 pr-12 bg-white rounded-[12px] border border-gray-200 text-[#9CA3AF] text-sm sm:text-sm font-poppins cursor-pointer shadow-sm"
         style={{ pointerEvents: 'none' }}
         {...props}
       />
@@ -376,7 +257,8 @@ const HomeScreen = () => {
   const [isTopBarLoading, setIsTopBarLoading] = useState(true);
   const [isHeroLoading, setIsHeroLoading] = useState(true);
   const [isDestinationsLoading, setIsDestinationsLoading] = useState(true);
-  const [isBottomConfirmBarLoading, setIsBottomConfirmBarLoading] = useState(true);
+  const [isBottomConfirmBarLoading, setIsBottomConfirmBarLoading] =
+    useState(true);
   const [isFindVisaLoading, setIsFindVisaLoading] = useState(true);
   const [isHowToApplyLoading, setIsHowToApplyLoading] = useState(true);
   const [isWhyChooseLoading, setIsWhyChooseLoading] = useState(true);
@@ -388,7 +270,9 @@ const HomeScreen = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [pendingAction, setPendingAction] = useState<PendingAction | null>(null);
+  const [pendingAction, setPendingAction] = useState<PendingAction | null>(
+    null,
+  );
   const [isTopBarFixed, setIsTopBarFixed] = useState(false);
   // Desktop search dropdown state now handled in DesktopSearchDropdown
   const [showSearchIcon, setShowSearchIcon] = useState(false);
@@ -399,12 +283,16 @@ const HomeScreen = () => {
 
   const { t, i18n: i18nInstance } = useTranslation();
   const dispatch = useAppDispatch();
-
+  const { data, isLoading,  } = useFetchCountryListQuery("en-US");
   // Fetch country list
-  const { data: countryListResponse, isSuccess: isCountryListSuccess, error: countryListError } = useFetchCountryListQuery(
-    i18nInstance.language || 'en-US'
-  );
-  const countryListData = countryListResponse?.response ? { response: countryListResponse.response } : { response: [] };
+  const {
+    data: countryListResponse,
+    isSuccess: isCountryListSuccess,
+    error: countryListError,
+  } = useFetchCountryListQuery(i18nInstance.language || "en-US");
+  const countryListData = countryListResponse?.response
+    ? { response: countryListResponse.response }
+    : { response: [] };
 
   // Log API errors for debugging
   useEffect(() => {
@@ -416,10 +304,18 @@ const HomeScreen = () => {
 
       // Check if error object is truly empty (no meaningful data)
       const hasStatus = status !== undefined && status !== null;
-      const hasData = errorData !== undefined && errorData !== null &&
-        (typeof errorData !== 'object' || Object.keys(errorData || {}).length > 0);
-      const hasMessage = error?.message || error?.error || errorData?.message || errorData?.error?.message;
-      const hasOtherProps = error?.statusText || error?.data?.url || error?.originalStatus;
+      const hasData =
+        errorData !== undefined &&
+        errorData !== null &&
+        (typeof errorData !== "object" ||
+          Object.keys(errorData || {}).length > 0);
+      const hasMessage =
+        error?.message ||
+        error?.error ||
+        errorData?.message ||
+        errorData?.error?.message;
+      const hasOtherProps =
+        error?.statusText || error?.data?.url || error?.originalStatus;
 
       // Only log if there's meaningful error information
       if (hasStatus || hasData || hasMessage || hasOtherProps) {
@@ -429,7 +325,8 @@ const HomeScreen = () => {
         if (hasData) errorDetails.data = errorData;
         if (error?.error) errorDetails.error = error.error;
         if (hasMessage) {
-          errorDetails.message = error?.message || errorData?.message || errorData?.error?.message;
+          errorDetails.message =
+            error?.message || errorData?.message || errorData?.error?.message;
         }
         if (error?.data?.url) errorDetails.url = error.data.url;
 
@@ -437,7 +334,9 @@ const HomeScreen = () => {
 
         // If it's a 401, log a helpful message
         if (status === 401) {
-          console.warn('[HomeScreen] 401 Unauthorized - OAuth tokens are missing. Please authorize first.');
+          console.warn(
+            "[HomeScreen] 401 Unauthorized - OAuth tokens are missing. Please authorize first.",
+          );
         }
       }
       // Silently ignore empty error objects - they're likely from RTK Query's internal state management
@@ -447,7 +346,7 @@ const HomeScreen = () => {
   // Fetch IP address
   const { data: ipData, error: ipError } = useFetchIPQuery();
   // Memoize userIP to prevent unnecessary recalculations
-  const userIP = useMemo(() => ipData?.ip || '', [ipData?.ip]);
+  const userIP = useMemo(() => ipData?.ip || "", [ipData?.ip]);
 
   // Log IP fetch errors
   useEffect(() => {
@@ -465,7 +364,11 @@ const HomeScreen = () => {
   }, [ipError]);
 
   // Fetch location based on IP - RTK Query will cache based on userIP value
-  const { data: geoIPData, isSuccess: isGeoIPSuccess, error: geoIPError } = useFetchGeoIPQuery(userIP, {
+  const {
+    data: geoIPData,
+    isSuccess: isGeoIPSuccess,
+    error: geoIPError,
+  } = useFetchGeoIPQuery(userIP, {
     skip: !userIP,
     // Prevent refetching on remount if data exists
     refetchOnMountOrArgChange: false,
@@ -485,8 +388,13 @@ const HomeScreen = () => {
       // console.error('[HomeScreen] GeoIP API error:', errorDetails);
 
       // If it's a 401, log a helpful message
-      if ((geoIPError as any)?.status === 401 || (geoIPError as any)?.originalStatus === 401) {
-        console.warn('[HomeScreen] 401 Unauthorized - OAuth tokens are missing. Please authorize first.');
+      if (
+        (geoIPError as any)?.status === 401 ||
+        (geoIPError as any)?.originalStatus === 401
+      ) {
+        console.warn(
+          "[HomeScreen] 401 Unauthorized - OAuth tokens are missing. Please authorize first.",
+        );
       }
     }
   }, [geoIPError]);
@@ -498,45 +406,67 @@ const HomeScreen = () => {
   const locationResponse = locationState.locationResponse;
   const countryIsoCode = locationState.countryIsoCode;
 
-  const handleUpdateNationality = useCallback((country: Country) => {
-    dispatch(setNationality(country));
-  }, [dispatch]);
+  const handleUpdateNationality = useCallback(
+    (country: ICountry) => {
+      dispatch(setNationality(country));
+    },
+    [dispatch],
+  );
 
-  const handleUpdateResidency = useCallback((country: Country) => {
-    dispatch(setResidency(country));
-  }, [dispatch]);
+  const handleUpdateResidency = useCallback(
+    (country: ICountry) => {
+      dispatch(setResidency(country));
+    },
+    [dispatch],
+  );
 
-  const handleUpdateCountryIsoCode = useCallback((code: string) => {
-    dispatch(setCountryIsoCode(code));
-  }, [dispatch]);
+  const handleUpdateCountryIsoCode = useCallback(
+    (code: string) => {
+      dispatch(setCountryIsoCode(code));
+    },
+    [dispatch],
+  );
 
   // Update location data when geoIP data is fetched
   useEffect(() => {
     if (isGeoIPSuccess && geoIPData?.response && userIP) {
-      dispatch(setLocationData({
-        ip: userIP,
-        countryIsoCode: geoIPData.response.countryIsoCode || '',
-        residency: geoIPData.response.residency || '',
-      }));
+      dispatch(
+        setLocationData({
+          ip: userIP,
+          countryIsoCode: geoIPData.response.countryIsoCode || "",
+          residency: geoIPData.response.residency || "",
+        }),
+      );
     }
   }, [isGeoIPSuccess, geoIPData, userIP, dispatch]);
 
   const isRTL = i18n.language === "ar" || i18n.language === "ar-AE";
   useEffect(() => {
     if (!isCountryListSuccess || !countryListData?.response) return;
-    const currentResidency = residency as Country | null;
+    const currentResidency = residency as ICountry | null;
     if (currentResidency && currentResidency.isoCode) return;
-    const residencyText =
-      (locationResponse as any)?.response?.residency?.toLocaleLowerCase();
-    const residencyIsoCodeValue = countryIsoCode ? String(countryIsoCode).toLocaleLowerCase() : null;
+    const residencyText = (
+      locationResponse as any
+    )?.response?.residency?.toLocaleLowerCase();
+    const residencyIsoCodeValue = countryIsoCode
+      ? String(countryIsoCode).toLocaleLowerCase()
+      : null;
     const residencyIsoCode =
       residencyIsoCodeValue ||
       (locationResponse as any)?.response?.countryIsoCode?.toLocaleLowerCase();
-    const residencyData = countryListData.response.find((item: Country) => {
-      if (residencyIsoCode && item.isoCode && item.isoCode.toLocaleLowerCase() === residencyIsoCode) {
+    const residencyData = countryListData.response.find((item: ICountry) => {
+      if (
+        residencyIsoCode &&
+        item.isoCode &&
+        item.isoCode.toLocaleLowerCase() === residencyIsoCode
+      ) {
         return true;
       }
-      if (residencyText && item.isoCode && item.isoCode.toLocaleLowerCase().includes(residencyText)) {
+      if (
+        residencyText &&
+        item.isoCode &&
+        item.isoCode.toLocaleLowerCase().includes(residencyText)
+      ) {
         return true;
       }
       return false;
@@ -582,9 +512,9 @@ const HomeScreen = () => {
   const toggleModal = (value: boolean, mode?: ModalTypes) => {
     setShowModal(value);
     if (mode) {
-      setModalType(mode)
+      setModalType(mode);
     }
-  }
+  };
 
   const handleFlagClick = useCallback(() => {
     setIsDialogOpen(true);
@@ -599,46 +529,64 @@ const HomeScreen = () => {
     toggleModal(true, "searchDestination");
   }, [toggleModal]);
 
-  const handleMenuClick = useCallback(() => {
-  }, []);
+  const handleMenuClick = useCallback(() => {}, []);
 
-  const executePendingAction = useCallback((action: PendingAction) => {
-    if (!action) return;
+  const executePendingAction = useCallback(
+    (action: PendingAction) => {
+      if (!action) return;
 
-    switch (action.type) {
-      case 'navigate':
-        if (action.url) {
-          window.location.href = action.url;
-        }
-        break;
-      case 'search':
-        const currentResidencyForSearch = residency as Country | null;
-        const destination = action.destination as Country | undefined;
-        if (destination && currentResidencyForSearch && currentResidencyForSearch.isoCode && destination.isoCode) {
-          const path = getCountryVisaUrl(currentResidencyForSearch.isoCode, destination.isoCode);
-          window.location.href = path;
-        }
-        break;
-    }
-    setPendingAction(null);
-  }, [residency]);
+      switch (action.type) {
+        case "navigate":
+          if (action.url) {
+            window.location.href = action.url;
+          }
+          break;
+        case "search":
+          const currentResidencyForSearch = residency as ICountry | null;
+          const destination = action.destination as ICountry | undefined;
+          if (
+            destination &&
+            currentResidencyForSearch &&
+            currentResidencyForSearch.isoCode &&
+            destination.isoCode
+          ) {
+            const path = getCountryVisaUrl(
+              currentResidencyForSearch.isoCode,
+              destination.isoCode,
+            );
+            window.location.href = path;
+          }
+          break;
+      }
+      setPendingAction(null);
+    },
+    [residency],
+  );
 
-  const handlePreFlowNavigation = useCallback((action: PendingAction): boolean => {
-    const currentNationality = nationality as Country | null;
-    const currentResidency = residency as Country | null;
-    if (!currentNationality || !currentNationality.isoCode || !currentResidency || !currentResidency.isoCode) {
-      setPendingAction(action);
-      setShowModal(false);
-      setIsDialogOpen(true);
-      return false;
-    }
+  const handlePreFlowNavigation = useCallback(
+    (action: PendingAction): boolean => {
+      const currentNationality = nationality as ICountry | null;
+      const currentResidency = residency as ICountry | null;
+      if (
+        !currentNationality ||
+        !currentNationality.isoCode ||
+        !currentResidency ||
+        !currentResidency.isoCode
+      ) {
+        setPendingAction(action);
+        setShowModal(false);
+        setIsDialogOpen(true);
+        return false;
+      }
 
-    executePendingAction(action);
-    return true;
-  }, [nationality, residency, executePendingAction]);
+      executePendingAction(action);
+      return true;
+    },
+    [nationality, residency, executePendingAction],
+  );
 
   const handleConfirmUpdate = useCallback(
-    (newNationality: Country, newResidency: Country) => {
+    (newNationality: ICountry, newResidency: ICountry) => {
       handleUpdateNationality(newNationality);
       handleUpdateResidency(newResidency);
       if (newResidency?.isoCode) {
@@ -647,29 +595,35 @@ const HomeScreen = () => {
 
       if (pendingAction) {
         setTimeout(() => {
-          if (pendingAction.type === 'navigate' && pendingAction.url) {
+          if (pendingAction.type === "navigate" && pendingAction.url) {
             let finalUrl = pendingAction.url;
 
             try {
               const urlObj = new URL(finalUrl);
               const params = new URLSearchParams(urlObj.search);
 
-              if (params.has('nat')) {
-                params.set('nat', newNationality?.isoCode || '');
+              if (params.has("nat")) {
+                params.set("nat", newNationality?.isoCode || "");
               }
 
-              if (params.has('res')) {
-                params.set('res', newResidency?.isoCode || '');
+              if (params.has("res")) {
+                params.set("res", newResidency?.isoCode || "");
               }
 
               finalUrl = `${urlObj.origin}${urlObj.pathname}?${params.toString()}`;
-            } catch (error) {
-
-            }
+            } catch (error) {}
 
             window.location.href = finalUrl;
-          } else if (pendingAction.type === 'search' && pendingAction.destination && newResidency.isoCode && pendingAction.destination.isoCode) {
-            const path = getCountryVisaUrl(newResidency.isoCode, pendingAction.destination.isoCode);
+          } else if (
+            pendingAction.type === "search" &&
+            pendingAction.destination &&
+            newResidency.isoCode &&
+            pendingAction.destination.isoCode
+          ) {
+            const path = getCountryVisaUrl(
+              newResidency.isoCode,
+              pendingAction.destination.isoCode,
+            );
             window.location.href = path;
           }
 
@@ -677,7 +631,12 @@ const HomeScreen = () => {
         }, 100);
       }
     },
-    [handleUpdateNationality, handleUpdateResidency, handleUpdateCountryIsoCode, pendingAction]
+    [
+      handleUpdateNationality,
+      handleUpdateResidency,
+      handleUpdateCountryIsoCode,
+      pendingAction,
+    ],
   );
 
   const handleInspireMeClick = () => {
@@ -714,14 +673,31 @@ const HomeScreen = () => {
     }
   }, [isHeroLoading]);
 
-
   // Convert StaticImageData to string
-  const planeMarkSrc = typeof planeMark === 'string' ? planeMark : (planeMark as any)?.src || planeMark;
-  const planeImageSrc = typeof planeImage === 'string' ? planeImage : (planeImage as any)?.src || planeImage;
-  const homeBgImageSrc = typeof homeBgImage === 'string' ? homeBgImage : (homeBgImage as any)?.src || homeBgImage;
-  const scrollBgImageSrc = typeof scrollBgImage === 'string' ? scrollBgImage : (scrollBgImage as any)?.src || scrollBgImage;
-  const inspireMeGifSrc = typeof inspireMeGif === 'string' ? inspireMeGif : (inspireMeGif as any)?.src || inspireMeGif;
-  const arrowLeftSrc = typeof arrowLeft === 'string' ? arrowLeft : (arrowLeft as any)?.src || arrowLeft;
+  const planeMarkSrc =
+    typeof planeMark === "string"
+      ? planeMark
+      : (planeMark as any)?.src || planeMark;
+  const planeImageSrc =
+    typeof planeImage === "string"
+      ? planeImage
+      : (planeImage as any)?.src || planeImage;
+  const homeBgImageSrc =
+    typeof homeBgImage === "string"
+      ? homeBgImage
+      : (homeBgImage as any)?.src || homeBgImage;
+  const scrollBgImageSrc =
+    typeof scrollBgImage === "string"
+      ? scrollBgImage
+      : (scrollBgImage as any)?.src || scrollBgImage;
+  const inspireMeGifSrc =
+    typeof inspireMeGif === "string"
+      ? inspireMeGif
+      : (inspireMeGif as any)?.src || inspireMeGif;
+  const arrowLeftSrc =
+    typeof arrowLeft === "string"
+      ? arrowLeft
+      : (arrowLeft as any)?.src || arrowLeft;
 
   return (
     <div
@@ -738,10 +714,10 @@ const HomeScreen = () => {
         ) : (
           <TopBar
             variant="home"
-            flagIcon={(residency as Country | null)?.flag}
+            flagIcon={(residency as ICountry | null)?.flag}
             isLoggedIn={false}
             onFlagClick={handleFlagClick}
-            onLogoClick={() => { }}
+            onLogoClick={() => {}}
             onSearchClick={handleSearchClick}
             onMenuClick={handleMenuClick}
             isFixed={isTopBarFixed}
@@ -799,7 +775,7 @@ const HomeScreen = () => {
             )}
             {/* ===== Header ===== */}
             <div
-              className={`flex gap-2 relative ${
+              className={`flex items-center gap-2 relative ${
                 isMobile ? 'w-full mt-8 mb-6 justify-center' : 'self-start mb-4'
               }`}
               style={{
@@ -844,22 +820,22 @@ const HomeScreen = () => {
             {/* Nationality & Residency Selector - Desktop/Tablet Only */}
             {countryListData?.response && !isMobile && (
               <div
-                className="relative block mb-3"
+                className="relative block mb-3 self-start"
                 style={{
                   zIndex: 100,
-                  width: '590px',
-                  maxWidth: '100%'
+                  width: isTablet ? "85%" : "65%",
                 }}
               >
-                <NationalityResidencySelector
-                  ref={nationalitySelectorRef}
-                  nationality={nationality}
-                  residency={residency}
-                  onNationalityChange={handleUpdateNationality}
-                  onResidencyChange={handleUpdateResidency}
-                  countryList={countryListData.response}
-                  isMobile={isMobile}
-                />
+                <div className="w-full">
+                  <NationalityResidencySelector
+                    countryList={data?.response ?? []}
+                    nationality={nationality}
+                    residency={residency}
+                    onNationalityChange={handleUpdateNationality}
+                    onResidencyChange={handleUpdateResidency}
+                    isMobile={isMobile}
+                  />
+                </div>
               </div>
             )}
 
@@ -897,10 +873,9 @@ const HomeScreen = () => {
             {/* Desktop/Tablet Search Destination */}
             {!isMobile && modalType === "searchDestination" && (
               <div
-                className="relative flex justify-start z-[2] mb-4"
+                className="relative flex justify-start z-[2] mb-4 self-start"
                 style={{
-                  width: '590px',
-                  maxWidth: '100%'
+                  width: isTablet ? "85%" : "65%",
                 }}
               >
                 <DesktopSearchDropdown
@@ -979,7 +954,7 @@ const HomeScreen = () => {
       )}
       {
         !isMobile && (
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
             <OfferSection />
           </div>
         )
@@ -1039,11 +1014,12 @@ const HomeScreen = () => {
       <MobileBottomDrawer
         modalOpen={showModal}
         setModalOpen={toggleModal}
-        sx={modalType === "searchDestination" ? { minHeight: '85%' } : {}}
+        sx={modalType === "searchDestination" ? { minHeight: "85%" } : {}}
       >
         {modalType === "searchDestination" && showModal && (
           <Suspense fallback={<MobileBottomDrawerSkeleton />}>
-            <SearchDestination onPreFlowNavigation={handlePreFlowNavigation} />
+            {/* <SearchDestination onPreFlowNavigation={handlePreFlowNavigation} /> */}
+            <div>Search destination</div>
           </Suspense>
         )}
         {modalType === "visaMode" && showModal && (
@@ -1059,20 +1035,27 @@ const HomeScreen = () => {
         )}
       </MobileBottomDrawer>
 
-      {!nationality && (
-        isBottomConfirmBarLoading ? (
+      {!nationality &&
+        (isBottomConfirmBarLoading ? (
           <BottomConfirmBarSkeleton />
         ) : (
           <div className="w-full">
             <BottomConfirmBar
-              residency={residency ? ((residency as unknown as Country).residency || (residency as unknown as Country).name || '') : ''}
-              flagUrl={residency ? (residency as unknown as Country).flag : undefined}
+              residency={
+                residency
+                  ? (residency as unknown as ICountry).residency ||
+                    (residency as unknown as ICountry).name ||
+                    ""
+                  : ""
+              }
+              flagUrl={
+                residency ? (residency as unknown as ICountry).flag : undefined
+              }
               onConfirmClick={handleConfirmBarClick}
               nationalitySelectorRef={nationalitySelectorRef}
             />
           </div>
-        )
-      )}
+        ))}
 
       <UpdateResidencyDialog
         open={isDialogOpen}
@@ -1080,7 +1063,7 @@ const HomeScreen = () => {
         initialNationality={nationality}
         initialResidency={residency}
         onConfirm={handleConfirmUpdate}
-        onFlagUpdate={() => { }}
+        onFlagUpdate={() => {}}
       />
     </div>
   );

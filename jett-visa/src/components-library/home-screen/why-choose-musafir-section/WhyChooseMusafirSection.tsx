@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import InfoCard from '../how-to-apply-section/InfoCard';
 import { useFetchStaticContentQuery, type UniqueValueProposition } from '@/store/visaStaticContentApi';
@@ -5,7 +7,7 @@ import ClickIcon from "@/assets/images/icons/clickIcon.png";
 import StarShieldIcon from "@/assets/images/icons/starShieldIcon.png";
 import PhoneIcon from "@/assets/images/icons/phoneIcon.png";
 import HistoryIcon from "@/assets/images/icons/historyIcon.png";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/utils/i18nStub';
 
 // Static fallback data
 const staticUniqueValuePropositions: UniqueValueProposition[] = [

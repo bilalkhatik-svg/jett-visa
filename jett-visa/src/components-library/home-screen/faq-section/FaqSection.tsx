@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useState } from "react";
 import DownArrowIcon from "@/assets/images/icons/downArrowIcon.png";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@/utils/i18nStub";
 import { useFetchStaticContentQuery } from "@/store/visaStaticContentApi";
 
 interface FaqItem {

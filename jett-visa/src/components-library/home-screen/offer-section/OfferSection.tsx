@@ -1,9 +1,11 @@
+"use client";
+
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/utils/i18nStub';
 import offerImage from "@/assets/images/offerImage.webp";
 import arrowLeftIcon from "@/assets/images/icons/arrowLeft.webp";
 import arrowRightIcon from "@/assets/images/icons/arrowrighticon.webp";
-import i18n from "@/i18n";
+import { i18n } from "@/utils/i18nStub";
 
 // Convert StaticImageData to string for img src
 const offerImageSrc = typeof offerImage === 'string' ? offerImage : (offerImage as any)?.src || offerImage;

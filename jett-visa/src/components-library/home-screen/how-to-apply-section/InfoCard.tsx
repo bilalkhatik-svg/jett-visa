@@ -1,4 +1,4 @@
-import React from "react";
+"use client";
 
 type InfoCardProps = {
   imageSrc: string;
@@ -18,9 +18,9 @@ const InfoCard: React.FC<InfoCardProps> = ({
   // Horizontal variant for Why Choose Musafir section
   if (variant === "horizontal") {
     return (
-      <div 
+      <div
         className="bg-white border-2 border-[#E5E7EB] rounded-[20px] hover:shadow-lg transition-all duration-300"
-        style={{ 
+        style={{
           padding: '26px',
           width: '544px',
           height: '180px',
@@ -42,7 +42,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
             <h4 className="text-lg font-semibold text-[#003B71] font-poppins leading-snug">
               {title}
             </h4>
-            <p 
+            <p
               className="font-poppins font-normal text-[#003669] leading-none align-middle"
               style={{
                 fontSize: '16px',
@@ -72,18 +72,12 @@ const InfoCard: React.FC<InfoCardProps> = ({
         </div>
 
         {/* Text content */}
-        <div className="flex flex-col gap-2">
-          <h4 className="text-lg font-semibold text-[#003B71] font-poppins leading-snug sm:text-base">
+        <div className="flex flex-col gap-1.5 sm:gap-2 min-w-0 flex-1 overflow-hidden">
+          <h2 className="text-[18px] font-semibold text-[#00366B] font-poppins break-words">
             {title}
-          </h4>
-          <p 
-            className="font-poppins font-normal text-[#003669] leading-none align-middle sm:text-sm"
-            style={{
-              fontSize: '16px',
-              lineHeight: '100%',
-              letterSpacing: '0%'
-            }}
-          >
+          </h2>
+
+          <p className="text-[16px] font-normal text-[#003669] font-poppins leading-relaxed break-words">
             {description}
           </p>
         </div>

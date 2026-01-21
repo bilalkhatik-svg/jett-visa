@@ -1,8 +1,8 @@
-import I18nProvider from "@/components/I18nProvider";
+import type { Metadata, Viewport } from "next";
 import ReduxProvider from "@/components/ReduxProvider";
+import StructuredData from "@/components/StructuredData";
 import "./globals.css";
 import AppInit from "./providers/AppInit";
-import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
@@ -45,6 +45,15 @@ export const metadata: Metadata = {
   },
 };
 
+
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -52,11 +61,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
       <body className="bg-white text-black">
+        <StructuredData />
         <ReduxProvider>
-          <I18nProvider>
-            <AppInit />
-            {children}</I18nProvider>
+          <AppInit />
+          {children}
         </ReduxProvider>
       </body>
     </html>
