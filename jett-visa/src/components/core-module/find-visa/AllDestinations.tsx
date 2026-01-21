@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState, Suspense } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@/utils/i18nStub";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 

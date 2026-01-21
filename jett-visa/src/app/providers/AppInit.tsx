@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@/utils/i18nStub";
 import { useAppDispatch } from "@/store/hooks";
 import { RootState } from "@/store/store";
 import { useAuthorization } from "@/utils/hooks/useAuthorization";

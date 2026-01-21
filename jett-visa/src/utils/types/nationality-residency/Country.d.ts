@@ -1,4 +1,4 @@
-export interface Country {
+export interface ICountry {
       "id": string;
       "nationality": string;
       "residency": string,
@@ -10,5 +10,5 @@ export interface Country {
       "acronyms":string []
       "name":string
     }
-export type Nationality = Country;
-export type Residency = Country;
+export type Nationality = ICountry;
+export type Residency = ICountry;

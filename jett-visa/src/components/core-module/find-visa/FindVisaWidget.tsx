@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/utils/i18nStub';
 import { useFetchDestinationsQuery } from '@/store/visaDestinationsApi';
 import { useFetchCountryListQuery } from '@/store/visaCountryListApi';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
@@ -11,7 +11,7 @@ import circleBackgroundImage from '@/assets/images/circlebg.webp';
 import arcImage from '@/assets/images/Ellipse.webp';
 import lineImage from '@/assets/images/lineimage.webp';
 import CardImg from '@/assets/images/germany-card-img.webp';
-import type { PendingAction } from '@/pages/home-screen/HomeScreen';
+import type { PendingAction } from '@/components-library/home-screen/HomeScreen';
 
 // Mock data
 const continents = ['Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'];

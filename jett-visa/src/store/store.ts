@@ -11,7 +11,7 @@ import { visaDestinationsApi } from "@/store/visaDestinationsApi";
 import { authorizationApi } from "@/store/authorizationApi"; 
 import { languageSlice } from '@/store/slice/languageSlice';
 import { locationSlice } from '@/store/slice/locationSlice';
-// import { notificationSlice } from '@/store/slice/notificationSlice';
+import { notificationSlice } from '@/store/slice/notificationSlice';
 import { visaTicketApi } from "./contactFormApi";
 
 const appReducer = combineReducers({
@@ -27,7 +27,7 @@ const appReducer = combineReducers({
   loginSlice: loginSlice.reducer,
   locationSlice: locationSlice.reducer,
   languageSlice: languageSlice.reducer,
-//   notificationSlice: notificationSlice.reducer,
+  notificationSlice: notificationSlice.reducer,
 
 
 })

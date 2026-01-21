@@ -6,7 +6,7 @@ import MuzafirLogo from "@/assets/images/MusafirLogo.png";
 import arrowLeft from "@/assets/images/arrow-left.png";
 import searchIcon from "@/assets/images/icons/search.png";
 import menuIcon from "@/assets/images/icons/add-dashboard.webp";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@/utils/i18nStub";
 
 
 interface TopBarProps {
@@ -40,7 +40,7 @@ const TopBar: React.FC<TopBarProps> = ({
   showSearchIcon = false,
 }) => {
   const { i18n } = useTranslation();
-  const isRTL = i18n.dir() === "rtl";
+  const isRTL = typeof i18n.dir === 'function' ? i18n.dir() === "rtl" : i18n.language?.startsWith('ar');
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
 
@@ -108,7 +108,7 @@ const TopBar: React.FC<TopBarProps> = ({
         <button
           onClick={handleMenuClick}
           aria-label="Menu"
-          className={`p-0 ${isMobile ? 'w-[30px] h-[30px]' : 'w-[46px] h-[46px]'} bg-[#FAFAFA] hover:bg-[#F5F5F5] flex items-center justify-center relative`}
+          className={`p-0 ${isMobile ? 'w-[30px] h-[30px]' : 'w-[46px] h-[46px]'} hover:bg-[#F5F5F5] flex items-center justify-center relative`}
         >
           <img 
             src={menuIconSrc} 

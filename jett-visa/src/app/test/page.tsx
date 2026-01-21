@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@/utils/i18nStub";
 
 export default function TestPage() {
   const { t, i18n } = useTranslation();
