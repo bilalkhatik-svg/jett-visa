@@ -124,3 +124,4 @@ The metadata showing in your `index.html` head section proves the SEO fixes are 
 
 *Created: 2026-01-16*
 
+

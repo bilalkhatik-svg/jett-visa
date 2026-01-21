@@ -207,7 +207,8 @@ const DesktopSearchDropdown: React.FC<DesktopSearchDropdownProps> = ({
     <div ref={containerRef} className="relative w-full max-w-full" style={{ width: dropdownWidth || widthByBreakpoint.md }}>
       <input
         placeholder={t("search_by_country_or_city")}
-        className="w-full rounded-md border border-gray-200 h-11 sm:h-12 px-3 pr-10 text-sm sm:text-base"
+        className="w-full rounded-[12px] border border-gray-200 px-4 pr-12 text-sm sm:text-base"
+        style={{ height: '72px',width:'590px' }}
         value={search}
         onFocus={() => setIsOpen(true)}
         onChange={(e) => {

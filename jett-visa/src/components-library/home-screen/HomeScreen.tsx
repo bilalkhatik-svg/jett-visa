@@ -146,11 +146,12 @@ const NationalityResidencySelector = ({
     item.name.toLowerCase().includes(search.toLowerCase())
   );
   return (
-    <div className="relative w-full max-w-full sm:max-w-full md:max-w-md mx-0 sm:mx-0 md:mx-auto z-[100]">
+    <div className="relative w-full sm:max-w-full z-[100]" style={{ maxWidth: isMobile ? '100%' : '590px' }}>
       <div
-  className={`flex items-center justify-between rounded-[12px] bg-[#E8F4F8] shadow-sm border-0 ${
-    isMobile ? 'px-4 py-3' : 'px-4 py-3'
-  } md:ml-[-21%] md:bg-gradient-to-br md:from-white/80 md:to-white/60 md:backdrop-blur-md`}
+  className={`flex justify-between rounded-[12px] bg-[#E8F4F8] shadow-sm border-0 ${
+    isMobile ? 'px-4 py-3' : 'px-4'
+  } md:bg-gradient-to-br md:from-white/80 md:to-white/60 md:backdrop-blur-md`}
+  style={{ height: isMobile ? 'auto' : '72px' }}
 >
 
 
@@ -235,7 +236,7 @@ const NationalityResidencySelector = ({
                       setOpenNationality(false);
                       setSearch('');
                     }}
-                    className={`flex items-center gap-3 cursor-pointer hover:bg-[#F3F4F6] transition-colors ${isMobile ? 'px-5 py-3' : 'px-6 py-3.5'
+                    className={`flex gap-3 cursor-pointer hover:bg-[#F3F4F6] transition-colors ${isMobile ? 'px-5 py-3' : 'px-6 py-3.5'
                       }`}
                   >
                     <img
@@ -258,7 +259,7 @@ const NationalityResidencySelector = ({
 
         {/* Residency */}
         <div
-          className="flex items-center gap-2 sm:gap-2 cursor-pointer flex-1 min-w-0"
+          className="flex gap-2 sm:gap-2 cursor-pointer flex-1 min-w-0"
           onClick={onResidencyChange}
         >
           <img
@@ -341,8 +342,12 @@ const SearchField = ({ isMobile, placeholder, onClick, value, ...props }: any) =
 
   return (
     <div
-      className={`relative w-full`}
+      className={`relative`}
       onClick={onClick}
+      style={{ 
+        width: isMobile ? '100%' : '590px',
+        maxWidth: '100%'
+      }}
     >
       <input
         type="text"
@@ -350,7 +355,9 @@ const SearchField = ({ isMobile, placeholder, onClick, value, ...props }: any) =
         value={value}
         readOnly
         disabled
-        className="w-full h-[48px] sm:h-[48px] md:h-[52px] px-4 pr-12 bg-white rounded-[12px] border border-gray-200 text-[#9CA3AF] text-sm sm:text-sm font-poppins cursor-pointer shadow-sm"
+        className={`w-full px-4 pr-12 bg-white rounded-[12px] border border-gray-200 text-[#9CA3AF] text-sm sm:text-sm font-poppins cursor-pointer shadow-sm ${
+          isMobile ? 'h-[48px]' : 'h-[72px]'
+        }`}
         style={{ pointerEvents: 'none' }}
         {...props}
       />
@@ -792,7 +799,7 @@ const HomeScreen = () => {
             )}
             {/* ===== Header ===== */}
             <div
-              className={`flex items-center gap-2 relative ${
+              className={`flex gap-2 relative ${
                 isMobile ? 'w-full mt-8 mb-6 justify-center' : 'self-start mb-4'
               }`}
               style={{
@@ -837,23 +844,22 @@ const HomeScreen = () => {
             {/* Nationality & Residency Selector - Desktop/Tablet Only */}
             {countryListData?.response && !isMobile && (
               <div
-                className="relative block mb-3 self-start"
+                className="relative block mb-3"
                 style={{
                   zIndex: 100,
-                  width: isTablet ? "85%" : "65%",
+                  width: '590px',
+                  maxWidth: '100%'
                 }}
               >
-                <div className="w-full">
-                  <NationalityResidencySelector
-                    ref={nationalitySelectorRef}
-                    nationality={nationality}
-                    residency={residency}
-                    onNationalityChange={handleUpdateNationality}
-                    onResidencyChange={handleUpdateResidency}
-                    countryList={countryListData.response}
-                    isMobile={isMobile}
-                  />
-                </div>
+                <NationalityResidencySelector
+                  ref={nationalitySelectorRef}
+                  nationality={nationality}
+                  residency={residency}
+                  onNationalityChange={handleUpdateNationality}
+                  onResidencyChange={handleUpdateResidency}
+                  countryList={countryListData.response}
+                  isMobile={isMobile}
+                />
               </div>
             )}
 
@@ -891,9 +897,10 @@ const HomeScreen = () => {
             {/* Desktop/Tablet Search Destination */}
             {!isMobile && modalType === "searchDestination" && (
               <div
-                className="relative flex justify-start z-[2] mb-4 self-start"
+                className="relative flex justify-start z-[2] mb-4"
                 style={{
-                  width: isTablet ? "85%" : "65%",
+                  width: '590px',
+                  maxWidth: '100%'
                 }}
               >
                 <DesktopSearchDropdown
@@ -972,7 +979,7 @@ const HomeScreen = () => {
       )}
       {
         !isMobile && (
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <OfferSection />
           </div>
         )
