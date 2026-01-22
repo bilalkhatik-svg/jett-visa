@@ -149,7 +149,16 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
   return (
     <div className="w-full max-w-[1120px] mx-auto opacity-100" >
       <div className="flex justify-between items-center mb-6 sm:mb-5">
-        <h2 className="font-poppins font-semibold text-[#003B71] text-2xl sm:text-xl">Top destinations</h2>
+      <h2
+  className="
+    font-poppins font-semibold
+    text-[#003B71]
+    text-[28px]
+    leading-[1]
+    tracking-normal
+    mb-8
+  "
+>Top destinations</h2>
         <button className="text-sm text-[#0066CC] font-medium hover:underline transition-all sm:text-xs">View all</button>
       </div>
       <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -165,7 +174,20 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
               className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-            <div className="absolute top-3 left-3 bg-white/25 backdrop-blur-sm px-3 py-1 rounded-lg text-xs font-medium text-white border border-white/40">
+            <div
+  className="
+    absolute top-0 left-0
+    bg-white/25 backdrop-blur-sm
+    border border-white/40
+    text-[#3F6B96] text-[10px] font-medium
+    rounded-tl-[20px] rounded-br-[9px]
+    pt-[6px] pr-[16px] pb-[6px] pl-[20px]
+    gap-[10px]
+    opacity-100
+    inline-flex items-center whitespace-nowrap
+    min-h-[33px]
+  "
+>
               {item.VisaType || "E-Visa"}
             </div>
             <div className="absolute bottom-4 left-3 right-3 text-white">
@@ -174,7 +196,20 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
                 <p className="text-xs font-medium opacity-90">
                   Starts ₹{item.StartingPrice || "N/A"}
                 </p>
-                <span className="text-[10px] font-medium bg-white/25 backdrop-blur-sm px-2.5 py-1 rounded-md border border-white/30">
+                <span
+  className="
+    absolute top-3 right-[-12px]
+    bg-white/25 backdrop-blur-sm
+    border border-white/30
+    text-[#FFFFFF] text-[10px] font-medium
+    rounded-tl-[20px] rounded-bl-[20px]
+    pt-[6px] pr-[10px] pb-[6px] pl-[14px]
+    
+    inline-flex items-center whitespace-nowrap
+    min-h-[32px]
+    opacity-100
+  "
+>
                   {item.GetVisaDays} {item.unit || "days"}
                 </span>
               </div>
@@ -197,7 +232,20 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-            <div className="absolute top-2 left-2 bg-white/25 backdrop-blur-sm px-2 py-0.5 rounded-lg text-[10px] font-medium text-white border border-white/40">
+            <div
+              className="
+                absolute top-0 left-0
+                bg-white/25 backdrop-blur-sm
+                border border-white/40
+                text-white text-xs font-medium
+                rounded-tl-[20px] rounded-br-[9px]
+                pt-[6px] pr-[16px] pb-[6px] pl-[20px]
+                gap-[10px]
+                opacity-100
+                inline-flex items-center whitespace-nowrap
+                min-h-[33px]
+              "
+            >
               {item.VisaType || "E-Visa"}
             </div>
             <div className="absolute bottom-3 left-2 right-2 text-white">
@@ -206,7 +254,19 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
                 <p className="text-[10px] font-medium opacity-90">
                   Starts ₹{item.StartingPrice || "N/A"}
                 </p>
-                <span className="text-[9px] font-medium bg-white/25 backdrop-blur-sm px-2 py-0.5 rounded-md border border-white/30">
+                <span
+                  className="
+                    absolute top-3 right-[-12px]
+                    bg-white/25 backdrop-blur-sm
+                    border border-white/30
+                    text-white text-[10px] font-medium
+                    rounded-tl-[20px] rounded-bl-[20px]
+                    pt-[6px] pr-[10px] pb-[6px] pl-[14px]
+                    inline-flex items-center whitespace-nowrap
+                    min-h-[32px]
+                    opacity-100
+                  "
+                >
                   {item.GetVisaDays} {item.unit || "days"}
                 </span>
               </div>

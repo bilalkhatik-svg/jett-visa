@@ -219,9 +219,12 @@ const useMediaQuery = (query: string) => {
   return matches;
 };
 import arrowLeft from "@/assets/images/icons/arrowLeft.webp";
+import VectorImage from "@/assets/images/Vector.png";
+import SearchImage from "@/assets/images/Search.png";
+import VisaImage from "@/assets/images/visa.png";
 import ScrollingDestinationImages from "./scrolling-destination-images/ScrollingDestinationImages";
 import OfferSection from "./offer-section/OfferSection";
-import homeBgImage from "@/assets/images/homeBgImage.webp";
+import homeBgImage from "@/assets/images/Rectangleimg.png";
 import scrollBgImage from "@/assets/images/scrollBgImage.png";
 import FooterSection from "./footer-section/FooterSection";
 import NationalityResidencySelector from "@/components/core-module/nationality-residency/common/Nationality-Residence-Selector";
@@ -803,27 +806,44 @@ const HomeScreen = () => {
               }}
             >
               <div className="relative inline-block">
-                <img
-                  src={planeMarkSrc}
-                  alt="plane mark"
-                  className={isMobile ? "block w-[180px] h-[40px]" : "block w-[320px] h-[58px] md:w-[320px] md:h-[58px] lg:w-[280px]"}
-                  style={{
-                    transform: isRTL ? "scaleX(-1)" : "none",
-                  }}
-                />
-                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-center gap-1 ${
-                  isMobile ? 'flex-col items-center gap-0.5' : 'items-baseline'
-                }`}>
-                  <span className={`text-[#003B71] font-poppins font-semibold leading-tight text-center ${
-                    isMobile ? 'text-lg' : 'text-3xl lg:text-[28px]'
-                  }`}>
-                    {t("search")}.
-                  </span>
-                  <span className={`text-[#003B71] font-poppins whitespace-nowrap font-bold leading-tight text-center ${
-                    isMobile ? 'text-lg' : 'text-3xl lg:text-[28px]'
-                  }`}>
-                    {t("visa")}. {t("go")}.
-                  </span>
+              <img
+                src={planeMarkSrc}
+                alt="plane mark"
+              className={
+    isMobile
+      ? "block w-[162.62px] h-[46.75px] mt-[10%] opacity-100"
+      : "block w-[320px] h-[58px] md:w-[320px] md:h-[58px] lg:w-[280px]"
+  }
+  style={{
+    transform: isRTL ? "scaleX(-1)" : "none",
+  }}
+/>
+                <div  className={`
+    absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+    w-full flex justify-center
+    ${isMobile ? 'flex-col items-center gap-0' : 'items-center gap-1'}
+  `}>
+                  {isMobile ? (
+                    <>
+                      <img
+      src={typeof SearchImage === 'string' ? SearchImage : (SearchImage as any)?.src || SearchImage}
+      alt="Search"
+      className="block w-[97px] h-[39px] object-contain"
+    />
+    <img
+      src={typeof VisaImage === 'string' ? VisaImage : (VisaImage as any)?.src || VisaImage}
+      alt="Visa Go"
+      className="block w-[115px] h-[39px] object-contain mt-[-6%]"
+    />
+
+                    </>
+                  ) : (
+                    <img
+                      src={typeof VectorImage === 'string' ? VectorImage : (VectorImage as any)?.src || VectorImage}
+                      alt="Search Visa Go"
+                      className="h-auto max-w-full object-contain max-h-[40px] ml-[20%]"
+                    />
+                  )}
                 </div>
               </div>
               <img
@@ -870,7 +890,7 @@ const HomeScreen = () => {
               <div className="relative w-full" style={{ zIndex: 2 }}>
                 <SearchField
                   isMobile={isMobile}
-                  placeholder={t("search_by_country_or_city")}
+                  placeholder={"Search by country or city"}
                   value=""
                   onClick={() => toggleModal(true, "searchDestination")}
                 />
@@ -898,6 +918,7 @@ const HomeScreen = () => {
                 }}
               >
                 <DesktopSearchDropdown
+                isMobile={isMobile}
                   t={t}
                   onPreFlowNavigation={handlePreFlowNavigation}
                   countryList={countryListData?.response || []}
@@ -943,7 +964,8 @@ const HomeScreen = () => {
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  {isMobile ? t("inspire_me") : t("inspire_me_for_desktopView")}
+                  {/* {isMobile ? t("inspire_me") : t("inspire_me_for_desktopView")} */}
+                  {isMobile ? "inspire me" :  "Plan your next adventure, and let AI simplify your visa"}
                 </span>
                 {!isMobile && (
                   <img

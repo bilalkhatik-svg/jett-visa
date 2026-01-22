@@ -39,17 +39,28 @@ const InfoCard: React.FC<InfoCardProps> = ({
 
           {/* Text content */}
           <div className="flex flex-col gap-2 flex-1">
-            <h4 className="text-lg font-semibold text-[#003B71] font-poppins leading-snug">
+          <h4
+  className="
+    font-poppins font-semibold
+    text-[#003B71]
+    text-[18px]
+    leading-[1]
+    tracking-normal
+    align-middle
+  "
+>
               {title}
             </h4>
-            <p 
-              className="font-poppins font-normal text-[#003669] leading-none align-middle"
-              style={{
-                fontSize: '16px',
-                lineHeight: '100%',
-                letterSpacing: '0%'
-              }}
-            >
+            <p
+  className="
+    font-poppins font-normal
+    text-[#003669]
+    text-[16px]
+    leading-[1]
+    tracking-normal
+    align-middle
+  "
+>
               {description}
             </p>
           </div>

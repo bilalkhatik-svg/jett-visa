@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'saas.dev.api.musafirbiz.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'dtbytxvxbapz.cloudfront.net',
+      },
     ],
   },
 
