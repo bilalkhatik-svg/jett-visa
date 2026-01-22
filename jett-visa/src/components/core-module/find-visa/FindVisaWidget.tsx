@@ -13,6 +13,7 @@ import lineImage from '@/assets/images/lineimage.webp';
 import CardImg from '@/assets/images/germany-card-img.webp';
 import type { PendingAction } from '@/components-library/home-screen/HomeScreen';
 import DestinationCarousel from './DestinationCarousel';
+import ContinentSelector from './ContinentSelector';
 
 // Mock data
 const continents = ['Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'];
@@ -263,62 +264,92 @@ const NationalitySelect = ({
   );
 };
 
-const ContinentSelector = ({ selected, onChange }: { selected: string; onChange: (continent: string) => void }) => {
-  const currentIndex = continents.indexOf(selected);
-  const hasPrevious = currentIndex > 0;
-  const hasNext = currentIndex < continents.length - 1;
+// const ContinentSelector = ({ selected, onChange }: { selected: string; onChange: (continent: string) => void }) => {
+//   const currentIndex = continents.indexOf(selected);
+//   const hasPrevious = currentIndex > 0;
+//   const hasNext = currentIndex < continents.length - 1;
 
-  const handlePrevious = () => {
-    if (hasPrevious) {
-      onChange(continents[currentIndex - 1]);
-    }
-  };
+//   // Inject mobile styles for selected text
+//   useEffect(() => {
+//     const styleId = 'continent-selector-mobile-styles';
+//     if (!document.getElementById(styleId)) {
+//       const style = document.createElement('style');
+//       style.id = styleId;
+//       style.textContent = `
+//         @media (max-width: 768px) {
+//           .continent-selected-text {
+//             color: #FFF;
+//             font-family: "Google Sans", sans-serif;
+//             font-size: 12px;
+//             font-style: normal;
+//             font-weight: 700;
+//             line-height: 16px;
+//           }
+//         }
+//       `;
+//       document.head.appendChild(style);
+//     }
+//     return () => {
+//       const style = document.getElementById(styleId);
+//       if (style) {
+//         document.head.removeChild(style);
+//       }
+//     };
+//   }, []);
 
-  const handleNext = () => {
-    if (hasNext) {
-      onChange(continents[currentIndex + 1]);
-    }
-  };
+//   const handlePrevious = () => {
+//     if (hasPrevious) {
+//       onChange(continents[currentIndex - 1]);
+//     }
+//   };
 
-  return (
-    <div className="inline-flex justify-center items-center gap-[12px]">
-      <button
-        onClick={handlePrevious}
-        disabled={!hasPrevious}
-        className={`btn btn-circle btn-sm ${hasPrevious
-            ? 'btn-primary'
-            : 'btn-disabled opacity-50'
-          }`}
-        aria-label="Previous continent"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="28" viewBox="0 0 25 28" fill="none">
-          <path d="M2.5 9.33784C-0.833328 11.2623 -0.833333 16.0736 2.5 17.9981L17.5 26.6583C20.8333 28.5829 25 26.1772 25 22.3282L25 5.00772C25 1.15872 20.8333 -1.24692 17.5 0.677586L2.5 9.33784Z" fill="#0087FA" />
-        </svg>
-      </button>
+//   const handleNext = () => {
+//     if (hasNext) {
+//       onChange(continents[currentIndex + 1]);
+//     }
+//   };
 
-      <div
-        className="flex w-[140px] px-[12px] py-[10px] justify-center items-center rounded-[100px] border-[2px] border-white bg-[#0087FA]"
+//   return (
+//     <div className="inline-flex justify-center items-center gap-[12px]">
+//       <button
+//         onClick={handlePrevious}
+//         disabled={!hasPrevious}
+//         className={`btn btn-circle btn-sm ${hasPrevious
+//             ? 'btn-primary'
+//             : 'btn-disabled opacity-50'
+//           }`}
+//         aria-label="Previous continent"
+//       >
+//         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="28" viewBox="0 0 25 28" fill="none" className="max-md:w-[17px] max-md:h-[17px] ">
+//           <path d="M2.5 9.33784C-0.833328 11.2623 -0.833333 16.0736 2.5 17.9981L17.5 26.6583C20.8333 28.5829 25 26.1772 25 22.3282L25 5.00772C25 1.15872 20.8333 -1.24692 17.5 0.677586L2.5 9.33784Z" fill="#0087FA" />
+//         </svg>
+//       </button>
 
-      >
-        {selected}
-      </div>
+//       <div
+//         className="flex w-[140px] px-[12px] py-[10px] justify-center items-center rounded-[100px] border-[2px] border-white bg-[#0087FA]"
 
-      <button
-        onClick={handleNext}
-        disabled={!hasNext}
-        className={`btn btn-circle btn-sm ${hasNext
-            ? 'btn-primary'
-            : 'btn-disabled opacity-50'
-          }`}
-        aria-label="Next continent"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="28" viewBox="0 0 25 28" fill="none">
-          <path d="M22.5 9.33784C25.8333 11.2623 25.8333 16.0736 22.5 17.9981L7.5 26.6583C4.16667 28.5829 -1.42102e-06 26.1772 -1.25278e-06 22.3282L-4.95676e-07 5.00772C-3.27431e-07 1.15872 4.16667 -1.24692 7.5 0.677586L22.5 9.33784Z" fill="#0087FA" />
-        </svg>
-      </button>
-    </div>
-  );
-};
+//       >
+//         <span className="continent-selected-text">
+//           {selected}
+//         </span>
+//       </div>
+
+//       <button
+//         onClick={handleNext}
+//         disabled={!hasNext}
+//         className={`btn btn-circle btn-sm ${hasNext
+//             ? 'btn-primary'
+//             : 'btn-disabled opacity-50'
+//           }`}
+//         aria-label="Next continent"
+//       >
+//         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="28" viewBox="0 0 25 28" fill="none" className="max-md:w-[17px] max-md:h-[17px]">
+//           <path d="M22.5 9.33784C25.8333 11.2623 25.8333 16.0736 22.5 17.9981L7.5 26.6583C4.16667 28.5829 -1.42102e-06 26.1772 -1.25278e-06 22.3282L-4.95676e-07 5.00772C-3.27431e-07 1.15872 4.16667 -1.24692 7.5 0.677586L22.5 9.33784Z" fill="#0087FA" />
+//         </svg>
+//       </button>
+//     </div>
+//   );
+// };
 
 // const DestinationCarousel = ({
 //   destinations,
@@ -666,7 +697,7 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
         }}
       >
         <div className={`flex flex-col items-center gap-[26px] relative z-[50] mx-auto ${isMobile ? 'w-full' : 'w-[448px]'}`}>
-          <div className="text-center flex flex-col items-center gap-2">
+          <div className={`text-center flex flex-col items-center gap-2 ${isMobile ? 'gap-1' : ''}`}>
             <h1
               className={`font-poppins font-semibold text-[#003669]] ${isMobile ? 'text-base' : 'text-[28px]'
                 }`}
@@ -750,6 +781,7 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
                 selected={selectedContinent}
                 onChange={handleContinentChange}
               />
+            
             </div>
 
             <div className="absolute left-0 right-0 bottom-[35px] z-[3] flex flex-col gap-2">
