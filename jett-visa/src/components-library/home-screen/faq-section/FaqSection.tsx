@@ -25,7 +25,7 @@ const FaqSection: React.FC = () => {
   // Use API data if available, otherwise fall back to static data
   const apiContent = staticContentResponse?.response?.[0];
   const apiFaqs = apiContent?.faqs || [];
-  
+
   const staticFaqs: FaqItem[] = [
     {
       question: t("what_is_visa") || "What is a visa?",
@@ -59,13 +59,13 @@ const FaqSection: React.FC = () => {
         "Visa extension policies vary by country. Some allow extensions, while others require you to leave and reapply.",
     },
   ];
-  
+
   // Use API FAQs if available, otherwise use static FAQs
-  const faqs: FaqItem[] = apiFaqs.length > 0 
+  const faqs: FaqItem[] = apiFaqs.length > 0
     ? apiFaqs.map((faq: any) => ({
-        question: faq.question || '',
-        answer: faq.answer || '',
-      }))
+      question: faq.question || '',
+      answer: faq.answer || '',
+    }))
     : staticFaqs;
 
   const downArrowIconSrc =
@@ -74,53 +74,92 @@ const FaqSection: React.FC = () => {
       : (DownArrowIcon as any)?.src || DownArrowIcon;
 
   return (
-    <div className="max-w-[1120px] mx-auto bg-white px-8 py-5 sm:px-4 sm:py-4">
+    // <section className="w-full max-w-[1120px] mx-auto opacity-100" style={{minHeight:'324px'}}>
+    <div className="w-full max-w-[1120px] mx-auto opacity-100">
       {/* Title */}
-      <h3 className="font-poppins font-semibold text-[#00366B] text-[28px] sm:text-[20px] mb-4 sm:mb-3">
-        {t("faqs")}
-      </h3>
+      <h2
+        className="
+    font-poppins font-semibold
+    text-[#003B71]
+    text-[28px]
+    leading-[1]
+    tracking-normal
+    mb-6
+    sm:text-[28px] sm:mb-5
+  "
+      >
+        {"FAQs"}
+      </h2>
 
-      {faqs.map((faq, index) => {
-        const isExpanded = expanded === index;
+      <div className="space-y-2">
+        {faqs.map((faq, index) => {
+          const isExpanded = expanded === index;
 
-        return (
-          <div key={index} className="border-b border-[#F2F2F2]">
-            {/* Question row */}
-            <button
-              type="button"
-              onClick={() => toggleExpand(index)}
-              aria-expanded={isExpanded}
-              className="w-full flex items-center justify-between py-3 text-left focus:outline-none"
-            >
-              <span className="font-poppins font-medium text-[#00366B] text-[18px] sm:text-[14px] leading-[18px]">
-                {faq.question}
-              </span>
-
-              <img
-                src={downArrowIconSrc}
-                alt="expand"
-                className={`w-6 h-6 transition-transform duration-200 ${
-                  isExpanded ? "rotate-180" : "rotate-0"
-                }`}
-              />
-            </button>
-
-            {/* Answer */}
+          return (
             <div
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                isExpanded
-                  ? "max-h-[300px] opacity-100"
-                  : "max-h-0 opacity-0"
-              }`}
+              key={index}
+
             >
-              <p className="pb-3 font-poppins text-[#707478] text-[16px] sm:text-[12px] leading-[18px]">
-                {faq.answer}
-              </p>
+
+              {/* Question row */}
+              <button
+                type="button"
+                onClick={() => toggleExpand(index)}
+                aria-expanded={isExpanded}
+                className="w-full h-[52px] flex items-center justify-between px-5 text-left focus:outline-none hover:bg-gray-50 transition-colors sm:px-4 sm:py-3"
+                
+              >
+                <span
+                  className="
+    font-poppins font-medium
+    text-[#003B71]
+    text-[18px]
+    leading-[1]
+    tracking-normal
+    pr-4
+  "
+                >
+                  {faq.question}
+                </span>
+
+                {/* <img
+                  src={downArrowIconSrc}
+                  alt="expand"
+                  className={`w-5 h-5 transition-transform duration-300 flex-shrink-0 sm:w-4 sm:h-4 ${
+                    isExpanded ? "rotate-180" : "rotate-0"
+                  }`}
+                /> */}
+                <svg
+                  className={`w-4 h-4 ml-auto transition-transform `}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              {/* Answer */}
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  isExpanded
+                    ? "max-h-[400px] opacity-100"
+                    : "max-h-0 opacity-0"
+                }`}
+              >
+                <p className="px-5 pb-4 font-poppins text-[#6B7280] text-sm leading-relaxed sm:px-4 sm:pb-3 sm:text-xs">
+                   {faq.answer}
+                   
+                </p>
+              </div>
+              <hr />
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
+    // </section>
   );
 };
 

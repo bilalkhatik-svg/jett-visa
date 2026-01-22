@@ -74,6 +74,11 @@ const ScrollingDestinationImages: React.FC<ScrollingDestinationImagesProps> = ({
     const { i18n } = useTranslation();
     // Safely check RTL - handle SSR case
     const isRTL = typeof i18n.dir === 'function' ? i18n.dir() === "rtl" : i18n.language?.startsWith('ar');
+    
+    // State to track which column is being hovered
+    const [hoveredColumn, setHoveredColumn] = React.useState<number | null>(null);
+    // State to track which image is being hovered (for showing country name)
+    const [hoveredImage, setHoveredImage] = React.useState<string | null>(null);
 
     if (isMobile || isTablet || isTopDestinationListPending || !topDestinationList || topDestinationList.length === 0) {
         return null;
@@ -90,31 +95,57 @@ const ScrollingDestinationImages: React.FC<ScrollingDestinationImagesProps> = ({
 
     const renderColumn = (columnItems: TopDestination[], columnIndex: number) => {
         const duplicatedItems = duplicateItems(columnItems);
+        const isColumnHovered = hoveredColumn === columnIndex;
+        
         return (
             <div
                 key={columnIndex}
                 className="flex flex-col items-center shrink-0 w-[140px] md:w-[172px]"
+                onMouseEnter={() => setHoveredColumn(columnIndex)}
+                onMouseLeave={() => setHoveredColumn(null)}
             >
                 <div className="overflow-hidden">
                     <div className={`flex flex-col gap-3 m-2 ${
-      columnIndex % 2 === 0 ? 'animate-scrollUp' : 'animate-scrollDown'
-    }`}>
+                        isColumnHovered ? '' : (columnIndex % 2 === 0 ? 'animate-scrollUp' : 'animate-scrollDown')
+                    }`}>
                         {duplicatedItems.map((destination, itemIndex) => {
                             const imageUrl = destination.Images?.[0]?.Filename || '';
                             const countryName = destination.Name || '';
                             const uniqueKey = `${destination.IsoCode2}-${columnIndex}-${itemIndex}`;
+                            const isImageHovered = hoveredImage === uniqueKey;
 
                             return (
                                 <div
                                     key={uniqueKey}
-
-                                    className="relative w-full h-[172px] md:h-[212px] rounded-[20px] overflow-hidden cursor-pointer border-4 border-white shadow-md hover:scale-[1.03] transition-transform ">
+                                    className="relative w-full h-[172px] md:h-[212px] rounded-[20px] overflow-hidden cursor-pointer border-4 border-white shadow-md hover:scale-[1.03] transition-transform"
+                                    onMouseEnter={() => setHoveredImage(uniqueKey)}
+                                    onMouseLeave={() => setHoveredImage(null)}
+                                >
                                     <img
                                         src={imageUrl}
                                         alt={countryName}
                                         loading="lazy"
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover opacity-70"
                                     />
+                                    {/* Country name overlay on hover */}
+                                    {isImageHovered && (
+                                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity">
+                                            <div 
+                                                className="flex items-center justify-center text-center font-semibold"
+                                                style={{
+                                                    width: '87px',
+                                                    height: '37px',
+                                                    position: 'absolute',
+                                                    top: '150.1px',
+                                                    left: '184.61px',
+                                                    color: '#00366B',
+                                                    opacity: 1
+                                                }}
+                                            >
+                                                {countryName}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })}

@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'saas.dev.api.musafirbiz.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'dtbytxvxbapz.cloudfront.net',
+      },
     ],
   },
 
@@ -27,6 +31,10 @@ const nextConfig: NextConfig = {
       {
         source: '/api/v1/:path*',
         destination: 'https://saas.dev.api.musafirbiz.com/api/v1/:path*',
+      },
+      {
+        source: '/ip-api/:path*',
+        destination: 'https://ipapi.co/:path*',
       },
     ];
   },

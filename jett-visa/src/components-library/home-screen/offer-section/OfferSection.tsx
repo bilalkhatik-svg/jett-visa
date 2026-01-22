@@ -128,7 +128,16 @@ const OfferSection = () => {
 
   return (
     <section className="px-8 py-5 bg-white max-w-[1120px] mx-auto md:px-8 md:py-5 sm:px-4 sm:py-5">
-      <h3 className="font-poppins font-semibold text-[#00366B] text-2xl mb-3 md:text-2xl md:mb-3 sm:text-lg">{t('offers') || 'Offers'}</h3>
+       <h2
+  className="
+    font-poppins font-semibold
+    text-[#003B71]
+    text-[28px]
+    leading-[1]
+    tracking-normal
+    mb-8
+  "
+>{"Offers"}</h2>
 
       <div
         onMouseEnter={handleMouseEnter}
@@ -169,7 +178,20 @@ const OfferSection = () => {
             aria-label="previous"
             style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }}
           >
-            <img src={arrowLeftIconSrc} alt="previous" width={20} height={20} className="object-contain" />
+              <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="text-[#00366B]"
+                        >
+                          <path
+                            d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+                            fill="currentColor"
+                          />
+                        </svg>
+          {/* <img src={arrowLeftIconSrc} alt="previous" width={20} height={20} className="object-contain" /> */}
           </button>
           <button
             onClick={goToNext}
@@ -177,7 +199,20 @@ const OfferSection = () => {
             aria-label="next"
             style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }}
           >
-            <img src={arrowRightIconSrc} alt="next" width={20} height={20} className="object-contain" />
+            <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="text-[#00366B]"
+                        >
+                          <path
+                            d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+                            fill="currentColor"
+                          />
+                        </svg>
+            {/* <img src={arrowRightIconSrc} alt="next" width={20} height={20} className="object-contain" /> */}
           </button>
         </div>
       </div>

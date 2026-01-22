@@ -54,14 +54,14 @@ const FooterSection: React.FC = React.memo(() => {
           className={`flex ${isRTL ? "flex-row-reverse" : "flex-row"} items-center justify-center gap-1`}
         >
           <p
-            className="font-medium"
+           className="font-bold"
             style={{
               fontSize: isMobile ? 12 : 23,
-              color: "#002255", // Replace with your theme.palette.customColors.blue[26] hex
+              color: "#003669", // Replace with your theme.palette.customColors.blue[26] hex
               fontFamily: "Poppins",
             }}
           >
-            {t("powered_by")}
+            {"Powered by"}
           </p>
 
           <Image

@@ -22,7 +22,7 @@ export const visaModesApi = createApi({
   endpoints: (builder) => ({
     fetchModesList: builder.query<VisaModeApiResponse, string | void>({
       query: (language = "en-US") => ({
-        url: "modes",
+        url: "visa/modes",
         method: "GET",
         params: { language },
       }),

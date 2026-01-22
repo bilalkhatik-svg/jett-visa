@@ -102,36 +102,53 @@ const MobileBottomDrawerSkeleton = () => (
 
 // Simple component placeholders
 // const FooterSection = () => <footer className="bg-gray-800 text-white p-8">Footer</footer>;
-const MobileBottomDrawer = ({ modalOpen, setModalOpen, children, sx }: any) => {
-  if (!modalOpen) return null;
-  return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end"
-      onClick={() => setModalOpen(false)}
-    >
-      <div
-        className="bg-white w-full rounded-t-lg"
-        style={sx}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex justify-end p-2">
-          <button
-            onClick={() => setModalOpen(false)}
-            className="text-gray-500 text-xl"
-          >
-            ✕
-          </button>
-        </div>
-        <div
-          className="overflow-y-auto"
-          style={{ height: "calc(100% - 40px)" }}
-        >
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-};
+// const MobileBottomDrawer = ({ modalOpen, setModalOpen, children, sx }: any) => {
+//   if (!modalOpen) return null;
+//   return (
+//     <div
+//       className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end"
+//       onClick={() => setModalOpen(false)}
+//     >
+//       <div
+//         className="bg-white w-full rounded-t-lg"
+//         style={sx}
+//         onClick={(e) => e.stopPropagation()}
+//       >
+//         <div className="flex justify-end">
+//          <button
+//   onClick={() => setModalOpen(false)}
+//   className="
+//     absolute 
+//     -top-3 
+//     left-1/2 
+//     -translate-x-1/2
+//     w-10
+//     h-10
+//     rounded-full 
+//     bg-white 
+//     shadow-md 
+//     flex 
+//     items-center 
+//     justify-center
+//     text-gray-600 
+//     text-xl
+//     active:scale-95
+//   "
+// >
+//   ✕
+// </button>
+
+//         </div>
+//         <div
+//           className="overflow-y-auto"
+//           style={{ height: "calc(100% - 40px)" }}
+//         >
+//           {children}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 const VisaTypeSection = ({
   showOthers,
   setShowOthers,
@@ -163,14 +180,13 @@ const UpdateResidencyDialog = ({
 }: any) => {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-        <h2 className="text-xl font-bold mb-4">Update Residency</h2>
-        <button onClick={onClose} className="text-gray-500">
-          Close
-        </button>
-      </div>
-    </div>
+   <>
+    <MobileBottomDrawer 
+    modalOpen={open}
+    setModalOpen={onClose}
+    children={null}
+    />
+   </>
   );
 };
 
@@ -203,12 +219,20 @@ const useMediaQuery = (query: string) => {
   return matches;
 };
 import arrowLeft from "@/assets/images/icons/arrowLeft.webp";
+import VectorImage from "@/assets/images/Vector.png";
+import SearchImage from "@/assets/images/Search.png";
+import VisaImage from "@/assets/images/visa.png";
 import ScrollingDestinationImages from "./scrolling-destination-images/ScrollingDestinationImages";
 import OfferSection from "./offer-section/OfferSection";
-import homeBgImage from "@/assets/images/homeBgImage.webp";
+import homeBgImage from "@/assets/images/Rectangleimg.png";
 import scrollBgImage from "@/assets/images/scrollBgImage.png";
 import FooterSection from "./footer-section/FooterSection";
 import NationalityResidencySelector from "@/components/core-module/nationality-residency/common/Nationality-Residence-Selector";
+import DesktopSearchDropdown from "./search-destination/DesktopSearchDropdown";
+import TopDestinationSection from "./top-destination-section/TopDestinationSection";
+import SearchDestination from "./search-destination/SearchDestination";
+import MobileBottomDrawer from "../bottom-drawer/BottomDrawer";
+import ResidencyDialogContent from "@/components/core-module/nationality-residency/ResidencyDialogContent";
 
 export type ModalTypes = "searchDestination" | "visaMode" | "travelDate" | "";
 
@@ -222,21 +246,12 @@ export interface PendingAction {
 }
 
 // Simple SearchField component using Tailwind
-const SearchField = ({
-  isMobile,
-  placeholder,
-  onClick,
-  value,
-  ...props
-}: any) => {
-  const searchIcon2Src =
-    typeof SearchIcon2 === "string"
-      ? SearchIcon2
-      : (SearchIcon2 as any)?.src || SearchIcon2;
+const SearchField = ({ isMobile, placeholder, onClick, value, ...props }: any) => {
+  const searchIcon2Src = typeof SearchIcon2 === 'string' ? SearchIcon2 : (SearchIcon2 as any)?.src || SearchIcon2;
 
   return (
     <div
-      className={`relative w-full max-w-[315px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[590px] my-3`}
+      className={`relative w-full`}
       onClick={onClick}
     >
       <input
@@ -245,16 +260,16 @@ const SearchField = ({
         value={value}
         readOnly
         disabled
-        className="w-full h-[42px] md:h-[52px] px-4 pr-10 bg-white rounded-[14px] border-2 border-[#F2F2F8] text-[#B5B5B5] text-sm cursor-pointer"
-        style={{ pointerEvents: "none" }}
+        className="w-full h-[48px] sm:h-[48px] md:h-[52px] px-4 pr-12 bg-white rounded-[12px] border border-gray-200 text-[#9CA3AF] text-sm sm:text-sm font-poppins cursor-pointer shadow-sm"
+        style={{ pointerEvents: 'none' }}
         {...props}
       />
       <img
         src={searchIcon2Src}
-        width={14}
-        height={14}
+        width={16}
+        height={16}
         alt="searchIcon"
-        className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
+        className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none w-4 h-4"
       />
     </div>
   );
@@ -392,7 +407,7 @@ const HomeScreen = () => {
         originalStatus: (geoIPError as any)?.originalStatus,
         fullError: geoIPError,
       };
-      console.error("[HomeScreen] GeoIP API error:", errorDetails);
+      // console.error('[HomeScreen] GeoIP API error:', errorDetails);
 
       // If it's a 401, log a helpful message
       if (
@@ -708,12 +723,16 @@ const HomeScreen = () => {
 
   return (
     <div
-      className="w-full flex flex-col items-center bg-white"
-      style={{ borderBottom: "2px solid transparent" }}
+      className="w-full flex flex-col items-center bg-gradient-to-b from-[#F8FAFC] to-white min-h-screen md:overflow-x-hidden"
+      style={{ borderBottom: '2px solid transparent' }}
     >
-      <div className="relative w-full" style={{ zIndex: 1100 }}>
+      <div
+        className="relative w-full bg-white shadow-sm"
+        style={{ zIndex: 1100 }}
+      >
         {isTopBarLoading ? (
           <TopBarSkeleton />
+
         ) : (
           <TopBar
             variant="home"
@@ -729,105 +748,123 @@ const HomeScreen = () => {
         )}
       </div>
 
-      {isTopBarFixed && <div className="h-[60px]" />}
+      {isTopBarFixed && (
+        <div className="h-[72px]" />
+      )}
 
       {isHeroLoading ? (
         <HeroSectionSkeleton />
       ) : (
-        <div ref={heroSectionRef} className="w-full">
+        <div
+          ref={heroSectionRef}
+          className="w-full bg-white"
+        >
           <div
-            className="relative w-full flex flex-col justify-center border-b border-[#1976d2] rounded-b-[20px] pb-[30px] pt-10 px-4 min-h-auto items-center sm:pb-[30px] sm:pt-10 sm:px-4 sm:min-h-auto sm:items-center md:pb-10 md:pt-[60px] md:px-[60px] md:min-h-[547px] lg:px-[120px] xl:px-[180px]"
+            className={`relative w-full flex flex-col rounded-b-3xl ${
+              isMobile 
+                ? 'pb-10 pt-6 px-5 min-h-[auto] justify-start' 
+                : 'pb-12 pt-16 px-12 min-h-[600px] justify-center items-center lg:px-20 xl:px-32 2xl:px-40'
+            }`}
             style={{
               backgroundImage: isMobile
-                ? `linear-gradient(200deg, #e7c0eeff, #a0e0e3ff 100%),linear-gradient(to top right, #dbd68fff 0%, transparent 50%)`
+                ? `linear-gradient(135deg, #E8F4F8 0%, #F0F9FF 100%)`
                 : `url(${homeBgImageSrc})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
-              backgroundBlendMode: "screen",
+              backgroundBlendMode: "soft-light",
               zIndex: 2,
             }}
           >
             {!isMobile && !isTablet && (
               <div
-                className="absolute top-0 left-0 right-0 bottom-0.5 rounded-br-[20px] overflow-hidden pointer-events-none"
+                className="absolute top-0 left-0 right-0 bottom-0 rounded-b-3xl overflow-hidden pointer-events-none"
                 style={{ zIndex: 0 }}
               >
                 <div
-                  className="absolute bottom-0 right-0 w-[45%] h-screen pointer-events-none"
+                  className="absolute bottom-0 right-0 w-[50%] h-full pointer-events-none opacity-90"
                   style={{
                     backgroundImage: `url(${scrollBgImageSrc})`,
                     backgroundSize: "cover",
-                    backgroundPosition: "center",
+                    backgroundPosition: "center right",
                     backgroundRepeat: "no-repeat",
                     zIndex: 1,
                   }}
                 />
                 <div className="pointer-events-auto">
-                  <ScrollingDestinationImages
-                    isMobile={isMobile}
-                    isTablet={isTablet}
-                  />
+                  <ScrollingDestinationImages isMobile={isMobile} isTablet={isTablet} />
                 </div>
               </div>
             )}
             {/* ===== Header ===== */}
             <div
-              className="flex items-center mb-0 mt-3 ml-2 gap-2 relative md:mb-0 md:mt-3 md:ml-2 sm:mb-4 sm:mt-2 sm:ml-0"
+              className={`flex items-center gap-2 relative ${
+                isMobile ? 'w-full mt-8 mb-6 justify-center' : 'self-start mb-4'
+              }`}
               style={{
                 zIndex: 2,
-                width: isMobile ? "100%" : isTablet ? "80%" : "60%",
+                width: isMobile ? "100%" : isTablet ? "85%" : "65%",
               }}
             >
               <div className="relative inline-block">
-                <img
-                  src={planeMarkSrc}
-                  alt="plane mark"
-                  className="block w-[362px] h-[64px] md:w-[362px] md:h-[64px] lg:w-[280px] sm:w-[140px] sm:h-auto"
-                  style={{
-                    transform: isRTL ? "scaleX(-1)" : "none",
-                  }}
-                />
-                <div className="absolute top-[60%] left-[40%] -translate-x-[30%] -translate-y-1/2 text-center w-full flex md:flex sm:block sm:top-[30%] sm:left-1/2">
-                  <span className="text-[#003669] font-poppins font-bold text-4xl leading-none md:text-4xl lg:text-[30px] sm:font-normal sm:text-[22px]">
-                    {t("search")}.
-                  </span>
-                  <span className="text-[#003669] font-poppins whitespace-nowrap font-black text-4xl leading-none mt-0.5 md:text-4xl lg:text-[30px] sm:font-bold sm:text-[22px]">
-                    {t("visa")}. {t("go")}.
-                  </span>
+              <img
+                src={planeMarkSrc}
+                alt="plane mark"
+              className={
+    isMobile
+      ? "block w-[162.62px] h-[46.75px] mt-[10%] opacity-100"
+      : "block w-[320px] h-[58px] md:w-[320px] md:h-[58px] lg:w-[280px]"
+  }
+  style={{
+    transform: isRTL ? "scaleX(-1)" : "none",
+  }}
+/>
+                <div  className={`
+    absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+    w-full flex justify-center
+    ${isMobile ? 'flex-col items-center gap-0' : 'items-center gap-1'}
+  `}>
+                  {isMobile ? (
+                    <>
+                      <img
+      src={typeof SearchImage === 'string' ? SearchImage : (SearchImage as any)?.src || SearchImage}
+      alt="Search"
+      className="block w-[97px] h-[39px] object-contain"
+    />
+    <img
+      src={typeof VisaImage === 'string' ? VisaImage : (VisaImage as any)?.src || VisaImage}
+      alt="Visa Go"
+      className="block w-[115px] h-[39px] object-contain mt-[-6%]"
+    />
+
+                    </>
+                  ) : (
+                    <img
+                      src={typeof VectorImage === 'string' ? VectorImage : (VectorImage as any)?.src || VectorImage}
+                      alt="Search Visa Go"
+                      className="h-auto max-w-full object-contain max-h-[40px] ml-[20%]"
+                    />
+                  )}
                 </div>
               </div>
               <img
                 src={planeImageSrc}
                 alt="plane"
-                className="block w-[108px] mb-[50px] -ml-[35px] md:w-[108px] md:mb-[50px] md:-ml-[35px] lg:w-[80px] sm:w-[50px] sm:mb-[30px] sm:-ml-2"
+                className={isMobile ? "block w-[60px] mb-8 -ml-5" : "block w-[100px] mb-12 -ml-8 md:w-[100px] md:mb-12 md:-ml-8 lg:w-[85px]"}
                 style={{
                   transform: isRTL ? "scaleX(-1)" : "none",
                 }}
               />
             </div>
+
+            {/* Nationality & Residency Selector - Desktop/Tablet Only */}
             {countryListData?.response && !isMobile && (
               <div
-                className="relative block -ml-[30%]"
+                className="relative block mb-3 self-start"
                 style={{
-                  zIndex: 2,
-                  width: isTablet ? "80%" : "60%",
+                  zIndex: 100,
+                  width: isTablet ? "85%" : "65%",
                 }}
               >
-                {/* {countryListData?.response && (
-                <div
-                className="
-                  relative flex
-                  justify-start
-                  z-[2]
-                  mt-3
-                  sm:mt-3
-                  md:mt-4
-                  w-full
-                  sm:w-full
-                  md:w-[80%]
-                  lg:w-[60%]
-                "
-              > */}
                 <div className="w-full">
                   <NationalityResidencySelector
                     countryList={data?.response ?? []}
@@ -840,70 +877,54 @@ const HomeScreen = () => {
                 </div>
               </div>
             )}
-            {/* Mobile VisaMode */}
+
+            {/* Visa Mode Options - Mobile Only */}
             {isMobile && (
-              <div
-                className="relative w-full sm:block md:hidden"
-                style={{ zIndex: 2 }}
-              >
+              <div className="relative w-full mb-6" style={{ zIndex: 2 }}>
                 <VisaMode showDestinationModal={toggleModal} />
+              </div>
+            )}
+
+            {/* Search by country or city - Mobile Only - Always visible */}
+            {isMobile && (
+              <div className="relative w-full" style={{ zIndex: 2 }}>
+                <SearchField
+                  isMobile={isMobile}
+                  placeholder={"Search by country or city"}
+                  value=""
+                  onClick={() => toggleModal(true, "searchDestination")}
+                />
               </div>
             )}
 
             {/* Desktop/Tablet VisaMode */}
             {!isMobile && (
               <div
-                className="
-                relative hidden md:block
-                z-[2]
-                mt-[3%]
-                -ml-[5%]
-                w-[60%]
-                tablet:w-[80%]
-              "
+                className="relative hidden md:block z-[2] mb-3 self-start"
+                style={{
+                  width: isTablet ? "85%" : "65%",
+                }}
               >
                 <VisaMode showDestinationModal={toggleModal} />
               </div>
             )}
 
-            {/* Nationality and Residency Selector - Above destination search */}
-
-            {modalType === "searchDestination" && (
+            {/* Desktop/Tablet Search Destination */}
+            {!isMobile && modalType === "searchDestination" && (
               <div
-                className="
-                relative flex
-                justify-start
-                z-[2]
-                mt-3
-                sm:mt-3
-                md:mt-4
-                w-full
-                sm:w-full
-                md:w-[80%]
-<<<<<<<< HEAD:jett-visa/src/features/home-screen/HomeScreen.tsx
-========
-                
->>>>>>>> 0f1ee9dd767d1707b6f0517bfcaf4a5fc9484625:jett-visa/src/components-library/home-screen/HomeScreen.tsx
-              "
+                className="relative flex justify-start z-[2] mb-4 self-start"
+                style={{
+                  width: isTablet ? "85%" : "65%",
+                }}
               >
-                {isMobile ? (
-                  <SearchField
-                    isMobile={isMobile}
-                    placeholder={t("search_by_country_or_city")}
-                    value={t("search_by_country_or_city")}
-                    onClick={() => toggleModal(true, "searchDestination")}
-                  />
-                ) : (
-                  // <DesktopSearchDropdown
-                  //   isMobile={isMobile}
-                  //   t={t}
-                  //   onPreFlowNavigation={handlePreFlowNavigation}
-                  //   countryList={countryListData?.response || []}
-                  //   widthByBreakpoint={{ md: "400px", lg: "500px", xl: "590px" }}
+                <DesktopSearchDropdown
+                isMobile={isMobile}
+                  t={t}
+                  onPreFlowNavigation={handlePreFlowNavigation}
+                  countryList={countryListData?.response || []}
+                  // widthByBreakpoint={{ md: "400px", lg: "500px", xl: "590px" }}
                   // dropdownWidth="391px"
-                  // />
-                  <div>drowpdown</div>
-                )}
+                />
               </div>
             )}
             {modalType === "visaMode" && (
@@ -924,33 +945,33 @@ const HomeScreen = () => {
             {/* ===== Inspire Me Button ===== */}
             <div
               onClick={handleInspireMeClick}
-              className="absolute bottom-[-25px] left-1/2 -translate-x-1/2 rounded-[30px] p-0.5 cursor-pointer inline-block transition-all duration-300 hover:shadow-lg md:bottom-[-25px] sm:bottom-[-20px]"
+              className="absolute bottom-[-30px] left-1/2 -translate-x-1/2 rounded-full p-[2px] cursor-pointer inline-block transition-all duration-300 hover:shadow-xl hover:scale-105 md:bottom-[-30px] sm:bottom-[-25px] z-0"
               style={{
-                background:
-                  "radial-gradient(133.33% 145.92% at 0% 0%, #D536F6 0%, #75ECF3 100%)",
+                background: "linear-gradient(135deg, #D536F6 0%, #75ECF3 100%)",
               }}
             >
-              <div className="rounded-[28px] px-2 py-1 flex items-center justify-center bg-white md:px-2 md:py-1 sm:px-1.5 sm:py-0.5">
+              <div className="rounded-full px-4 py-2 flex items-center justify-center gap-2 bg-white md:px-4 md:py-2 sm:px-3 sm:py-1.5">
                 <img
                   src={inspireMeGifSrc}
                   alt="Inspire Me Gif"
-                  className="mr-0 w-[35px] h-[30px] md:w-[35px] md:h-[30px] sm:w-8 sm:h-6"
+                  className="w-[32px] h-[28px] md:w-[32px] md:h-[28px] sm:w-7 sm:h-6"
                 />
                 <span
-                  className="text-sm font-medium mr-1 md:text-sm md:mr-1 sm:text-xs sm:mr-0.5"
+                  className="text-sm font-semibold whitespace-nowrap md:text-sm sm:text-xs"
                   style={{
                     background: "linear-gradient(135deg, #D536F6, #0AB1BA)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  {isMobile ? t("inspire_me") : t("inspire_me_for_desktopView")}
+                  {/* {isMobile ? t("inspire_me") : t("inspire_me_for_desktopView")} */}
+                  {isMobile ? "inspire me" :  "Plan your next adventure, and let AI simplify your visa"}
                 </span>
                 {!isMobile && (
                   <img
                     src={arrowLeftSrc}
                     alt="arrowLeft"
-                    className="mr-1 ml-0.5 w-6 h-6 md:block sm:hidden"
+                    className="w-5 h-5 md:block sm:hidden"
                     style={{
                       transform: isRTL ? "scaleX(-1)" : "none",
                     }}
@@ -965,71 +986,80 @@ const HomeScreen = () => {
       {isDestinationsLoading ? (
         <TopDestinationsSkeleton numberOfItems={8} />
       ) : (
-        <div>Top destination</div>
-      )}
-      {!isMobile && (
-        <div>
-          <OfferSection />
+        <div className="w-full">
+          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 md:overflow-hidden">
+            <TopDestinationSection onPreFlowNavigation={handlePreFlowNavigation} />
+          </div>
         </div>
       )}
+      {
+        !isMobile && (
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+            <OfferSection />
+          </div>
+        )
+      }
       {isFindVisaLoading ? (
         <FindVisaWidgetSkeleton />
       ) : (
-        <div className="w-full">
-          <FindVisaWidget onPreFlowNavigation={handlePreFlowNavigation} />
+        <div className="w-full bg-gradient-to-b from-white to-[#F8FAFC] pt-12 sm:pt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <FindVisaWidget onPreFlowNavigation={handlePreFlowNavigation} />
+          </div>
         </div>
       )}
       {isHowToApplyLoading ? (
         <HowToApplySectionSkeleton />
       ) : (
-        <div
-          className="w-full"
-          style={{ background: "rgba(235, 242, 255, 1)" }}
-        >
-          <HowToApplySection />
+        <div className="w-full bg-[#EBF2FF] pt-12 sm:pt-16 ">
+          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
+            <HowToApplySection />
+          </div>
         </div>
       )}
       {isWhyChooseLoading ? (
         <WhyChooseMusafirSectionSkeleton />
       ) : (
-        <div className="w-full">
-          <WhyChooseMusafirSection />
+        <div className="w-full pt-12 sm:pt-16 bg-white">
+          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
+            <WhyChooseMusafirSection />
+          </div>
         </div>
       )}
       {isTestimonialsLoading ? (
         <TestimonialsSectionSkeleton />
       ) : (
-        <div className="w-full">
-          <TestimonialsSection />
+        <div className="w-full pt-12 sm:pt-16 bg-[#F8FAFC] ">
+          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
+            <TestimonialsSection />
+          </div>
         </div>
       )}
       {isFaqLoading ? (
         <FaqSectionSkeleton />
       ) : (
-        <div className="w-full">
-          <FaqSection />
+        <div className="w-full pt-12 sm:pt-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:ml-[6%]">
+            <FaqSection />
+          </div>
         </div>
       )}
       {isFooterLoading ? (
         <FooterSkeleton />
       ) : (
-        <div className="w-full">
+        <div className="w-full bg-gradient-to-b from-white to-[#F8FAFC] pt-12">
           <FooterSection />
         </div>
       )}
-      <div
-        className="flex-grow w-full bg-white rounded-t-[20px]"
-        style={{ marginTop: "25px" }}
-      />
       <MobileBottomDrawer
         modalOpen={showModal}
         setModalOpen={toggleModal}
-        sx={modalType === "searchDestination" ? { minHeight: "85%" } : {}}
+        height="65%"
       >
         {modalType === "searchDestination" && showModal && (
           <Suspense fallback={<MobileBottomDrawerSkeleton />}>
-            {/* <SearchDestination onPreFlowNavigation={handlePreFlowNavigation} /> */}
-            <div>Search destination</div>
+            <SearchDestination label="Search Destination" onPreFlowNavigation={handlePreFlowNavigation} countryList={countryListData?.response} />
+            {/* <div>Search destination</div> */}
           </Suspense>
         )}
         {modalType === "visaMode" && showModal && (
@@ -1067,14 +1097,31 @@ const HomeScreen = () => {
           </div>
         ))}
 
-      <UpdateResidencyDialog
+      {/* <UpdateResidencyDialog
         open={isDialogOpen}
         onClose={handleDialogClose}
         initialNationality={nationality}
         initialResidency={residency}
         onConfirm={handleConfirmUpdate}
         onFlagUpdate={() => {}}
-      />
+      /> */}
+     <MobileBottomDrawer 
+    modalOpen={isDialogOpen}
+    setModalOpen={handleDialogClose}
+    height="75%"
+    // children={null}
+    >
+        {/* <SearchDestination
+          onPreFlowNavigation={handlePreFlowNavigation}
+          countryList={countryListData?.response}
+          initialNationality={nationality}
+          initialResidency={residency}
+          // onConfirm={handleConfirmUpdate}
+          // isForUpdateDialog={true}
+        /> */}
+        <ResidencyDialogContent/>
+
+       </MobileBottomDrawer>
     </div>
   );
 };
