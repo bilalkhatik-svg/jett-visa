@@ -102,36 +102,53 @@ const MobileBottomDrawerSkeleton = () => (
 
 // Simple component placeholders
 // const FooterSection = () => <footer className="bg-gray-800 text-white p-8">Footer</footer>;
-const MobileBottomDrawer = ({ modalOpen, setModalOpen, children, sx }: any) => {
-  if (!modalOpen) return null;
-  return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end"
-      onClick={() => setModalOpen(false)}
-    >
-      <div
-        className="bg-white w-full rounded-t-lg"
-        style={sx}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex justify-end p-2">
-          <button
-            onClick={() => setModalOpen(false)}
-            className="text-gray-500 text-xl"
-          >
-            ✕
-          </button>
-        </div>
-        <div
-          className="overflow-y-auto"
-          style={{ height: "calc(100% - 40px)" }}
-        >
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-};
+// const MobileBottomDrawer = ({ modalOpen, setModalOpen, children, sx }: any) => {
+//   if (!modalOpen) return null;
+//   return (
+//     <div
+//       className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end"
+//       onClick={() => setModalOpen(false)}
+//     >
+//       <div
+//         className="bg-white w-full rounded-t-lg"
+//         style={sx}
+//         onClick={(e) => e.stopPropagation()}
+//       >
+//         <div className="flex justify-end">
+//          <button
+//   onClick={() => setModalOpen(false)}
+//   className="
+//     absolute 
+//     -top-3 
+//     left-1/2 
+//     -translate-x-1/2
+//     w-10
+//     h-10
+//     rounded-full 
+//     bg-white 
+//     shadow-md 
+//     flex 
+//     items-center 
+//     justify-center
+//     text-gray-600 
+//     text-xl
+//     active:scale-95
+//   "
+// >
+//   ✕
+// </button>
+
+//         </div>
+//         <div
+//           className="overflow-y-auto"
+//           style={{ height: "calc(100% - 40px)" }}
+//         >
+//           {children}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 const VisaTypeSection = ({
   showOthers,
   setShowOthers,
@@ -163,14 +180,13 @@ const UpdateResidencyDialog = ({
 }: any) => {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-        <h2 className="text-xl font-bold mb-4">Update Residency</h2>
-        <button onClick={onClose} className="text-gray-500">
-          Close
-        </button>
-      </div>
-    </div>
+   <>
+    <MobileBottomDrawer 
+    modalOpen={open}
+    setModalOpen={onClose}
+    children={null}
+    />
+   </>
   );
 };
 
@@ -211,6 +227,9 @@ import FooterSection from "./footer-section/FooterSection";
 import NationalityResidencySelector from "@/components/core-module/nationality-residency/common/Nationality-Residence-Selector";
 import DesktopSearchDropdown from "./search-destination/DesktopSearchDropdown";
 import TopDestinationSection from "./top-destination-section/TopDestinationSection";
+import SearchDestination from "./search-destination/SearchDestination";
+import MobileBottomDrawer from "../bottom-drawer/BottomDrawer";
+import ResidencyDialogContent from "@/components/core-module/nationality-residency/ResidencyDialogContent";
 
 export type ModalTypes = "searchDestination" | "visaMode" | "travelDate" | "";
 
@@ -879,12 +898,11 @@ const HomeScreen = () => {
                 }}
               >
                 <DesktopSearchDropdown
-                  isMobile={isMobile}
                   t={t}
                   onPreFlowNavigation={handlePreFlowNavigation}
                   countryList={countryListData?.response || []}
-                  widthByBreakpoint={{ md: "400px", lg: "500px", xl: "590px" }}
-                  dropdownWidth="391px"
+                  // widthByBreakpoint={{ md: "400px", lg: "500px", xl: "590px" }}
+                  // dropdownWidth="391px"
                 />
               </div>
             )}
@@ -906,7 +924,7 @@ const HomeScreen = () => {
             {/* ===== Inspire Me Button ===== */}
             <div
               onClick={handleInspireMeClick}
-              className="absolute bottom-[-30px] left-1/2 -translate-x-1/2 rounded-full p-[2px] cursor-pointer inline-block transition-all duration-300 hover:shadow-xl hover:scale-105 md:bottom-[-30px] sm:bottom-[-25px] z-10"
+              className="absolute bottom-[-30px] left-1/2 -translate-x-1/2 rounded-full p-[2px] cursor-pointer inline-block transition-all duration-300 hover:shadow-xl hover:scale-105 md:bottom-[-30px] sm:bottom-[-25px] z-0"
               style={{
                 background: "linear-gradient(135deg, #D536F6 0%, #75ECF3 100%)",
               }}
@@ -1014,12 +1032,12 @@ const HomeScreen = () => {
       <MobileBottomDrawer
         modalOpen={showModal}
         setModalOpen={toggleModal}
-        sx={modalType === "searchDestination" ? { minHeight: "85%" } : {}}
+        height="65%"
       >
         {modalType === "searchDestination" && showModal && (
           <Suspense fallback={<MobileBottomDrawerSkeleton />}>
-            {/* <SearchDestination onPreFlowNavigation={handlePreFlowNavigation} /> */}
-            <div>Search destination</div>
+            <SearchDestination label="Search Destination" onPreFlowNavigation={handlePreFlowNavigation} countryList={countryListData?.response} />
+            {/* <div>Search destination</div> */}
           </Suspense>
         )}
         {modalType === "visaMode" && showModal && (
@@ -1057,14 +1075,31 @@ const HomeScreen = () => {
           </div>
         ))}
 
-      <UpdateResidencyDialog
+      {/* <UpdateResidencyDialog
         open={isDialogOpen}
         onClose={handleDialogClose}
         initialNationality={nationality}
         initialResidency={residency}
         onConfirm={handleConfirmUpdate}
         onFlagUpdate={() => {}}
-      />
+      /> */}
+     <MobileBottomDrawer 
+    modalOpen={isDialogOpen}
+    setModalOpen={handleDialogClose}
+    height="75%"
+    // children={null}
+    >
+        {/* <SearchDestination
+          onPreFlowNavigation={handlePreFlowNavigation}
+          countryList={countryListData?.response}
+          initialNationality={nationality}
+          initialResidency={residency}
+          // onConfirm={handleConfirmUpdate}
+          // isForUpdateDialog={true}
+        /> */}
+        <ResidencyDialogContent/>
+
+       </MobileBottomDrawer>
     </div>
   );
 };
