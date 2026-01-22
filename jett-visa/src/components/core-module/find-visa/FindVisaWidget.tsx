@@ -1,389 +1,62 @@
-'use client';
+"use client";
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from '@/utils/i18nStub';
-import { useFetchDestinationsQuery } from '@/store/visaDestinationsApi';
-import { useFetchCountryListQuery } from '@/store/visaCountryListApi';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
-import { setNationality } from '@/store/slice/locationSlice';
+import NationalitySelect from '@/components/core-module/find-visa/NationalitySelect';
+import ContinentSelector from '@/components/core-module/find-visa/ContinentSelector';
+import DestinationCarousel from '@/components/core-module/find-visa/DestinationCarousel';
+import EmptyState from '@/components/core-module/find-visa/EmptyState';
+import ErrorBanner from '@/components/core-module/find-visa/ErrorBanner';
 import circleBackgroundImage from '@/assets/images/circlebg.webp';
 import arcImage from '@/assets/images/Ellipse.webp';
 import lineImage from '@/assets/images/lineimage.webp';
-import CardImg from '@/assets/images/germany-card-img.webp';
+import { setNationality } from '@/store/slice/locationSlice';
+import { useTranslation } from 'react-i18next';
 import type { PendingAction } from '@/components-library/home-screen/HomeScreen';
-
-// Mock data
-const continents = ['Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'];
-const continentLanguageMap: Record<string, string> = {
-  'Asia': 'Asia',
-  'Europe': 'Europe',
-  'Africa': 'Africa',
-  'North America': 'North America',
-  'South America': 'South America',
-  'Oceania': 'Oceania',
-};
+import { useLocation } from '@/utils/hooks/useLocation';
+import LoadingSkeleton from '@/components/core-module/skeletons/VisaCardSkeleton';
+import { useMediaQuery } from '@/utils/hooks/useMediaQuery';
+import { mockDestinations, continents, continentLanguageMap, nationalities } from '@/utility/mock/mockVisaApi';
+import type { Destination } from '@/utility/types/find-visa/Visa';
 
 const DEFAULT_CONTINENT = continents[0] || 'Asia';
 const SKELETON_MIN_TIME = 250;
 
-// Helper function
-const getCountryVisaUrl = (residencyIso: string, destinationIso: string): string => {
-  return `/visa?res=${residencyIso}&dest=${destinationIso}`;
-};
-
-// Types
-interface ApiDestination {
-  id: string;
-  countryName: string;
-  isoCode2: string;
-  isoCode3: string;
-  continent: string;
-  currencyCode: string;
-  symbol: string;
-  visaMode: string;
-  visaModeName: string;
-  startingPrice: number;
-  getVisaDays: number;
-  startsPrefix: string;
-  images: Array<{ filename: string }>;
-  entityIds: string[];
-}
-
-interface Destination {
-  id: string;
-  country: string;
-  countryCode: string;
-  continent: string;
-  image: string;
-  chips: VisaChip[];
-  active: boolean;
-}
-
-interface VisaChip {
-  type: 'mode' | 'price' | 'processing';
-  label: string;
-  value: string;
-}
-
 interface FindVisaWidgetProps {
   onPreFlowNavigation: (action: PendingAction) => boolean;
 }
-
-// Mock country data
-const mockCountries = [
-  { id: '1', name: 'India', isoCode: 'IN', flag: 'https://flagcdn.com/w20/in.png' },
-  { id: '2', name: 'United States', isoCode: 'US', flag: 'https://flagcdn.com/w20/us.png' },
-  { id: '3', name: 'United Kingdom', isoCode: 'GB', flag: 'https://flagcdn.com/w20/gb.png' },
-  { id: '4', name: 'Canada', isoCode: 'CA', flag: 'https://flagcdn.com/w20/ca.png' },
-  { id: '5', name: 'Australia', isoCode: 'AU', flag: 'https://flagcdn.com/w20/au.png' },
-  { id: '6', name: 'Germany', isoCode: 'DE', flag: 'https://flagcdn.com/w20/de.png' },
-  { id: '7', name: 'France', isoCode: 'FR', flag: 'https://flagcdn.com/w20/fr.png' },
-  { id: '8', name: 'Japan', isoCode: 'JP', flag: 'https://flagcdn.com/w20/jp.png' },
-  { id: '9', name: 'China', isoCode: 'CN', flag: 'https://flagcdn.com/w20/cn.png' },
-  { id: '10', name: 'Brazil', isoCode: 'BR', flag: 'https://flagcdn.com/w20/br.png' },
-  { id: '11', name: 'UAE', isoCode: 'AE', flag: 'https://flagcdn.com/w20/ae.png' },
-  { id: '12', name: 'Saudi Arabia', isoCode: 'SA', flag: 'https://flagcdn.com/w20/sa.png' },
-];
-
-// Functional NationalitySelect component with DaisyUI dropdown
-const NationalitySelect = ({ 
-  value, 
-  onChange, 
-  countryList 
-}: { 
-  value: string; 
-  onChange: (id: string) => void;
-  countryList?: any[];
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState('');
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // Use countryList if provided, otherwise use mock data
-  const countries = countryList && countryList.length > 0 
-    ? countryList.map((country: any) => ({
-        id: country.id || country.isoCode || country.IsoCode2 || country.isoCode2 || '',
-        name: country.name || country.countryName || country.nationality || '',
-        isoCode: country.isoCode || country.IsoCode2 || country.isoCode2 || '',
-        flag: country.flag || `https://flagcdn.com/w20/${(country.isoCode || country.IsoCode2 || country.isoCode2 || '').toLowerCase()}.png`
-      })).filter((c: any) => c.id && c.name) // Filter out invalid entries
-    : mockCountries;
-
-  const selectedCountry = countries.find(c => c.id === value);
-  
-  const filteredCountries = countries.filter(country =>
-    country.name.toLowerCase().includes(search.toLowerCase())
-  );
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-        setSearch('');
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen]);
-
-  const handleSelect = (countryId: string) => {
-    if (countryId) {
-      onChange(countryId);
-      setIsOpen(false);
-      setSearch('');
-    }
-  };
-
-  return (
-    <div className="dropdown dropdown-open w-full max-w-[448px]" ref={dropdownRef}>
-      <label
-        tabIndex={0}
-        className="btn btn-outline h-12 rounded-[14px] border-2 border-base-300 px-3 py-2 bg-base-100 flex items-center justify-between cursor-pointer hover:border-primary w-full"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setIsOpen(!isOpen);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            setIsOpen(!isOpen);
-          }
-        }}
-      >
-        <div className="flex items-center gap-2 flex-1 min-w-0">
-          {selectedCountry ? (
-            <>
-              <img
-                src={selectedCountry.flag}
-                alt={selectedCountry.name}
-                className="w-5 h-5 rounded-full flex-shrink-0"
-              />
-              <span className="text-sm text-primary font-medium truncate">
-                {selectedCountry.name}
-              </span>
-            </>
-          ) : (
-            <span className="text-sm text-base-content/60">Select Nationality</span>
-          )}
-        </div>
-        <svg
-          className={`w-4 h-4 text-base-content/60 flex-shrink-0 transition-transform ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </label>
-
-      {isOpen && (
-        <ul
-          tabIndex={0}
-          className="dropdown-content menu bg-base-100 rounded-2xl shadow-xl border border-base-300 z-[9999] w-full max-h-[400px] flex flex-col mt-2"
-          style={{ position: 'absolute', top: '100%', left: 0, right: 0 }}
-        >
-          {/* Header */}
-          <li className="px-5 pt-5 pb-3 border-b border-base-300">
-            <h3 className="text-lg font-semibold text-primary ">Select nationality</h3>
-          </li>
-
-          {/* Search */}
-          {/* <li className="px-5 pb-4 pt-4">
-            <div className="form-control">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search country..."
-                  className="input input-bordered w-full h-12 rounded-full pl-4 pr-10 text-sm"
-                  onClick={(e) => e.stopPropagation()}
-                />
-                <svg
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-                </svg>
-              </div>
-            </div>
-          </li> */}
-
-          {/* List */}
-          <div className="overflow-y-auto max-h-[280px] pb-2">
-            {filteredCountries.length > 0 ? (
-              filteredCountries.map((country) => (
-                <li key={country.id}>
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleSelect(country.id);
-                    }}
-                    className={`flex items-center gap-4 px-5 py-3 cursor-pointer hover:bg-base-200 ${
-                      value === country.id ? 'active bg-primary/10' : ''
-                    }`}
-                  >
-                    <img
-                      src={country.flag}
-                      alt={country.name}
-                      className="w-6 h-6 rounded-full flex-shrink-0"
-                    />
-                    <span className="text-base text-primary font-medium">
-                      {country.name}
-                    </span>
-                  </a>
-                </li>
-              ))
-            ) : (
-              <li className="px-5 py-8 text-center text-base-content/60">
-                <span>No countries found</span>
-              </li>
-            )}
-          </div>
-        </ul>
-      )}
-    </div>
-  );
-};
-
-const ContinentSelector = ({ selected, onChange }: { selected: string; onChange: (continent: string) => void }) => (
-  <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-    {continents.map((continent) => (
-      <button
-        key={continent}
-        onClick={() => onChange(continent)}
-        className={`btn btn-sm px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap ${
-          selected === continent
-            ? 'btn-primary'
-            : 'btn-outline btn-ghost'
-        }`}
-      >
-        {continent}
-      </button>
-    ))}
-  </div>
-);
-
-const DestinationCarousel = ({ 
-  destinations, 
-  onCardClick, 
-  onScrollContainerReady,
-  isMobile 
-}: { 
-  destinations: Destination[]; 
-  onCardClick: (dest: Destination) => void;
-  onScrollContainerReady: (node: HTMLDivElement | null) => void;
-  isMobile: boolean;
-}) => (
-  <div
-    ref={onScrollContainerReady}
-    className={`flex gap-4 overflow-x-auto scrollbar-hide ${isMobile ? 'snap-x snap-mandatory' : ''}`}
-  >
-    {destinations.map((dest) => (
-      <div
-        key={dest.id}
-        onClick={() => onCardClick(dest)}
-        className={`card bg-base-100 rounded-lg border border-base-300 overflow-hidden cursor-pointer hover:shadow-lg transition ${
-          isMobile ? 'min-w-[200px] snap-center' : 'w-[260px] flex-shrink-0'
-        }`}
-      >
-        <figure>
-          <img src={dest.image} alt={dest.country} className="w-full h-32 object-cover" />
-        </figure>
-        <div className="card-body p-3">
-          <h3 className="card-title text-primary font-semibold text-base mb-2">{dest.country}</h3>
-          <div className="flex flex-wrap gap-2">
-            {dest.chips.map((chip, idx) => (
-              <div key={idx} className="badge badge-outline text-xs">
-                {chip.label}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    ))}
-  </div>
-);
-
-const EmptyState = () => (
-  <div className="alert alert-info text-center py-8">
-    <span>No destinations found</span>
-  </div>
-);
-
-const ErrorBanner = () => (
-  <div className="alert alert-error">
-    <span>Error loading destinations</span>
-  </div>
-);
-
-const LoadingSkeleton = () => (
-  <div className="flex gap-4">
-    {[1, 2, 3].map((i) => (
-      <div key={i} className="skeleton w-[260px] h-[200px] rounded-lg flex-shrink-0" />
-    ))}
-  </div>
-);
 
 const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) => {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const storedNationality = useAppSelector((state) => state.locationSlice.nationality);
-  const residency = useAppSelector((state) => state.locationSlice.residency);
-  
-  // Fetch country list
-  const { data: countryListResponse } = useFetchCountryListQuery(i18n.language || 'en-US');
-  const countryListData = countryListResponse?.response ? { response: countryListResponse.response } : { response: [] };
-  
+  const { residency } = useLocation();
   const [selectedContinent, setSelectedContinent] = useState<string>(DEFAULT_CONTINENT);
   const [effectiveContinent, setEffectiveContinent] = useState<string>(DEFAULT_CONTINENT);
   const nationalityIsoCode = storedNationality?.isoCode || '';
   const hasNationality = !!nationalityIsoCode;
   const [loadingContinent, setLoadingContinent] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 640px)");
   const carouselContainerRef = useRef<HTMLDivElement | null>(null);
   const [carouselEdges, setCarouselEdges] = useState({ atStart: true, atEnd: false });
-  
   const englishContinent =
     i18n.language === 'ar'
       ? continentLanguageMap[effectiveContinent] || effectiveContinent
       : effectiveContinent;
-  
-  // Fetch destinations based on nationality and continent
-  const { data: destinationsResponse, isLoading, isError } = useFetchDestinationsQuery(
-    {
-      continent: englishContinent,
-      isoCode2: nationalityIsoCode,
-      language: i18n.language || 'en-US',
-    },
-    {
-      skip: !hasNationality,
-    }
-  );
-  
-  const apiDestinations = destinationsResponse?.response || [];
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 600);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  // Use mock destinations filtered by continent
+  const allDestinations: Destination[] = useMemo(() => {
+    if (!hasNationality) return [];
+    
+    return mockDestinations.filter(dest => 
+      dest.continent === englishContinent
+    );
+  }, [hasNationality, englishContinent]);
+
+  const isLoading = false;
+  const isError = false;
 
   useEffect(() => {
     if (!hasNationality) return;
@@ -407,55 +80,6 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
 
     return () => clearTimeout(timer);
   }, [isLoading, loadingContinent]);
-
-  const allDestinations: Destination[] = useMemo(() => {
-    if (isError) {
-      return [];
-    }
-    if (!apiDestinations || apiDestinations.length === 0) {
-      return [];
-    }
-
-    return (apiDestinations as unknown as ApiDestination[]).map(dest => {
-      const chips: VisaChip[] = [];
-
-      if (dest.visaModeName) {
-        chips.push({
-          type: 'mode',
-          label: dest.visaModeName,
-          value: dest.visaModeName,
-        });
-      }
-
-      if (dest.startingPrice && dest.symbol && dest.startsPrefix) {
-        chips.push({
-          type: 'price',
-          label: `${dest.startsPrefix} ${dest.symbol}${dest.startingPrice.toFixed(0)}`,
-          value: dest.startingPrice.toString(),
-        });
-      }
-
-      if (dest.getVisaDays) {
-        chips.push({
-          type: 'processing',
-          label: `${dest.getVisaDays}`,
-          value: dest.getVisaDays.toString(),
-        });
-      }
-
-      const imageUrl = dest.images?.[0]?.filename || CardImg;
-
-      return {
-        id: dest.id,
-        country: dest.countryName,
-        countryCode: dest.isoCode2,
-        continent: dest.continent,
-        image: imageUrl,
-        chips: chips,
-        active: true,
-      } as Destination;
-    });
-  }, [apiDestinations, isError]);
 
   const firstFiveDestinations = useMemo(() => {
     return allDestinations.slice(0, 5);
@@ -512,30 +136,15 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
 
   const handleNationalityChange = useCallback(
     (nationalityId: string) => {
-      // Find the country in the API response by matching id, isoCode, or IsoCode2
-      const selectedNationalityData = countryListData?.response?.find(
-        (country: any) => 
-          country.id === nationalityId || 
-          country.isoCode === nationalityId || 
-          country.IsoCode2 === nationalityId ||
-          country.isoCode2 === nationalityId
+      const selectedNationalityData = nationalities?.find(
+        (country: any) => country.id === nationalityId
       );
 
       if (selectedNationalityData) {
-        // Ensure the country object has all required fields
-        const nationalityPayload = {
-          id: selectedNationalityData.id || selectedNationalityData.isoCode || selectedNationalityData.IsoCode2 || selectedNationalityData.isoCode2,
-          isoCode: selectedNationalityData.isoCode || selectedNationalityData.IsoCode2 || selectedNationalityData.isoCode2,
-          name: selectedNationalityData.name || selectedNationalityData.countryName || selectedNationalityData.nationality,
-          flag: selectedNationalityData.flag,
-          ...selectedNationalityData
-        };
-        dispatch(setNationality(nationalityPayload));
-      } else {
-        console.warn('[FindVisaWidget] Country not found for id:', nationalityId);
+        dispatch(setNationality(selectedNationalityData));
       }
     },
-    [countryListData, dispatch]
+    [dispatch]
   );
 
   const handleContinentChange = useCallback((continent: string) => {
@@ -564,109 +173,109 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
   }, []);
 
   const handleCardClick = useCallback((destination: Destination) => {
-    const path = getCountryVisaUrl(residency?.isoCode || '', destination.countryCode);
+    const buildQuery = `?res=${residency?.isoCode || ''}&dest=${destination.countryCode}`;
+    const path = "/visa" + buildQuery;
+    const url = `${typeof window !== 'undefined' ? window.location.origin : ''}${path}`;
 
     const action: PendingAction = {
       type: 'navigate',
-      url: path
+      url: url
     };
 
     onPreFlowNavigation(action);
   }, [onPreFlowNavigation, residency]);
 
   const handleSeeAll = useCallback(() => {
-    router.push(`/destinations?continent=${selectedContinent}`);
+    router.push(`/all-destinations?continent=${selectedContinent}`);
   }, [router, selectedContinent]);
 
   const containerHeight = hasNationality ? (isMobile ? '528px' : '730px') : 'auto';
-  
-  const getImageSrc = (img: any) => typeof img === 'string' ? img : (img as any)?.src || img;
-  const circleBgSrc = getImageSrc(circleBackgroundImage);
-  const arcImgSrc = getImageSrc(arcImage);
-  const lineImgSrc = getImageSrc(lineImage);
 
   return (
     <div
-      className="w-full max-w-7xl mx-auto px-4 py-8 flex justify-center items-center"
+      className="px-2 py-4 flex justify-center items-center max-w-7xl mx-auto"
       role="region"
       aria-label="Find visa widget"
     >
       <div
-        className={`card bg-base-100 flex flex-col gap-4 relative overflow-hidden ${
-          isMobile ? 'w-[315px] border-4 border-base-200 shadow-sm' : 'w-full'
-        }`}
-        style={{
-          height: containerHeight,
-          borderRadius: '20px',
-          padding: '20px',
-        }}
+        className={`${
+          isMobile ? 'w-[315px]' : 'w-full'
+        } rounded-[20px] ${
+          isMobile ? 'border-4 border-[#F2F2F8]' : 'border-none'
+        } p-5 flex flex-col gap-[15px] bg-white ${
+          isMobile ? 'shadow-sm' : 'shadow-none'
+        } relative overflow-hidden`}
+        style={{ height: containerHeight }}
       >
         <div className="text-center relative z-[3] flex flex-col items-center gap-2">
           <h1
-            className={`font-poppins font-semibold text-primary ${
+            className={`h-1 ${
               isMobile ? 'text-base' : 'text-[28px]'
-            }`}
-            style={{ height: '4px' }}
+            } font-semibold text-[#00366B] font-[Poppins,sans-serif]`}
           >
             {t('find_your_visa')}
           </h1>
           <div
-            className={`flex items-center justify-center gap-3 ${
-              isMobile ? 'w-[154px] mt-0 mb-0' : 'w-[238px] mt-2.5 mb-2.5'
+            className={`${
+              isMobile ? 'w-[154px]' : 'w-[238px]'
+            } h-[18px] flex items-center justify-center gap-3 ${
+              isMobile ? 'mt-0 mb-0' : 'mt-2.5 mb-2.5'
             }`}
             aria-hidden="true"
           >
             <img
-              src={lineImgSrc}
+              src={typeof lineImage === 'string' ? lineImage : (lineImage as any)?.src}
               alt=""
-              className={`w-[30px] h-0.5 object-contain ${
-                isMobile ? 'mt-[35px]' : 'mt-[30px]'
-              }`}
+              className={`w-[30px] h-[2px] object-contain ${isMobile ? 'mt-[35px]' : 'mt-[30px]'}`}
             />
-            <span
-              className={`font-poppins font-normal text-primary text-center whitespace-nowrap ${
-                isMobile
-                  ? 'w-[154px] h-[18px] text-xs mt-10'
-                  : 'w-[238px] h-[18px] text-lg mt-[30px]'
+            <p
+              className={`${
+                isMobile ? 'w-[154px]' : 'w-[238px]'
+              } h-[18px] ${
+                isMobile ? 'text-xs' : 'text-lg'
+              } font-normal font-[Poppins,sans-serif] leading-[100%] text-[#00366B] text-center whitespace-nowrap ${
+                isMobile ? 'mt-10' : 'mt-[30px]'
               }`}
             >
               {t('based_on_your_nationality')}
-            </span>
+            </p>
             <img
-              src={lineImgSrc}
+              src={typeof lineImage === 'string' ? lineImage : (lineImage as any)?.src}
               alt=""
-              className={`w-[30px] h-0.5 object-contain ${
-                isMobile ? 'mt-[35px]' : 'mt-[30px]'
-              }`}
+              className={`w-[30px] h-[2px] object-contain ${isMobile ? 'mt-[35px]' : 'mt-[30px]'}`}
             />
           </div>
         </div>
 
-        <div className={`relative z-[3] max-w-full mx-auto ${isMobile ? 'w-full mt-2.4' : 'w-[448px] mt-0'}`}>
+        <div
+          className={`relative z-[3] max-w-full mx-auto ${
+            !isMobile ? 'w-[448px]' : 'w-full'
+          } ${isMobile ? 'mt-2.5' : 'mt-0'}`}
+        >
           <NationalitySelect
             value={storedNationality?.id || ''}
             onChange={handleNationalityChange}
-            countryList={countryListData?.response}
           />
         </div>
 
         {hasNationality && (
           <>
             <div
-              className="visa-circle-background absolute left-1/2 -translate-x-1/2 rounded-full bg-cover bg-center bg-no-repeat z-[1]"
+              className="visa-circle-background absolute top-[178px] left-1/2 -translate-x-1/2 rounded-full z-[1]"
               style={{
-                top: '178px',
                 width: isMobile ? '900px' : '1126px',
                 height: isMobile ? '900px' : '1126px',
-                backgroundImage: `url(${circleBgSrc})`,
+                backgroundImage: `url(${typeof circleBackgroundImage === 'string' ? circleBackgroundImage : (circleBackgroundImage as any)?.src})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
               }}
               aria-hidden="true"
             />
             <img
-              src={arcImgSrc}
+              src={typeof arcImage === 'string' ? arcImage : (arcImage as any)?.src}
               alt=""
-              className="absolute left-1/2 -translate-x-1/2 w-full max-w-[330px] h-auto z-[2] pointer-events-none"
-              style={{ top: '180px' }}
+              className="absolute top-[180px] left-1/2 -translate-x-1/2 w-full max-w-[330px] h-auto z-[2] pointer-events-none"
               aria-hidden="true"
             />
           </>
@@ -688,18 +297,30 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
                 ) : isError ? (
                   <ErrorBanner />
                 ) : allDestinations?.length > 0 ? (
-                  <div className="w-full relative flex items-center justify-center max-w-full mx-auto px-0" style={{ maxWidth: isMobile ? '100%' : '780px' }}>
+                  <div
+                    className={`w-full relative flex items-center justify-center ${
+                      isMobile ? 'max-w-full' : 'max-w-[780px]'
+                    } mx-auto`}
+                  >
                     {shouldShowDesktopControls && (
                       <button
                         aria-label="Show previous destinations"
                         onClick={() => handleDesktopScroll('prev')}
                         disabled={carouselEdges.atStart}
-                        className={`btn btn-circle btn-sm absolute -left-8 bg-base-100 shadow-md hover:bg-base-200 ${
-                          carouselEdges.atStart ? 'btn-disabled' : ''
-                        }`}
+                        className="absolute -left-8 bg-white rounded-full p-2 shadow-md hover:bg-[#F5F7FB] disabled:opacity-40 disabled:shadow-none transition-all"
                       >
-                        <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="text-[#00366B]"
+                        >
+                          <path
+                            d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+                            fill="currentColor"
+                          />
                         </svg>
                       </button>
                     )}
@@ -716,12 +337,20 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
                         aria-label="Show next destinations"
                         onClick={() => handleDesktopScroll('next')}
                         disabled={carouselEdges.atEnd}
-                        className={`btn btn-circle btn-sm absolute -right-8 bg-base-100 shadow-md hover:bg-base-200 ${
-                          carouselEdges.atEnd ? 'btn-disabled' : ''
-                        }`}
+                        className="absolute -right-8 bg-white rounded-full p-2 shadow-md hover:bg-[#F5F7FB] disabled:opacity-40 disabled:shadow-none transition-all"
                       >
-                        <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="text-[#00366B]"
+                        >
+                          <path
+                            d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+                            fill="currentColor"
+                          />
                         </svg>
                       </button>
                     )}
@@ -732,12 +361,12 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
               </div>
               {hasMoreThanFive && (
                 <div className="flex justify-center">
-                  <button
+                  <div
                     onClick={handleSeeAll}
-                    className="btn btn-link text-sm font-medium text-primary font-poppins"
+                    className="cursor-pointer text-sm font-medium text-[#00366B] font-[Poppins,sans-serif] text-center hover:underline"
                   >
                     {t('see_all') || 'See all'}
-                  </button>
+                  </div>
                 </div>
               )}
             </div>

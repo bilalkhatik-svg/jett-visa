@@ -18,9 +18,9 @@ const InfoCard: React.FC<InfoCardProps> = ({
   // Horizontal variant for Why Choose Musafir section
   if (variant === "horizontal") {
     return (
-      <div
+      <div 
         className="bg-white border-2 border-[#E5E7EB] rounded-[20px] hover:shadow-lg transition-all duration-300"
-        style={{
+        style={{ 
           padding: '26px',
           width: '544px',
           height: '180px',
@@ -39,17 +39,28 @@ const InfoCard: React.FC<InfoCardProps> = ({
 
           {/* Text content */}
           <div className="flex flex-col gap-2 flex-1">
-            <h4 className="text-lg font-semibold text-[#003B71] font-poppins leading-snug">
+          <h4
+  className="
+    font-poppins font-semibold
+    text-[#003B71]
+    text-[18px]
+    leading-[1]
+    tracking-normal
+    align-middle
+  "
+>
               {title}
             </h4>
             <p
-              className="font-poppins font-normal text-[#003669] leading-none align-middle"
-              style={{
-                fontSize: '16px',
-                lineHeight: '100%',
-                letterSpacing: '0%'
-              }}
-            >
+  className="
+    font-poppins font-normal
+    text-[#003669]
+    text-[16px]
+    leading-[1]
+    tracking-normal
+    align-middle
+  "
+>
               {description}
             </p>
           </div>
@@ -72,12 +83,18 @@ const InfoCard: React.FC<InfoCardProps> = ({
         </div>
 
         {/* Text content */}
-        <div className="flex flex-col gap-1.5 sm:gap-2 min-w-0 flex-1 overflow-hidden">
-          <h2 className="text-[18px] font-semibold text-[#00366B] font-poppins break-words">
+        <div className="flex flex-col gap-2">
+          <h4 className="text-lg font-semibold text-[#003B71] font-poppins leading-snug sm:text-base">
             {title}
-          </h2>
-
-          <p className="text-[16px] font-normal text-[#003669] font-poppins leading-relaxed break-words">
+          </h4>
+          <p 
+            className="font-poppins font-normal text-[#003669] leading-none align-middle sm:text-sm"
+            style={{
+              fontSize: '16px',
+              lineHeight: '100%',
+              letterSpacing: '0%'
+            }}
+          >
             {description}
           </p>
         </div>

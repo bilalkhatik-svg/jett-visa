@@ -1,0 +1,1 @@
+export { default as VisaTypeSection } from "@/components/core-module/visa-type/VisaTypeSection";

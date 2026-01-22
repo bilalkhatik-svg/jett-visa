@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next";
 
 const InspireMe: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const isArabic = i18n.language.startsWith("ar");
+  const isArabic = i18n.language?.startsWith("ar") || false;
   const router = useRouter();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = useState("");
@@ -121,12 +121,12 @@ const InspireMe: React.FC = () => {
                 }}
               >
                 <Image
-                  src={inspireMeGif}
-                  alt="Inspire Me Gif"
-                  width={60}
-                  height={58}
-                  className="object-contain rounded-full"
-                />
+  src={inspireMeGif}
+  alt="Inspire Me Gif"
+  width={33.524}
+  height={32}
+  className="object-contain rounded-full opacity-100"
+ />
               </div>
               <p
                 className="text-base font-semibold mt-2"
@@ -136,7 +136,8 @@ const InspireMe: React.FC = () => {
                   WebkitTextFillColor: "transparent",
                 }}
               >
-                {t("inspire_me")}
+                {/* {t("inspire_me_for_desktopView")} */}
+                inspire me desktop view
               </p>
             </div>
 

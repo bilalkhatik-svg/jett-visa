@@ -40,9 +40,9 @@ const VisaMode = ({ showDestinationModal }: VisaModeProps) => {
   const visaModeImageSrc = typeof visaModeImage === 'string' ? visaModeImage : (visaModeImage as any)?.src || visaModeImage;
 
   const items = [
-    { key: "destination", label: t("destination"), img: destinationImageSrc },
-    { key: "visaMode", label: t("visa_mode"), img: visaModeImageSrc },
-    { key: "travelDate", label: t("travel_date"), img: travelDateImageSrc },
+    { key: "destination", label: "Destination", img: destinationImageSrc },
+    { key: "visaMode", label: "Visa mode", img: visaModeImageSrc },
+    { key: "travelDate", label: "Travel date", img: travelDateImageSrc },
   ];
 
   return (
@@ -73,16 +73,16 @@ const VisaMode = ({ showDestinationModal }: VisaModeProps) => {
     className={`flex items-center justify-center rounded-[12px] transition-all duration-200
       ${
         activeKey === item.key
-          ? 'bg-[#E8F4F8] shadow-lg border-2 border-[#0066CC]'
+          ? 'bg-[#E8F4F8] shadow-lg border-2 border-transparent'
           : 'bg-[#E8F4F8] hover:bg-[#D0E8F5] border-2 border-transparent'
       }
-      w-[72px] h-[72px] sm:w-[72px] sm:h-[72px] md:w-20 md:h-20
+      w-[80px] h-[80px] sm:w-[80px] sm:h-[80px] md:w-20 md:h-20
     `}
   >
     <img
       src={item.img}
       alt={item.label}
-      className="block object-contain w-10 h-10 sm:w-10 sm:h-10 md:w-14 md:h-14"
+      className="block object-contain  sm:w-10 sm:h-10 md:w-14 md:h-14"
     />
   </button>
 

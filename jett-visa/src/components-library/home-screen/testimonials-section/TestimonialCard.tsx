@@ -15,9 +15,24 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   starIcon = '@assets/images/icons/ratingStarIcon.png',
 }) => {
   return (
-    <div className="min-w-[280px] sm:min-w-[260px] md:min-w-[320px] lg:min-w-[340px] bg-white rounded-2xl border border-[#E5E7EB] p-6 flex flex-col gap-4 shadow-sm hover:shadow-md transition-all sm:p-5">
+    <div 
+      className="bg-white flex flex-col opacity-100"
+      style={{
+        width: '352px',
+        height: '172px',
+        borderRadius: '16px',
+        border: '1.5px dashed #E4E4E4',
+        paddingTop: '20px',
+        paddingRight: '30px',
+        paddingBottom: '20px',
+        paddingLeft: '30px',
+        top: '3736px',
+        left: '160px',
+        gap: '30px',
+      }}
+    >
       <p 
-        className="font-poppins font-medium text-[#003669] leading-none flex-1 sm:text-sm"
+        className="font-poppins font-medium text-[#003669] leading-none flex-1"
         style={{ 
           fontSize: '18px',
           lineHeight: '100%',
@@ -28,10 +43,10 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       </p>
 
       <div className="flex items-center justify-between border-t border-[#F3F4F6] pt-3">
-        <div className="text-sm font-semibold text-[#003B71] sm:text-xs">{author}</div>
+        <div className="text-sm font-semibold text-[#003B71]">{author}</div>
         <div className="flex gap-1">
           {Array.from({ length: rating }).map((_, index) => (
-            <img key={index} src={starIcon} alt="star" className="w-4 h-4 object-contain sm:w-3 sm:h-3" />
+            <img key={index} src={starIcon} alt="star" className="w-4 h-4 object-contain" />
           ))}
         </div>
       </div>

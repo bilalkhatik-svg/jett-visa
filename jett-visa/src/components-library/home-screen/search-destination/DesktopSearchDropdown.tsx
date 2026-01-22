@@ -1,9 +1,9 @@
+"use client";
+
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import SearchIcon2 from "@/assets/images/icons/search.png";
-// import type { PendingAction } from "@pages/home-screen/HomeScreen";
-// import type { Country as DestinationCountry, ExtendedCountry } from "@utility/types/country/Country";
 import curveDownLeftIcon from "@/assets/images/icons/curveDownLeftIcon.webp";
-// import { storage } from "@utility/storage";
 
 // Define types locally
 export type PendingAction = {
@@ -190,15 +190,17 @@ const DesktopSearchDropdown: React.FC<DesktopSearchDropdownProps> = ({
     onPreFlowNavigation({ type: "search", destination: item as any });
   };
 
-  // Convert StaticImageData to string for img src
-  const searchIcon2Src = typeof SearchIcon2 === 'string' ? SearchIcon2 : (SearchIcon2 as any)?.src || SearchIcon2;
-  const curveDownLeftIconSrc = typeof curveDownLeftIcon === 'string' ? curveDownLeftIcon : (curveDownLeftIcon as any)?.src || curveDownLeftIcon;
-
   if (isMobile) {
     return (
       <div className="relative">
-        <input className="w-full rounded-md border border-gray-200 h-10 px-3 pr-10 bg-gray-50" disabled value={t("search_by_country_or_city")} />
-        <img src={searchIcon2Src} width={14} height={14} alt="searchIcon" className="absolute right-3 top-1/2 -translate-y-1/2" />
+        <input 
+          className="w-full rounded-md border border-gray-200 h-10 px-3 pr-10 bg-gray-50" 
+          disabled 
+          value={t("search_by_country_or_city")} 
+        />
+        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+          <Image src={SearchIcon2} width={14} height={14} alt="searchIcon" />
+        </div>
       </div>
     );
   }
@@ -206,9 +208,9 @@ const DesktopSearchDropdown: React.FC<DesktopSearchDropdownProps> = ({
   return (
     <div ref={containerRef} className="relative w-full max-w-full" style={{ width: dropdownWidth || widthByBreakpoint.md }}>
       <input
-        placeholder={t("search_by_country_or_city")}
+        placeholder={"Search by country or city"}
         className="w-full rounded-[12px] border border-gray-200 px-4 pr-12 text-sm sm:text-base"
-        style={{ height: '72px',width:'590px' }}
+        style={{ height: '52px',width:'505px' }}
         value={search}
         onFocus={() => setIsOpen(true)}
         onChange={(e) => {
@@ -226,10 +228,10 @@ const DesktopSearchDropdown: React.FC<DesktopSearchDropdownProps> = ({
         {hasMatchingCountry ? (
           <div className="flex items-center gap-1 sm:gap-2 text-xs text-gray-400">
             <span className="hidden sm:inline">Press Enter to search</span>
-            <img src={curveDownLeftIconSrc} alt="hint" width={16} height={16} className="w-3 h-3 sm:w-4 sm:h-4" />
+            <Image src={curveDownLeftIcon} alt="hint" width={16} height={16} className="w-3 h-3 sm:w-4 sm:h-4" />
           </div>
         ) : (
-          <img src={searchIcon2Src} width={14} height={14} alt="searchIcon" className="w-3 h-3 sm:w-[14px] sm:h-[14px]" />
+          <Image src={SearchIcon2} width={14} height={14} alt="searchIcon" className="w-3 h-3 sm:w-[14px] sm:h-[14px]" />
         )}
       </div>
 
@@ -244,9 +246,17 @@ const DesktopSearchDropdown: React.FC<DesktopSearchDropdownProps> = ({
                   onClick={() => handleSelect(c)}
                 >
                   {!!(c as any)?.flag && (
-                    <img src={(c as any).flag} alt="" width={18} height={18} className="w-4 h-4 sm:w-[18px] sm:h-[18px] rounded-full object-cover flex-shrink-0" />
+                    <img 
+                      src={(c as any).flag} 
+                      alt="" 
+                      width={18} 
+                      height={18} 
+                      className="w-4 h-4 sm:w-[18px] sm:h-[18px] rounded-full object-cover flex-shrink-0" 
+                    />
                   )}
-                  <div className="text-xs sm:text-sm text-[#003669] truncate">{((c as any).displayName as string) || (c as any).residency || (c as any).nationality || ""}</div>
+                  <div className="text-xs sm:text-sm text-[#003669] truncate">
+                    {((c as any).displayName as string) || (c as any).residency || (c as any).nationality || ""}
+                  </div>
                 </div>
               ))}
             </div>

@@ -72,7 +72,16 @@ const WhyChooseMusafirSection = React.memo(() => {
 
   return (
     <section className="w-full max-w-[1120px] mx-auto opacity-100" >
-      <h2 className="font-poppins font-semibold text-[#003B71] text-2xl mb-8 sm:text-xl sm:mb-6">{t('why_choose_musafir')}</h2>
+      <h2
+  className="
+    font-poppins font-semibold
+    text-[#003B71]
+    text-[28px]
+    leading-[1]
+    tracking-normal
+    mb-8
+  "
+>{"Why choose musafir?"}</h2>
 
       {/* Desktop: Horizontal cards in 2 columns */}
       <div className="hidden md:grid md:grid-cols-2" style={{ gap: '20px' }}>

@@ -34,7 +34,8 @@ const NationalityResidencySelector = ({
     if (!debouncedSearch) return countryList;
 
     return countryList.filter((item) =>
-      item.nationality.toLowerCase().includes(debouncedSearch.toLowerCase())
+      item?.nationality?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+      item?.residency?.toLowerCase().includes(debouncedSearch.toLowerCase())
     );
   }, [countryList, debouncedSearch]);
 
@@ -49,7 +50,8 @@ const NationalityResidencySelector = ({
   };
 
   return (
-    <div className="relative w-full max-w-full sm:max-w-md mx-auto z-50">
+    <div className="relative z-50 w-[505px]">
+
       {/* ================= Trigger Bar ================= */}
       <div
         className={`flex items-center rounded-[14px] bg-gradient-to-br from-white/80 to-white/60 backdrop-blur-md shadow-sm ${
@@ -61,10 +63,10 @@ const NationalityResidencySelector = ({
           className="flex items-center gap-3 cursor-pointer flex-1 min-w-0"
           onClick={() => setOpenType(openType === 'nationality' ? null : 'nationality')}
         >
-          {nationality && (
+          {nationality?.flag && (
             <img
               src={nationality.flag}
-              alt={nationality.nationality}
+              alt={nationality?.nationality || 'Nationality flag'}
               className="w-6 h-6 rounded-full"
             />
           )}
@@ -95,10 +97,10 @@ const NationalityResidencySelector = ({
           className="flex items-center gap-3 cursor-pointer flex-1 min-w-0"
           onClick={() => setOpenType(openType === 'residency' ? null : 'residency')}
         >
-          {residency && (
+          {residency?.flag && (
             <img
               src={residency.flag}
-              alt={residency.residency}
+              alt={residency?.residency || 'Residency flag'}
               className="w-6 h-6 rounded-full"
             />
           )}
@@ -155,15 +157,17 @@ const NationalityResidencySelector = ({
                   onClick={() => handleSelect(item)}
                   className="flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-blue-50"
                 >
-                  <img
-                    src={item.flag}
-                    alt={item.nationality}
-                    className="w-5 h-5 rounded-full"
-                  />
+                  {item?.flag && (
+                    <img
+                      src={item.flag}
+                      alt={item?.nationality || item?.residency || ''}
+                      className="w-5 h-5 rounded-full"
+                    />
+                  )}
                   <span className="text-blue-700 font-medium">
                     {openType === 'nationality'
-                      ? item.nationality
-                      : item.residency}
+                      ? item?.nationality
+                      : item?.residency}
                   </span>
                 </div>
               ))}

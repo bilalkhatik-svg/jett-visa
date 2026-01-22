@@ -80,19 +80,35 @@ const TestimonialsSection = React.memo(() => {
 
     return (
         <section className="w-full max-w-[1120px] mx-auto opacity-100" >
-            <h2 className="font-poppins font-semibold text-[#003669] text-2xl mb-8 sm:text-xl sm:mb-6">{t('testimonials')}</h2>
+            <h2
+  className="
+    font-poppins font-semibold
+    text-[#003B71]
+    text-[28px]
+    leading-[1]
+    tracking-normal
+    mb-8
+  "
+>{"Testimonials"}</h2>
 
-            <div className="flex overflow-x-auto gap-6 pb-4 scrollbar-hide md:gap-6 sm:gap-4 snap-x snap-mandatory">
-                {testimonials.map((testimonial: Testimonial, index: number) => (
-                    <div key={index} className="snap-start">
-                        <TestimonialCard
-                            content={testimonial.content}
-                            author={testimonial.author}
-                            rating={testimonial.rating}
-                            starIcon={starIconSrc}
-                        />
-                    </div>
-                ))}
+            <div className="flex overflow-x-auto gap-6 pb-4 pr-4 scrollbar-hide md:gap-6 sm:gap-4 snap-x snap-mandatory">
+                {testimonials.map((testimonial: Testimonial, index: number) => {
+                    const isLast = index === testimonials.length - 1;
+                    return (
+                        <div 
+                            key={index} 
+                            className="snap-start flex-shrink-0"
+                            style={isLast ? { marginRight: '4px' } : {}}
+                        >
+                            <TestimonialCard
+                                content={testimonial.content}
+                                author={testimonial.author}
+                                rating={testimonial.rating}
+                                starIcon={starIconSrc}
+                            />
+                        </div>
+                    );
+                })}
             </div>
         </section>
     );
