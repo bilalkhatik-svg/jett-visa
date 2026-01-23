@@ -100,60 +100,12 @@ const MobileBottomDrawerSkeleton = () => (
   <div className="h-96 bg-gray-200 animate-pulse"></div>
 );
 
-// Simple component placeholders
-// const FooterSection = () => <footer className="bg-gray-800 text-white p-8">Footer</footer>;
-// const MobileBottomDrawer = ({ modalOpen, setModalOpen, children, sx }: any) => {
-//   if (!modalOpen) return null;
-//   return (
-//     <div
-//       className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end"
-//       onClick={() => setModalOpen(false)}
-//     >
-//       <div
-//         className="bg-white w-full rounded-t-lg"
-//         style={sx}
-//         onClick={(e) => e.stopPropagation()}
-//       >
-//         <div className="flex justify-end">
-//          <button
-//   onClick={() => setModalOpen(false)}
-//   className="
-//     absolute 
-//     -top-3 
-//     left-1/2 
-//     -translate-x-1/2
-//     w-10
-//     h-10
-//     rounded-full 
-//     bg-white 
-//     shadow-md 
-//     flex 
-//     items-center 
-//     justify-center
-//     text-gray-600 
-//     text-xl
-//     active:scale-95
-//   "
-// >
-//   ✕
-// </button>
 
-//         </div>
-//         <div
-//           className="overflow-y-auto"
-//           style={{ height: "calc(100% - 40px)" }}
-//         >
-//           {children}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-const VisaTypeSection = ({
-  showOthers,
-  setShowOthers,
-  onPreFlowNavigation,
-}: any) => <div className="p-4">Visa Type Section</div>;
+// const VisaTypeSection = ({
+//   showOthers,
+//   setShowOthers,
+//   onPreFlowNavigation,
+// }: any) => <div className="p-4">Visa Type Section</div>;
 const BottomConfirmBar = ({
   residency,
   flagUrl,
@@ -170,25 +122,7 @@ const BottomConfirmBar = ({
     </button>
   </div>
 );
-const UpdateResidencyDialog = ({
-  open,
-  onClose,
-  initialNationality,
-  initialResidency,
-  onConfirm,
-  onFlagUpdate,
-}: any) => {
-  if (!open) return null;
-  return (
-   <>
-    <MobileBottomDrawer 
-    modalOpen={open}
-    setModalOpen={onClose}
-    children={null}
-    />
-   </>
-  );
-};
+
 
 const TravelDateCalender = ({
   selectedDate,
@@ -232,7 +166,8 @@ import DesktopSearchDropdown from "./search-destination/DesktopSearchDropdown";
 import TopDestinationSection from "./top-destination-section/TopDestinationSection";
 import SearchDestination from "./search-destination/SearchDestination";
 import MobileBottomDrawer from "../bottom-drawer/BottomDrawer";
-import ResidencyDialogContent from "@/components/core-module/nationality-residency/ResidencyDialogContent";
+import ResidencyDialogContent from "@/components/core-module/nationality-residency/common/ResidencyDialogContent";
+import { VisaTypeSection } from "@/components/core-module/visa-type";
 
 export type ModalTypes = "searchDestination" | "visaMode" | "travelDate" | "";
 
@@ -767,7 +702,7 @@ const HomeScreen = () => {
             }`}
             style={{
               backgroundImage: isMobile
-                ? `linear-gradient(135deg, #E8F4F8 0%, #F0F9FF 100%)`
+                ? `linear-gradient(200deg, rgb(231, 192, 238), rgb(160, 224, 227) 100%), linear-gradient(to right top, rgb(219, 214, 143) 0%, transparent 50%)`
                 : `url(${homeBgImageSrc})`,
               backgroundSize: "cover",
               backgroundPosition: "center",

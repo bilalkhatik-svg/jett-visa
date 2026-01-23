@@ -129,21 +129,10 @@ const ScrollingDestinationImages: React.FC<ScrollingDestinationImagesProps> = ({
                                     />
                                     {/* Country name overlay on hover */}
                                     {isImageHovered && (
-                                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity">
-                                            <div 
-                                                className="flex items-center justify-center text-center font-semibold"
-                                                style={{
-                                                    width: '87px',
-                                                    height: '37px',
-                                                    position: 'absolute',
-                                                    top: '150.1px',
-                                                    left: '184.61px',
-                                                    color: '#00366B',
-                                                    opacity: 1
-                                                }}
-                                            >
+                                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity z-10">
+                                            <span className="text-white text-lg font-semibold text-center px-4 py-2">
                                                 {countryName}
-                                            </div>
+                                            </span>
                                         </div>
                                     )}
                                 </div>
