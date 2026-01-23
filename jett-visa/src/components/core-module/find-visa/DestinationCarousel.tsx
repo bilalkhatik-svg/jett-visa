@@ -85,7 +85,7 @@ const VisaCard: React.FC<VisaCardProps> = ({ destination, onClick, isCenter, sho
   return (
     <div
       onClick={onClick}
-      className={`card bg-base-100 shadow-xl border border-base-300 rounded-lg overflow-hidden cursor-pointer hover:shadow-2xl transition flex-shrink-0 ${isCenter
+      className={`card bg-base-100 shadow-xl  rounded-lg overflow-hidden cursor-pointer hover:shadow-2xl transition flex-shrink-0 ${isCenter
         ? 'w-[255px] h-[371px] absolute right-0 top-[-0.5px] max-md:w-[146px] max-md:h-[212px] max-md:relative max-md:right-auto max-md:top-auto max-md:rounded-[20px] mobile-center-card'
         : 'w-[260px] max-md:w-[180px]'
         } relative`}
@@ -98,18 +98,28 @@ const VisaCard: React.FC<VisaCardProps> = ({ destination, onClick, isCenter, sho
               alt={destination.country}
               className="w-full h-full object-cover rounded-[20px]"
             /> */}
-          <figure className="absolute inset-0 rounded-[20px] overflow-hidden border-[4px] border-[#F2F2F8]">
+          <figure className="absolute inset-0  rounded-[20px] overflow-hidden" >
             <img
               src={imageSrc}
               alt={destination.country}
               className="w-full h-full object-cover rounded-[16px]"
             />
-
-
             <div
               className="absolute inset-0 max-md:hidden"
               style={{
                 background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.50) 48.78%)',
+                backdropFilter: 'blur(4px)',
+              }}
+            />
+            <div
+              className="absolute inset-0 md:hidden"
+              style={{
+                background: `linear-gradient(
+                  180deg,
+                  rgba(162, 38, 247, 0.12) 0%,
+                  rgba(74, 129, 253, 0.18) 100%
+                )`,
+                mixBlendMode: 'soft-light',
                 backdropFilter: 'blur(4px)',
               }}
             />
@@ -232,36 +242,68 @@ const DestinationCarousel: React.FC<DestinationCarouselProps> = React.memo(
     }, [destinations, handleScroll, onScrollContainerReady]);
 
     // Center second card on desktop initial load
+    // useEffect(() => {
+    //   if (isMobile || destinations.length <= 1) {
+    //     setCenterIndex(0);
+    //     initialScrollDone.current = true;
+    //     return;
+    //   }
+
+    //   if (initialScrollDone.current || !scrollRef.current) return;
+
+    //   const scrollToSecondCard = () => {
+    //     const container = scrollRef.current;
+    //     if (!container) return;
+
+    //     const secondCard = container.children[1] as HTMLElement;
+    //     if (!secondCard) return;
+
+    //     const containerWidth = container.offsetWidth;
+    //     const cardWidth = secondCard.offsetWidth;
+    //     const scrollPosition = secondCard.offsetLeft - (containerWidth / 2) + (cardWidth / 2);
+
+    //     container.scrollLeft = scrollPosition;
+    //     setCenterIndex(1);
+    //     initialScrollDone.current = true;
+    //   };
+
+    //   // Wait for layout, then scroll
+    //   requestAnimationFrame(() => {
+    //     requestAnimationFrame(scrollToSecondCard);
+    //   });
+    // }, [isMobile, destinations]);
+
     useEffect(() => {
-      if (isMobile || destinations.length <= 1) {
-        setCenterIndex(0);
-        initialScrollDone.current = true;
-        return;
-      }
+      if (destinations.length <= 1 || !scrollRef.current) return;
 
-      if (initialScrollDone.current || !scrollRef.current) return;
+      // Use SAME logic for desktop & mobile
+      const targetIndex = destinations.length > 1 ? 1 : 0;
 
-      const scrollToSecondCard = () => {
+      const scrollToTargetCard = () => {
         const container = scrollRef.current;
         if (!container) return;
 
-        const secondCard = container.children[1] as HTMLElement;
-        if (!secondCard) return;
+        const targetCard = container.children[targetIndex] as HTMLElement;
+        if (!targetCard) return;
 
         const containerWidth = container.offsetWidth;
-        const cardWidth = secondCard.offsetWidth;
-        const scrollPosition = secondCard.offsetLeft - (containerWidth / 2) + (cardWidth / 2);
+        const cardWidth = targetCard.offsetWidth;
+
+        const scrollPosition =
+          targetCard.offsetLeft - containerWidth / 2 + cardWidth / 2;
 
         container.scrollLeft = scrollPosition;
-        setCenterIndex(1);
+        setCenterIndex(targetIndex);
         initialScrollDone.current = true;
       };
 
-      // Wait for layout, then scroll
+      if (initialScrollDone.current) return;
+
       requestAnimationFrame(() => {
-        requestAnimationFrame(scrollToSecondCard);
+        requestAnimationFrame(scrollToTargetCard);
       });
-    }, [isMobile, destinations]);
+    }, [destinations]);
+
 
     const carouselClasses = `flex gap-2 max-md:gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth items-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]`;
 
