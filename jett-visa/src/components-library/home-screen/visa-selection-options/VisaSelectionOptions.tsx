@@ -62,7 +62,7 @@ const VisaMode = ({ showDestinationModal }: VisaModeProps) => {
         //   </button>
 
         //   <div className={`font-poppins font-medium whitespace-nowrap text-xs sm:text-xs md:text-sm ${
-        //     activeKey === item.key ? 'text-[#0066CC]' : 'text-[#374151]'
+        //     activeKey === item.key ? 'text-[#00366B]' : 'text-[#374151]'
         //   }`}>
         //     {item.label}
         //   </div>
@@ -86,7 +86,7 @@ const VisaMode = ({ showDestinationModal }: VisaModeProps) => {
     />
   </button>
 
-  <div className="font-poppins font-medium whitespace-nowrap text-xs sm:text-xs md:text-sm text-[#0066CC]">
+  <div className="font-poppins font-medium whitespace-nowrap text-xs sm:text-xs md:text-sm text-[#00366B]">
     {item.label}
   </div>
 </div>

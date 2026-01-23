@@ -100,7 +100,7 @@ const TopBar: React.FC<TopBarProps> = ({
         <button
           onClick={onProfileClick}
           aria-label="User profile"
-          className="ml-0 bg-white text-[#0066CC] w-[32px] h-[32px] rounded-full text-base font-semibold relative hover:bg-gray-50 hover:text-[#0066CC] border border-gray-200 transition-all"
+          className="ml-0 bg-white text-[#00366B] w-[32px] h-[32px] rounded-full text-base font-semibold relative hover:bg-gray-50 hover:text-[#00366B] border border-gray-200 transition-all"
         >
           {userInitial}
           <span className="absolute top-1 right-1 w-2 h-2 bg-[#0066CC] rounded-full" />

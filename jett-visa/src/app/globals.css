@@ -5,7 +5,7 @@
 /* now it's legal to use layers */
 @layer base {
   body {
-    @apply bg-white text-black;
+    @apply bg-white text-[#00366B];
   }
 }
 

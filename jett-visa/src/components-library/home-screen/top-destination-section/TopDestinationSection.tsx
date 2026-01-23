@@ -135,7 +135,7 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
       <div className="w-full">
         <div className="flex justify-between items-center mb-6">
           <h2 className="font-poppins font-semibold text-[#003B71] text-2xl sm:text-xl">Top destinations</h2>
-          <button className="text-sm text-[#0066CC] font-medium hover:underline">View all</button>
+          <button className="text-sm text-[#00366B] font-medium hover:underline">View all</button>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-3">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
@@ -159,7 +159,7 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
     mb-8
   "
 >Top destinations</h2>
-        <button className="text-sm text-[#0066CC] font-medium hover:underline transition-all sm:text-xs">View all</button>
+        <button className="text-sm text-[#00366B] font-medium hover:underline transition-all sm:text-xs">View all</button>
       </div>
       <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-4">
         {mappedDestinations.map((item, index) => (

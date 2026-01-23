@@ -151,7 +151,7 @@ const CantFindDestinationForm: React.FC<CantFindDestinationFormProps> = ({
   return (
     <>
       <form onSubmit={handleSubmit} className="p-4 flex flex-col gap-2 rounded-lg bg-white max-w-md max-h-full overflow-y-auto">
-        <h3 className="text-center font-medium text-lg text-[#0066CC] mb-2">{t("request_new_destination")}</h3>
+        <h3 className="text-center font-medium text-lg mb-2">{t("request_new_destination")}</h3>
 
         <div className="space-y-3">
           <div>
@@ -181,7 +181,7 @@ const CantFindDestinationForm: React.FC<CantFindDestinationFormProps> = ({
           <div>
             <div className="flex justify-between items-center mb-1">
               <label className="text-sm text-[#00366B]">{t("message_optional")}</label>
-              <div className="text-xs text-[#0066CC]">{formValues.message.length}/500</div>
+              <div className="text-xs">{formValues.message.length}/500</div>
             </div>
             <textarea
               name="message"
