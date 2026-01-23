@@ -168,6 +168,7 @@ import SearchDestination from "./search-destination/SearchDestination";
 import MobileBottomDrawer from "../bottom-drawer/BottomDrawer";
 import ResidencyDialogContent from "@/components/core-module/nationality-residency/common/ResidencyDialogContent";
 import { VisaTypeSection } from "@/components/core-module/visa-type";
+import SearchField from "../search-field/SearchField";
 
 export type ModalTypes = "searchDestination" | "visaMode" | "travelDate" | "";
 
@@ -181,34 +182,7 @@ export interface PendingAction {
 }
 
 // Simple SearchField component using Tailwind
-const SearchField = ({ isMobile, placeholder, onClick, value, ...props }: any) => {
-  const searchIcon2Src = typeof SearchIcon2 === 'string' ? SearchIcon2 : (SearchIcon2 as any)?.src || SearchIcon2;
 
-  return (
-    <div
-      className={`relative w-full`}
-      onClick={onClick}
-    >
-      <input
-        type="text"
-        placeholder={placeholder}
-        value={value}
-        readOnly
-        disabled
-        className="w-full h-[48px] sm:h-[48px] md:h-[52px] px-4 pr-12 bg-white rounded-[12px] border border-gray-200 text-[#9CA3AF] text-sm sm:text-sm font-poppins cursor-pointer shadow-sm"
-        style={{ pointerEvents: 'none' }}
-        {...props}
-      />
-      <img
-        src={searchIcon2Src}
-        width={16}
-        height={16}
-        alt="searchIcon"
-        className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none w-4 h-4"
-      />
-    </div>
-  );
-};
 
 const HomeScreen = () => {
   const [isTopBarLoading, setIsTopBarLoading] = useState(true);
@@ -824,9 +798,10 @@ const HomeScreen = () => {
             {isMobile && (
               <div className="relative w-full" style={{ zIndex: 2 }}>
                 <SearchField
-                  isMobile={isMobile}
+                  // isMobile={isMobile}
                   placeholder={"Search by country or city"}
                   value=""
+                  onChange={()=>{}}
                   onClick={() => toggleModal(true, "searchDestination")}
                 />
               </div>
@@ -946,7 +921,7 @@ const HomeScreen = () => {
       {isHowToApplyLoading ? (
         <HowToApplySectionSkeleton />
       ) : (
-        <div className="w-full bg-[#EBF2FF] pt-12 sm:pt-16 ">
+        <div className="w-full bg-[#EBF2FF] p-4 sm:pt-4 ">
           <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
             <HowToApplySection />
           </div>
@@ -955,7 +930,7 @@ const HomeScreen = () => {
       {isWhyChooseLoading ? (
         <WhyChooseMusafirSectionSkeleton />
       ) : (
-        <div className="w-full pt-12 sm:pt-16 bg-white">
+        <div className="w-full pt-6 sm:pt-8 bg-white">
           <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
             <WhyChooseMusafirSection />
           </div>
@@ -973,7 +948,7 @@ const HomeScreen = () => {
       {isFaqLoading ? (
         <FaqSectionSkeleton />
       ) : (
-        <div className="w-full pt-12 sm:pt-16 bg-white">
+        <div className="w-full pt-6 sm:pt-8 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:ml-[6%]">
             <FaqSection />
           </div>
