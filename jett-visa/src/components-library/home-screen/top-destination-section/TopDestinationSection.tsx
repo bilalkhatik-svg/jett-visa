@@ -42,72 +42,36 @@ interface TopDestinationItem {
   StartingPrice?: string | number;
 }
 
-// Static test data - will be replaced with API integration later
-const staticTopDestinations: TopDestination[] = [
-  {
-    VisaType: "E-Visa",
-    Images: [{ Filename: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=400&h=300&fit=crop" }],
-    Name: "Germany",
-    GetVisaDays: "4-5",
-    Order: 1,
-    Unit: "days",
-    IsoCode2: "DE",
-    StartingPrice: "6800"
-  },
-  {
-    VisaType: "E-Visa",
-    Images: [{ Filename: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=300&fit=crop" }],
-    Name: "France",
-    GetVisaDays: "5-7",
-    Order: 2,
-    Unit: "days",
-    IsoCode2: "FR",
-    StartingPrice: "7200"
-  },
-  {
-    VisaType: "E-Visa",
-    Images: [{ Filename: "https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?w=400&h=300&fit=crop" }],
-    Name: "Italy",
-    GetVisaDays: "6-8",
-    Order: 3,
-    Unit: "days",
-    IsoCode2: "IT",
-    StartingPrice: "7500"
-  },
-  {
-    VisaType: "E-Visa",
-    Images: [{ Filename: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=400&h=300&fit=crop" }],
-    Name: "Spain",
-    GetVisaDays: "5-7",
-    Order: 4,
-    Unit: "days",
-    IsoCode2: "ES",
-    StartingPrice: "7000"
-  }
-];
-
 interface TopDestinationSectionProps {
   onPreFlowNavigation: (action: PendingAction) => boolean;
 }
 
-const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionProps) => {
+const TopDestinationSection = ({
+  onPreFlowNavigation,
+}: TopDestinationSectionProps) => {
   const { i18n } = useTranslation();
   const residency = useAppSelector((state) => state.locationSlice.residency);
-  
+
   // Fetch top destinations
-  const { data: topDestinationResponse, isLoading: isTopDestinationListPending } = useFetchTopDestinationQuery({
+  const {
+    data: topDestinationResponse,
+    isLoading: isTopDestinationListPending,
+  } = useFetchTopDestinationQuery({
     count: 8,
-    language: i18n.language || 'en-US',
+    language: i18n.language || "en-US",
   });
-  
-  const topDestinationList = topDestinationResponse?.Response || staticTopDestinations;
+
+  const topDestinationList = topDestinationResponse?.Response;
 
   const mappedDestinations: TopDestinationItem[] = useMemo(() => {
     return (topDestinationList || []).map((dest: TopDestination) => ({
       VisaType: dest.VisaType || "E-Visa",
       imageUrl: dest.Images?.[0]?.Filename || "",
       name: dest.Name || "",
-      GetVisaDays: typeof dest.GetVisaDays === 'number' ? dest.GetVisaDays : Number(dest.GetVisaDays) || 0,
+      GetVisaDays:
+        typeof dest.GetVisaDays === "number"
+          ? dest.GetVisaDays
+          : Number(dest.GetVisaDays) || 0,
       order: dest.Order || 0,
       unit: dest.Unit || "days",
       currencyCode: "",
@@ -134,12 +98,19 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
     return (
       <div className="w-full">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="font-poppins font-semibold text-[#003B71] text-2xl sm:text-xl">Top destinations</h2>
-          <button className="text-sm text-[#00366B] font-medium hover:underline">View all</button>
+          <h2 className="font-poppins font-semibold text-[#003B71] text-2xl sm:text-xl">
+            Top destinations
+          </h2>
+          <button className="text-sm text-[#00366B] font-medium hover:underline">
+            View all
+          </button>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-3">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-            <div key={i} className="h-56 bg-gray-200 animate-pulse rounded-2xl sm:h-48"></div>
+            <div
+              key={i}
+              className="h-56 bg-gray-200 animate-pulse rounded-2xl sm:h-48"
+            ></div>
           ))}
         </div>
       </div>
@@ -147,10 +118,10 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
   }
 
   return (
-    <div className="w-full max-w-[1120px] mx-auto opacity-100" >
+    <div className="w-full max-w-[1120px] mx-auto opacity-100">
       <div className="flex justify-between items-center mb-6 sm:mb-5">
-      <h2
-  className="
+        <h2
+          className="
     font-poppins font-semibold
     text-[#003B71]
     text-[28px]
@@ -158,8 +129,12 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
     tracking-normal
     mb-8
   "
->Top destinations</h2>
-        <button className="text-sm text-[#00366B] font-medium hover:underline transition-all sm:text-xs">View all</button>
+        >
+          Top destinations
+        </h2>
+        <button className="text-sm text-[#00366B] font-medium hover:underline transition-all sm:text-xs">
+          View all
+        </button>
       </div>
       <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-4">
         {mappedDestinations.map((item, index) => (
@@ -175,7 +150,7 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
             <div
-  className="
+              className="
     absolute top-0 left-0
     bg-white/25 backdrop-blur-sm
     border border-white/40
@@ -187,7 +162,7 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
     inline-flex items-center whitespace-nowrap
     min-h-[33px]
   "
->
+            >
               {item.VisaType || "E-Visa"}
             </div>
             <div className="absolute bottom-4 left-3 right-3 text-white">
@@ -197,7 +172,7 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
                   Starts ₹{item.StartingPrice || "N/A"}
                 </p>
                 <span
-  className="
+                  className="
     absolute top-3 right-[-12px]
     bg-white/25 backdrop-blur-sm
     border border-white/30
@@ -209,7 +184,7 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
     min-h-[32px]
     opacity-100
   "
->
+                >
                   {item.GetVisaDays} {item.unit || "days"}
                 </span>
               </div>
@@ -217,7 +192,7 @@ const TopDestinationSection = ({ onPreFlowNavigation }: TopDestinationSectionPro
           </div>
         ))}
       </div>
-      
+
       {/* Mobile Horizontal Scroll */}
       <div className="flex md:hidden overflow-x-auto gap-3 pb-2 snap-x snap-mandatory -mx-5 px-5 scrollbar-hide">
         {mappedDestinations.map((item, index) => (

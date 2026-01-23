@@ -101,11 +101,11 @@ const MobileBottomDrawerSkeleton = () => (
 );
 
 
-const VisaTypeSection = ({
-  showOthers,
-  setShowOthers,
-  onPreFlowNavigation,
-}: any) => <div className="p-4">Visa Type Section</div>;
+// const VisaTypeSection = ({
+//   showOthers,
+//   setShowOthers,
+//   onPreFlowNavigation,
+// }: any) => <div className="p-4">Visa Type Section</div>;
 const BottomConfirmBar = ({
   residency,
   flagUrl,
@@ -167,6 +167,7 @@ import TopDestinationSection from "./top-destination-section/TopDestinationSecti
 import SearchDestination from "./search-destination/SearchDestination";
 import MobileBottomDrawer from "../bottom-drawer/BottomDrawer";
 import ResidencyDialogContent from "@/components/core-module/nationality-residency/common/ResidencyDialogContent";
+import { VisaTypeSection } from "@/components/core-module/visa-type";
 
 export type ModalTypes = "searchDestination" | "visaMode" | "travelDate" | "";
 

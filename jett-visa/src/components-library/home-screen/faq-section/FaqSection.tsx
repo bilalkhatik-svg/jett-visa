@@ -16,7 +16,7 @@ const FaqSection: React.FC = () => {
 
   // Fetch static content from API
   const { data: staticContentResponse } = useFetchStaticContentQuery({
-    language: i18n.language || 'en-US',
+    language: i18n.language || "en-US",
   });
 
   const toggleExpand = (index: number) =>
@@ -26,52 +26,14 @@ const FaqSection: React.FC = () => {
   const apiContent = staticContentResponse?.response?.[0];
   const apiFaqs = apiContent?.faqs || [];
 
-  const staticFaqs: FaqItem[] = [
-    {
-      question: t("what_is_visa") || "What is a visa?",
-      answer:
-        t("visa_explanation") ||
-        "A visa is an endorsement by the issuing country, usually stamped or bound into a passport, that allows the bearer to enter the country.",
-    },
-    {
-      question: t("how_long_visa") || "How long does it take to get a visa?",
-      answer:
-        t("visa_processing_time") ||
-        "Processing times vary by country and visa type, typically ranging from a few days to several weeks.",
-    },
-    {
-      question:
-        t("what_documents_required") || "What documents are required?",
-      answer:
-        t("required_documents") ||
-        "Commonly required documents include a passport, application form, photos, and proof of funds/accommodation.",
-    },
-    {
-      question: t("visa_validity") || "How long is a visa valid?",
-      answer:
-        t("visa_validity_explanation") ||
-        "Visa validity depends on the type and country. Tourist visas typically range from 30 days to 10 years.",
-    },
-    {
-      question: t("can_extend_visa") || "Can I extend my visa?",
-      answer:
-        t("visa_extension") ||
-        "Visa extension policies vary by country. Some allow extensions, while others require you to leave and reapply.",
-    },
-  ];
-
   // Use API FAQs if available, otherwise use static FAQs
-  const faqs: FaqItem[] = apiFaqs.length > 0
-    ? apiFaqs.map((faq: any) => ({
-      question: faq.question || '',
-      answer: faq.answer || '',
-    }))
-    : staticFaqs;
-
-  const downArrowIconSrc =
-    typeof DownArrowIcon === "string"
-      ? DownArrowIcon
-      : (DownArrowIcon as any)?.src || DownArrowIcon;
+  const faqs: FaqItem[] =
+    apiFaqs.length > 0
+      ? apiFaqs.map((faq: any) => ({
+          question: faq.question || "",
+          answer: faq.answer || "",
+        }))
+      : [];
 
   return (
     // <section className="w-full max-w-[1120px] mx-auto opacity-100" style={{minHeight:'324px'}}>
@@ -96,18 +58,13 @@ const FaqSection: React.FC = () => {
           const isExpanded = expanded === index;
 
           return (
-            <div
-              key={index}
-
-            >
-
+            <div key={index}>
               {/* Question row */}
               <button
                 type="button"
                 onClick={() => toggleExpand(index)}
                 aria-expanded={isExpanded}
                 className="w-full h-[52px] flex items-center justify-between px-5 text-left focus:outline-none hover:bg-gray-50 transition-colors sm:px-4 sm:py-3"
-                
               >
                 <span
                   className="
@@ -122,35 +79,31 @@ const FaqSection: React.FC = () => {
                   {faq.question}
                 </span>
 
-                {/* <img
-                  src={downArrowIconSrc}
-                  alt="expand"
-                  className={`w-5 h-5 transition-transform duration-300 flex-shrink-0 sm:w-4 sm:h-4 ${
-                    isExpanded ? "rotate-180" : "rotate-0"
-                  }`}
-                /> */}
                 <svg
-                  className={`w-4 h-4 ml-auto transition-transform `}
+                  className={`w-4 h-4 ml-auto transition-transform ${
+            isExpanded ? 'rotate-180' : ''
+          }` }
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={2}
                   viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
-              
+
               {/* Answer */}
               <div
                 className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                  isExpanded
-                    ? "max-h-[400px] opacity-100"
-                    : "max-h-0 opacity-0"
+                  isExpanded ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
                 <p className="px-5 pb-4 font-poppins text-[#6B7280] text-sm leading-relaxed sm:px-4 sm:pb-3 sm:text-xs">
-                   {faq.answer}
-                   
+                  {faq.answer}
                 </p>
               </div>
               <hr />
