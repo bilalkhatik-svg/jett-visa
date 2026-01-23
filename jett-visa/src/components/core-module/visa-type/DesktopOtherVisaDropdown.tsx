@@ -1,13 +1,10 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useVisaModes } from "@/utils/hooks/useVisaModes";
 import type { PendingAction } from "@/components-library/home-screen/HomeScreen";
 import { useLocation } from "@/utils/hooks/useLocation";
-import rightArrowIcon from "@/assets/images/icons/rightArrowIcon.png";
-import visaDefaultIcon from "@/assets/images/icons/othersIcon.png";
 
 interface DesktopOtherVisaDropdownProps {
   onPreFlowNavigation: (action: PendingAction) => boolean;
@@ -25,19 +22,14 @@ const DesktopOtherVisaDropdown: React.FC<DesktopOtherVisaDropdownProps> = ({
   const { visaModesList } = useVisaModes();
   const { nationality, residency } = useLocation();
 
-  const visaTypes =
-    visaModesList?.response?.map((mode) => ({
-      Code: mode?.Code,
-      Name: mode?.Name,
-      Description: mode?.Description,
-      Icon: mode?.Icon,
-      Url: mode?.Url,
-      Priority: mode?.Priority,
-    })) || [];
+  // Get all visa types from API response
+  const allVisaTypes = visaModesList?.response || [];
+  
+  // Get visa types that are NOT shown as stickers (skip first 3)
+  const otherVisaTypes = allVisaTypes.slice(3);
 
   const handleVisaClick = (modeCode: string) => {
-    debugger;
-    const buildQuery = `?mode=${modeCode?.toLocaleLowerCase()}&nat=${nationality?.isoCode || ""}&res=${residency?.isoCode || ""}`;
+    const buildQuery = `?mode=${modeCode?.toLowerCase()}&nat=${nationality?.isoCode || ""}&res=${residency?.isoCode || ""}`;
     const path = "/explore/visa-mode" + buildQuery;
     const url = `${window.location.origin}${path}`;
 
@@ -51,60 +43,96 @@ const DesktopOtherVisaDropdown: React.FC<DesktopOtherVisaDropdownProps> = ({
     onClose();
   };
 
-  const anchorRect = anchorRef.current?.getBoundingClientRect();
+  const [position, setPosition] = useState({ top: 0, left: 0 });
+
+  useEffect(() => {
+    const updatePosition = () => {
+      if (anchorRef.current) {
+        const rect = anchorRef.current.getBoundingClientRect();
+        setPosition({
+          top: rect.bottom + 12,
+          left: rect.left,
+        });
+      }
+    };
+
+    updatePosition();
+    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("resize", updatePosition);
+
+    return () => {
+      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, []);
+
+  // Don't render if no items
+  if (!otherVisaTypes || otherVisaTypes.length === 0) {
+    return null;
+  }
 
   const dropdownStyle = {
-    position: "absolute" as const,
-    top: anchorRect ? anchorRect.bottom + window.scrollY + 12 : 0,
-    left: anchorRect ? anchorRect.left + window.scrollX : 0,
+    position: "fixed" as const,
+    top: `${position.top}px`,
+    left: `${position.left}px`,
   };
 
   return (
-    <div
-      style={dropdownStyle}
-      className="bg-white rounded-2xl shadow-[0px_12px_30px_rgba(10,37,64,0.16)] border border-[rgba(237,240,247,1)] z-[1300] overflow-hidden"
-    >
-      <div className="flex flex-col p-2 gap-1">
-        {visaTypes.slice(3).map((item, index) => (
+    <>
+      {/* Backdrop to close dropdown */}
+      <div
+        className="fixed inset-0 z-[1299]"
+        onClick={onClose}
+      />
+      <div
+        style={dropdownStyle}
+        className="bg-white rounded-2xl shadow-[0px_12px_30px_rgba(10,37,64,0.16)] border border-[rgba(237,240,247,1)] z-[1300] overflow-hidden min-w-[280px]"
+      >
+      <div className="flex flex-col p-3 gap-2">
+        {otherVisaTypes.map((item: any, index: number) => (
           <div
-            key={item?.Code || index}
-            className="flex items-center justify-start gap-1 rounded-[28px] py-2.5 px-4 cursor-pointer hover:bg-gray-50 transition-colors"
-            onClick={() => handleVisaClick(item.Code)}
+            key={item?.Code || item?.code || `visa-${index}`}
+            className="flex items-center justify-between gap-3 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-colors rounded-lg"
+            onClick={() => handleVisaClick(item?.Code || item?.code || "")}
           >
-            {item?.Url ? (
+            {/* Left: Visa type icon */}
+            {item?.Url || item?.url ? (
               <img
-                src={item.Url}
-                alt={item?.Name}
-                width={26}
-                height={26}
-                className="w-[26px] h-[26px] object-contain"
+                src={item.Url || item.url}
+                alt={item?.Name || item?.name || "visa icon"}
+                className="w-5 h-5 object-contain flex-shrink-0"
               />
             ) : (
-              <Image
-                src={visaDefaultIcon}
-                alt={item?.Name || "visa icon"}
-                width={26}
-                height={26}
-                className="w-[26px] h-[26px] object-contain"
-              />
+              <div className="w-5 h-5 bg-gray-300 rounded flex-shrink-0" />
             )}
-            <div className="text-[#0A2540] text-sm font-medium flex-1">
-              {item?.Name || t("visa_type")}
+            
+            {/* Center: Visa type text in blue */}
+            <div className="text-[#00366B] text-sm font-medium flex-1 text-left">
+              {item?.Name || item?.name || t("visa_type")}
             </div>
-            <Image
-              src={rightArrowIcon}
-              alt="arrow"
-              width={14}
-              height={14}
-              className="w-[14px] h-[14px]"
+            
+            {/* Right: Blue chevron */}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#00366B"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="flex-shrink-0"
               style={{
                 transform: isRTL ? "rotate(180deg)" : "rotate(0deg)",
               }}
-            />
+            >
+              <path d="M9 18l6-6-6-6" />
+            </svg>
           </div>
         ))}
       </div>
     </div>
+    </>
   );
 };
 

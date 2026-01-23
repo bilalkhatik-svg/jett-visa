@@ -663,7 +663,7 @@ const HomeScreen = () => {
     >
       <div
         className="relative w-full bg-white shadow-sm"
-        style={{ zIndex: 1100 }}
+        style={{ zIndex: 1 }}
       >
         {isTopBarLoading ? (
           <TopBarSkeleton />
@@ -796,7 +796,7 @@ const HomeScreen = () => {
               <div
                 className="relative block mb-3 self-start"
                 style={{
-                  zIndex: 100,
+                  zIndex: 10,
                   width: isTablet ? "85%" : "65%",
                 }}
               >
@@ -815,13 +815,13 @@ const HomeScreen = () => {
 
             {/* Visa Mode Options - Mobile Only */}
             {isMobile && (
-              <div className="relative w-full mb-6" style={{ zIndex: 2 }}>
+              <div className="relative w-full mb-6" >
                 <VisaMode showDestinationModal={toggleModal} />
               </div>
             )}
 
-            {/* Search by country or city - Mobile Only - Always visible */}
-            {isMobile && (
+            {/* Search by country or city - Mobile Only - Hide when visa mode or travel date is selected */}
+            {isMobile && modalType !== "visaMode" && modalType !== "travelDate" && (
               <div className="relative w-full" style={{ zIndex: 2 }}>
                 <SearchField
                   isMobile={isMobile}
@@ -833,7 +833,7 @@ const HomeScreen = () => {
             )}
 
             {/* Desktop/Tablet VisaMode */}
-            {!isMobile && (
+            {/* {!isMobile && (
               <div
                 className="relative hidden md:block z-[2] mb-3 self-start"
                 style={{
@@ -842,7 +842,20 @@ const HomeScreen = () => {
               >
                 <VisaMode showDestinationModal={toggleModal} />
               </div>
-            )}
+            )} */}
+            <div
+  className="relative block mb-3 self-start z-[10]"
+  style={{
+    width: isTablet ? "85%" : "65%",
+  }}
+>
+  {!isMobile && (
+    <div className="relative hidden md:block z-[2]">
+      <VisaMode showDestinationModal={toggleModal} />
+    </div>
+  )}
+</div>
+
 
             {/* Desktop/Tablet Search Destination */}
             {!isMobile && modalType === "searchDestination" && (
