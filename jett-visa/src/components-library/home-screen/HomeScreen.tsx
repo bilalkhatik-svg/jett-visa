@@ -650,6 +650,8 @@ const HomeScreen = () => {
             onFlagClick={handleFlagClick}
             onLogoClick={() => { }}
             onSearchClick={handleSearchClick}
+            nationality={nationality}
+            residency={residency}
             onMenuClick={handleMenuClick}
             isFixed={isTopBarFixed}
             showSearchIcon={showSearchIcon}

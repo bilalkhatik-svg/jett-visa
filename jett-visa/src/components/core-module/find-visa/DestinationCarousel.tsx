@@ -1,7 +1,7 @@
 'use client';
-
+ 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-
+ 
 // Mobile-only styles for center card
 const mobileCenterCardStyles = `
   @media (max-width: 768px) {
@@ -17,14 +17,14 @@ const mobileCenterCardStyles = `
     }
   }
 `;
-
+ 
 // Types
 interface VisaChip {
   type: 'mode' | 'price' | 'processing';
   label: string;
   value: string;
 }
-
+ 
 interface Destination {
   id: string;
   country: string;
@@ -34,14 +34,14 @@ interface Destination {
   chips: VisaChip[];
   active: boolean;
 }
-
+ 
 interface DestinationCarouselProps {
   destinations: Destination[];
   onCardClick: (destination: Destination) => void;
   onScrollContainerReady?: (node: HTMLDivElement | null) => void;
   isMobile?: boolean;
 }
-
+ 
 // VisaCard component
 interface VisaCardProps {
   destination: Destination;
@@ -49,11 +49,11 @@ interface VisaCardProps {
   isCenter: boolean;
   showOnlyCountry: boolean;
 }
-
+ 
 const VisaCard: React.FC<VisaCardProps> = ({ destination, onClick, isCenter, showOnlyCountry }) => {
   const getImageSrc = (img: any) => typeof img === 'string' ? img : (img as any)?.src || img;
   const imageSrc = getImageSrc(destination.image);
-
+ 
   if (showOnlyCountry) {
     return (
       <div
@@ -81,7 +81,7 @@ const VisaCard: React.FC<VisaCardProps> = ({ destination, onClick, isCenter, sho
       </div>
     );
   }
-
+ 
   return (
     <div
       onClick={onClick}
@@ -168,13 +168,13 @@ const VisaCard: React.FC<VisaCardProps> = ({ destination, onClick, isCenter, sho
     </div>
   );
 };
-
+ 
 const DestinationCarousel: React.FC<DestinationCarouselProps> = React.memo(
   ({ destinations, onCardClick, onScrollContainerReady, isMobile = false }) => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [centerIndex, setCenterIndex] = useState(0);
     const initialScrollDone = useRef(false);
-
+ 
     // Inject mobile styles
     useEffect(() => {
       const styleId = 'mobile-center-card-styles';
@@ -191,27 +191,27 @@ const DestinationCarousel: React.FC<DestinationCarouselProps> = React.memo(
         }
       };
     }, []);
-
+ 
     const handleScroll = useCallback(() => {
       if (!scrollRef.current) return;
-
+ 
       const scrollLeft = scrollRef.current.scrollLeft;
       const containerCenter = scrollLeft + scrollRef.current.offsetWidth / 2;
-
+ 
       let closestIndex = 0;
       let closestDistance = Number.MAX_VALUE;
-
+ 
       Array.from(scrollRef.current.children).forEach((child, index) => {
         const card = child as HTMLElement;
         const cardCenter = card.offsetLeft + card.offsetWidth / 2;
         const distance = Math.abs(containerCenter - cardCenter);
-
+ 
         if (distance < closestDistance) {
           closestDistance = distance;
           closestIndex = index;
         }
       });
-
+ 
       // Only update if index actually changed to prevent unnecessary re-renders
       setCenterIndex(prevIndex => {
         if (prevIndex !== closestIndex) {
@@ -220,17 +220,17 @@ const DestinationCarousel: React.FC<DestinationCarouselProps> = React.memo(
         return prevIndex;
       });
     }, []);
-
+ 
     useEffect(() => {
       const el = scrollRef.current;
       if (onScrollContainerReady) {
         onScrollContainerReady(el);
       }
-
+ 
       if (el) {
         el.addEventListener('scroll', handleScroll);
       }
-
+ 
       return () => {
         if (el) {
           el.removeEventListener('scroll', handleScroll);
@@ -240,7 +240,7 @@ const DestinationCarousel: React.FC<DestinationCarouselProps> = React.memo(
         }
       };
     }, [destinations, handleScroll, onScrollContainerReady]);
-
+ 
     // Center second card on desktop initial load
     // useEffect(() => {
     //   if (isMobile || destinations.length <= 1) {
@@ -248,65 +248,65 @@ const DestinationCarousel: React.FC<DestinationCarouselProps> = React.memo(
     //     initialScrollDone.current = true;
     //     return;
     //   }
-
+ 
     //   if (initialScrollDone.current || !scrollRef.current) return;
-
+ 
     //   const scrollToSecondCard = () => {
     //     const container = scrollRef.current;
     //     if (!container) return;
-
+ 
     //     const secondCard = container.children[1] as HTMLElement;
     //     if (!secondCard) return;
-
+ 
     //     const containerWidth = container.offsetWidth;
     //     const cardWidth = secondCard.offsetWidth;
     //     const scrollPosition = secondCard.offsetLeft - (containerWidth / 2) + (cardWidth / 2);
-
+ 
     //     container.scrollLeft = scrollPosition;
     //     setCenterIndex(1);
     //     initialScrollDone.current = true;
     //   };
-
+ 
     //   // Wait for layout, then scroll
     //   requestAnimationFrame(() => {
     //     requestAnimationFrame(scrollToSecondCard);
     //   });
     // }, [isMobile, destinations]);
-
+ 
     useEffect(() => {
       if (destinations.length <= 1 || !scrollRef.current) return;
-
+ 
       // Use SAME logic for desktop & mobile
       const targetIndex = destinations.length > 1 ? 1 : 0;
-
+ 
       const scrollToTargetCard = () => {
         const container = scrollRef.current;
         if (!container) return;
-
+ 
         const targetCard = container.children[targetIndex] as HTMLElement;
         if (!targetCard) return;
-
+ 
         const containerWidth = container.offsetWidth;
         const cardWidth = targetCard.offsetWidth;
-
+ 
         const scrollPosition =
           targetCard.offsetLeft - containerWidth / 2 + cardWidth / 2;
-
+ 
         container.scrollLeft = scrollPosition;
         setCenterIndex(targetIndex);
         initialScrollDone.current = true;
       };
-
+ 
       if (initialScrollDone.current) return;
-
+ 
       requestAnimationFrame(() => {
         requestAnimationFrame(scrollToTargetCard);
       });
     }, [destinations]);
-
-
+ 
+ 
     const carouselClasses = `flex gap-2 max-md:gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth items-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]`;
-
+ 
     if (destinations.length === 1) {
       return (
         <div className="flex justify-center items-center w-full overflow-hidden">
@@ -319,7 +319,7 @@ const DestinationCarousel: React.FC<DestinationCarouselProps> = React.memo(
         </div>
       );
     }
-
+ 
     if (destinations.length === 2) {
       return (
         <div
@@ -342,7 +342,7 @@ const DestinationCarousel: React.FC<DestinationCarouselProps> = React.memo(
         </div>
       );
     }
-
+ 
     return (
       <div
         ref={scrollRef}
@@ -365,6 +365,6 @@ const DestinationCarousel: React.FC<DestinationCarouselProps> = React.memo(
     );
   }
 );
-
+ 
 DestinationCarousel.displayName = 'DestinationCarousel';
 export default DestinationCarousel;
