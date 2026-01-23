@@ -13,7 +13,7 @@ import {
   authenticatedUserExample,
   guestUserExample,
 } from "@/utility/mock/accountsMockData";
-import type { AccountMode, NavLink } from "@/utility/types/accounts/Accounts";
+import type { AccountMode, NavLink } from "@/utils/types/account/Accounts";
 import { useAppSelector } from "@/store/hooks";
 import FooterSection from "../home-screen/footer-section/FooterSection";
 

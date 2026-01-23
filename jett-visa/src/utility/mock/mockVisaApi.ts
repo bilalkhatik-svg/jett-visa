@@ -1,4 +1,4 @@
-import type { Nationality, Destination } from '@/utility/types/find-visa/Visa';
+import type { Nationality, Destination } from '@/utils/types/find-visa/Visa';
 import CardImg from '@/assets/images/germany-card-img.webp';
 
 export const nationalities: Nationality[] = [
