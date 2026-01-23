@@ -6,6 +6,7 @@ type InfoCardProps = {
   title: string;
   description: string;
   variant?: "vertical" | "horizontal";
+  chooseMusafir?: boolean;
 };
 
 const InfoCard: React.FC<InfoCardProps> = ({
@@ -13,6 +14,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
   imageAlt,
   title,
   description,
+  chooseMusafir,
   variant = "vertical",
 }) => {
   // Horizontal variant for Why Choose Musafir section
@@ -27,7 +29,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           maxWidth: '100%'
         }}
       >
-        <div className="flex flex-row items-start h-full" style={{ gap: '20px' }}>
+        <div className={`flex flex-row h-full ${chooseMusafir ? 'items-center' : 'items-start'}`} style={{ gap: '20px' }}>
           {/* Icon container */}
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EBF2FF] to-[#F8FAFC] flex items-center justify-center shrink-0">
             <img

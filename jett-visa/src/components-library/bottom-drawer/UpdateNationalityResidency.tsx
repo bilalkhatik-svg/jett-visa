@@ -21,7 +21,7 @@ const UpdateNationalityResidency = ({
         Update your nationality and Residency
       </h2>
 
-      <p className="text-sm text-[#003669] mb-6">
+      <p className="text-[#003669] mb-6 text-[12px]">
         Get accurate visa info, pricing and privileges based on your nationality and residency
       </p>
 
