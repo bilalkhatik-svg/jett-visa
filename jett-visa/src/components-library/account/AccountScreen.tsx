@@ -9,10 +9,10 @@ import TermsPrivacyList from "@/components/core-module/accounts/TermsPrivacyList
 import FooterMeta from "@/components/core-module/accounts/FooterMeta";
 import GuestHeaderBanner from "@/components/core-module/accounts/GuestHeaderBanner";
 import AccountSkeleton from "@/components/core-module/skeletons/AccountSkeleton";
-import {
-  authenticatedUserExample,
-  guestUserExample,
-} from "@/utility/mock/accountsMockData";
+// import {
+//   authenticatedUserExample,
+//   guestUserExample,
+// } from "@/utility/mock/accountsMockData";
 import type { AccountMode, NavLink } from "@/utility/types/accounts/Accounts";
 import { useAppSelector } from "@/store/hooks";
 import FooterSection from "../home-screen/footer-section/FooterSection";
@@ -30,8 +30,8 @@ const AccountScreen: React.FC = () => {
     return () => clearTimeout(timer);
   }, [mode]);
 
-  const data =
-    mode === "authenticated" ? authenticatedUserExample : guestUserExample;
+  // const data =
+  //   mode === "authenticated" ? authenticatedUserExample : guestUserExample;
 
   const { isAuthenticated, user, navigationLinks, applicationMetadata } = data;
 
