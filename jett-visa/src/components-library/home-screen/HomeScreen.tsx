@@ -207,9 +207,11 @@ const HomeScreen = () => {
   const [isTopBarFixed, setIsTopBarFixed] = useState(false);
   // Desktop search dropdown state now handled in DesktopSearchDropdown
   const [showSearchIcon, setShowSearchIcon] = useState(false);
+  const [showFloatingInspireMe, setShowFloatingInspireMe] = useState(false);
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTablet = useMediaQuery("(max-width:900px) and (min-width:601px)");
   const heroSectionRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
   const nationalitySelectorRef = useRef<NationalityResidencySelectorRef>(null);
 
   const { t, i18n: i18nInstance } = useTranslation();
@@ -347,7 +349,7 @@ const HomeScreen = () => {
   const handleUpdateResidency = useCallback(
     (country: ICountry) => {
       dispatch(setResidency(country));
-    },
+    },   
     [dispatch],
   );
 
@@ -435,6 +437,28 @@ const HomeScreen = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const isScrollingUp = currentScrollY < lastScrollY.current;
+      lastScrollY.current = currentScrollY;
+
+      setShowFloatingInspireMe(true);
+      // if (currentScrollY > 300 && isScrollingUp) {
+      //   return;
+      // }
+
+      // if (currentScrollY < 200 || !isScrollingUp) {
+      //   setShowFloatingInspireMe(false);
+      // }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -670,9 +694,9 @@ const HomeScreen = () => {
         >
           <div
             className={`relative w-full flex flex-col rounded-b-3xl ${
-              isMobile 
-                ? 'pb-10 pt-6 px-5 min-h-[auto] justify-start' 
-                : 'pb-12 pt-16 px-12 min-h-[600px] justify-center items-center lg:px-20 xl:px-32 2xl:px-40'
+              isMobile
+                ? 'pb-10 pt-6 px-5 min-h-[auto] justify-start'
+                : 'pb-12 pt-20 px-12 min-h-[600px] 2xl:min-h-[700px] justify-start items-start lg:px-20 xl:px-40 2xl:px-40'
             }`}
             style={{
               backgroundImage: isMobile
@@ -711,7 +735,7 @@ const HomeScreen = () => {
               }`}
               style={{
                 zIndex: 2,
-                width: isMobile ? "100%" : isTablet ? "85%" : "65%",
+                width: isMobile ? "100%" : isTablet ? "85%" : "560px",
               }}
             >
               <div className="relative inline-block">
@@ -771,7 +795,7 @@ const HomeScreen = () => {
                 className="relative block mb-3 self-start"
                 style={{
                   zIndex: 100,
-                  width: isTablet ? "85%" : "65%",
+                  width: isTablet ? "85%" : "560px",
                 }}
               >
                 <div className="w-full">
@@ -812,7 +836,7 @@ const HomeScreen = () => {
               <div
                 className="relative hidden md:block z-[2] mb-3 self-start"
                 style={{
-                  width: isTablet ? "85%" : "65%",
+                  width: isTablet ? "85%" : "560px",
                 }}
               >
                 <VisaMode showDestinationModal={toggleModal} />
@@ -824,7 +848,7 @@ const HomeScreen = () => {
               <div
                 className="relative flex justify-start z-[2] mb-4 self-start"
                 style={{
-                  width: isTablet ? "85%" : "65%",
+                  width: isTablet ? "85%" : "560px",
                 }}
               >
                 <DesktopSearchDropdown
@@ -893,11 +917,48 @@ const HomeScreen = () => {
         </div>
       )}
 
+      
+      {isTopBarFixed && showFloatingInspireMe && !isMobile && (
+        <div className="fixed inset-x-0 bottom-6 z-[9999]">
+          <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-end">
+              <button
+                onClick={handleInspireMeClick}
+                className="rounded-full p-[2px] shadow-lg transition-all duration-300 hover:shadow-xl"
+                style={{
+                  background: "linear-gradient(135deg, #D536F6 0%, #75ECF3 100%)",
+                }}
+                aria-label="Inspire me"
+              >
+                <span className="rounded-full px-4 py-2 flex items-center justify-center gap-2 bg-white">
+                  <img
+                    src={inspireMeGifSrc}
+                    alt=""
+                    className="w-[24px] h-[20px] object-contain"
+                  />
+                  <span
+                    className="text-sm font-semibold whitespace-nowrap"
+                    style={{
+                      background: "linear-gradient(135deg, #D536F6, #0AB1BA)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
+                    Inspire me
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
       {isDestinationsLoading ? (
         <TopDestinationsSkeleton numberOfItems={8} />
       ) : (
         <div className="w-full">
-          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 md:overflow-hidden">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 pt-12 sm:pt-16 md:overflow-hidden">
             <TopDestinationSection onPreFlowNavigation={handlePreFlowNavigation} />
           </div>
         </div>
@@ -949,7 +1010,7 @@ const HomeScreen = () => {
         <FaqSectionSkeleton />
       ) : (
         <div className="w-full pt-6 sm:pt-8 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:ml-[6%]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <FaqSection />
           </div>
         </div>

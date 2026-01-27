@@ -9,7 +9,6 @@ import { saveAuthTokens } from '@/utils/authStorage';
  * @returns Object with authorize function and loading/error states
  */
 export const useAuthorization = () => {
-  // debugger;
   const dispatch = useDispatch();
   const [authorize, { isLoading, error }] = useAuthorizeMutation();
 

@@ -36,7 +36,6 @@ const DesktopOtherVisaDropdown: React.FC<DesktopOtherVisaDropdownProps> = ({
     })) || [];
 
   const handleVisaClick = (modeCode: string) => {
-    debugger;
     const buildQuery = `?mode=${modeCode?.toLocaleLowerCase()}&nat=${nationality?.isoCode || ""}&res=${residency?.isoCode || ""}`;
     const path = "/explore/visa-mode" + buildQuery;
     const url = `${window.location.origin}${path}`;

@@ -1,249 +1,130 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useState, Suspense } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "@/utils/i18nStub";
-import { useSearchParams } from "next/navigation";
-import Image from "next/image";
-
-// Mock data
-const continents = ['Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'];
-
-// Types
-interface DestinationItem {
-  name: string;
-  image: string;
-  price?: number;
-  currency?: string;
-  time?: number;
-  isEarliest?: boolean;
-}
-
-interface NationalityResidency {
-  flag?: string;
-  text?: string;
-}
-
-// Simple ModeSelection placeholder component
-const ModeSelection = ({ 
-  title, 
-  nationality, 
-  residency, 
-  renderItems, 
-  isLoading 
-}: {
-  title: string;
-  nationality?: NationalityResidency;
-  residency?: NationalityResidency;
-  renderItems: DestinationItem[];
-  isLoading: boolean;
-}) => {
-  if (isLoading) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="skeleton h-8 w-64 mb-4"></div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="skeleton h-64 w-full rounded-lg"></div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-primary mb-6">{title}</h1>
-      
-      {(nationality || residency) && (
-        <div className="flex gap-4 mb-6">
-          {nationality && (
-            <div className="flex items-center gap-2">
-              {nationality.flag && (
-                <Image
-                  src={nationality.flag}
-                  alt={nationality.text || 'Nationality'}
-                  width={24}
-                  height={24}
-                  className="rounded-full"
-                />
-              )}
-              <span className="text-sm text-base-content">{nationality.text}</span>
-            </div>
-          )}
-          {residency && (
-            <div className="flex items-center gap-2">
-              {residency.flag && (
-                <Image
-                  src={residency.flag}
-                  alt={residency.text || 'Residency'}
-                  width={24}
-                  height={24}
-                  className="rounded-full"
-                />
-              )}
-              <span className="text-sm text-base-content">{residency.text}</span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {renderItems.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {renderItems.map((item, index) => (
-            <div key={`${item.name}-${index}`} className="card bg-base-100 shadow-xl">
-              <figure>
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={400}
-                  height={192}
-                  className="w-full h-48 object-cover"
-                />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title text-primary">{item.name}</h2>
-                <div className="flex gap-2 flex-wrap">
-                  {item.price && (
-                    <div className="badge badge-primary">
-                      {item.currency}{item.price}
-                    </div>
-                  )}
-                  {item.time && (
-                    <div className="badge badge-outline">
-                      {item.time} days
-                    </div>
-                  )}
-                  {item.isEarliest && (
-                    <div className="badge badge-success">Earliest</div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="alert alert-info">
-          <span>No destinations found</span>
-        </div>
-      )}
-    </div>
-  );
-};
-
-interface Country {
-  id?: string;
-  isoCode?: string;
-  name?: string;
-  nationality?: string;
-  residency?: string;
-  flag?: string;
-}
-
-interface ApiDestination {
-  id: string;
-  countryName: string;
-  images?: Array<{ filename: string }>;
-  startingPrice?: number;
-  symbol?: string;
-  getVisaDays?: number;
-  isEarliest?: boolean;
-}
-
-const AllDestinationsContent = () => {
-  const { t } = useTranslation();
-  const searchParams = useSearchParams();
-  const passedContinent = searchParams?.get('continent') || null;
-  const DEFAULT_CONTINENT = passedContinent || continents[0] || "Asia";
-  const [selectedContinent, setSelectedContinent] = useState<string>(DEFAULT_CONTINENT);
-  
-  // Local state for nationality and residency
-  const [nationality, setNationality] = useState<Country | null>(null);
-  const [residency, setResidency] = useState<Country | null>(null);
-  const [destinations, setDestinations] = useState<ApiDestination[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    if (passedContinent) {
-      setSelectedContinent(passedContinent);
-    }
-  }, [passedContinent]);
-
-  // Mock API call - replace with actual API call when available
-  useEffect(() => {
-    if (!nationality?.isoCode) return;
-    
-    setIsLoading(true);
-    setIsError(false);
-    
-    // Simulate API call
-    const fetchDestinations = async () => {
-      try {
-        // TODO: Replace with actual API call
-        // const response = await fetch(`/api/destinations?continent=${selectedContinent}&isoCode=${nationality.isoCode}`);
-        // const data = await response.json();
-        // setDestinations(data);
-        
-        // Mock data for now
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setDestinations([]);
-      } catch (error) {
-        console.error('Error fetching destinations:', error);
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDestinations();
-  }, [selectedContinent, nationality?.isoCode]);
-
-  // Convert API data → card items used by ModeSelection
-  const renderItems = useMemo<DestinationItem[]>(() => {
-    if (isError) return [];
-    if (!destinations || destinations.length === 0) return [];
-    
-    return destinations.map((item: ApiDestination) => ({
-      name: item.countryName,
-      image: item.images?.[0]?.filename || '/assets/images/germany-card-img.webp',
-      price: item.startingPrice,
-      currency: item.symbol,
-      time: item.getVisaDays,
-      isEarliest: item.isEarliest || false,
-    }));
-  }, [destinations, isError]);
-
-  return (
-    <ModeSelection
-      title={t("all_destinations") || "All Destinations"}
-      nationality={{
-        flag: nationality?.flag,
-        text: nationality?.nationality || nationality?.name,
-      }}
-      residency={{
-        flag: residency?.flag,
-        text: residency?.residency || residency?.name,
-      }}
-      renderItems={renderItems}
-      isLoading={isLoading}
-    />
-  );
-};
+import { useFetchDestinationsQuery, type Destination as ApiDestination } from "@/store/visaDestinationsApi";
+import { useAppSelector } from "@/store/hooks";
+import { getApiLanguageCode } from "@/utils/helper";
+import SearchIcon from "@/assets/images/icons/search.png";
 
 const AllDestinationsPage = () => {
+  const { t, i18n } = useTranslation();
+  const nationality = useAppSelector((state) => state.locationSlice.nationality);
+  const residency = useAppSelector((state) => state.locationSlice.residency);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const nationalityIsoCode = (nationality as any)?.isoCode || "";
+  const currentLanguage = i18n.language || "en";
+  const apiLanguage = getApiLanguageCode(currentLanguage);
+
+  const { data: destinationsResponse, isLoading, isError } = useFetchDestinationsQuery(
+    {
+      continent: "",
+      isoCode2: nationalityIsoCode,
+      language: apiLanguage,
+    },
+    {
+      skip: !nationalityIsoCode,
+    }
+  );
+
+  const destinations = destinationsResponse?.response ?? [];
+  const filteredDestinations = useMemo(() => {
+    if (!searchTerm) return destinations;
+    return destinations.filter((item: ApiDestination) =>
+      item.countryName?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [destinations, searchTerm]);
+
+  const searchIconSrc =
+    typeof SearchIcon === "string" ? SearchIcon : (SearchIcon as any)?.src || SearchIcon;
+
   return (
-    <Suspense fallback={
-      <div className="container mx-auto px-4 py-8">
-        <div className="skeleton h-8 w-64 mb-4"></div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="skeleton h-64 w-full rounded-lg"></div>
-          ))}
+    <div className="w-full bg-white min-h-screen">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 pt-24 pb-12">
+        <h1 className="text-center text-[#003669] text-3xl font-semibold mb-6">
+          {t("all_destinations") || "All destinations"}
+        </h1>
+
+        <div className="flex justify-center mb-6">
+          <div className="relative w-full max-w-[600px]">
+            <input
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder={t("search_by_country_or_city") || "Search by country or city"}
+              className="w-full h-[46px] rounded-full border border-[#E7ECF2] bg-white px-5 pr-12 text-sm text-[#667085] focus:outline-none focus:border-[#003669]"
+            />
+            <img
+              src={searchIconSrc}
+              alt=""
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-70"
+            />
+          </div>
         </div>
+
+        <div className="mb-6 text-sm text-[#003669] font-medium">
+          {t("based_on_nationality_and_residency") || "Based on your nationality & residency"}
+          <span className="text-[#6B7280] font-normal">
+            {" "}
+            • {filteredDestinations.length}{" "}
+            {filteredDestinations.length === 1 ? "destination" : "destinations"}
+          </span>
+        </div>
+
+        {isLoading && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <div key={i} className="h-64 bg-gray-200 animate-pulse rounded-2xl" />
+            ))}
+          </div>
+        )}
+
+        {!isLoading && isError && (
+          <div className="text-center text-sm text-gray-500 py-10">
+            {t("error_loading_destinations") || "Error loading destinations"}
+          </div>
+        )}
+
+        {!isLoading && !isError && filteredDestinations.length === 0 && (
+          <div className="text-center text-sm text-gray-500 py-10">
+            {t("no_results") || "No results found"}
+          </div>
+        )}
+
+        {!isLoading && !isError && filteredDestinations.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
+            {filteredDestinations.map((item) => (
+              <div
+                key={item.id}
+                className="relative h-64 rounded-2xl overflow-hidden shadow-lg bg-gray-100"
+              >
+                <img
+                  src={item.images?.[0]?.filename || "/assets/images/germany-card-img.webp"}
+                  alt={item.countryName}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute top-0 left-0 bg-white/25 backdrop-blur-sm border border-white/40 text-[#3F6B96] text-[10px] font-medium rounded-tl-[20px] rounded-br-[9px] pt-[6px] pr-[16px] pb-[6px] pl-[20px] inline-flex items-center whitespace-nowrap min-h-[33px]">
+                  {item.visaModeName || item.visaMode || "Visa"}
+                </div>
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <h3 className="font-semibold text-base mb-1">{item.countryName}</h3>
+                  <div className="flex items-center justify-between text-xs">
+                    <span>
+                      {item.startsPrefix || "Starts"} {item.symbol}
+                      {item.startingPrice}
+                    </span>
+                    <span className="bg-white/20 border border-white/30 rounded-full px-3 py-1">
+                      {item.getVisaDays} {item.getVisaDays === 1 ? "day" : "days"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    }>
-      <AllDestinationsContent />
-    </Suspense>
+    </div>
   );
 };
 

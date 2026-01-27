@@ -31,11 +31,11 @@ const InfoCard: React.FC<InfoCardProps> = ({
       >
         <div className={`flex flex-row h-full ${chooseMusafir ? 'items-center' : 'items-start'}`} style={{ gap: '20px' }}>
           {/* Icon container */}
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EBF2FF] to-[#F8FAFC] flex items-center justify-center shrink-0">
+          <div className="w-[90px] h-[90px] rounded-full  flex items-center justify-center shrink-0">
             <img
               src={imageSrc}
               alt={imageAlt}
-              className="w-7 h-7 object-contain"
+              className="w-full h-full object-contain"
             />
           </div>
 

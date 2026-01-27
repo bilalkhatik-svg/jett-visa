@@ -47,8 +47,6 @@ const VisaTypeSection: React.FC<VisaTypeSectionProps> = ({
   const { nationality, residency } = useLocation();
 
   const handleVisaClick = (modeCode: string) => {
-    debugger;
-    console.log("modeCode", modeCode)
     const buildQuery = `?mode=${modeCode?.toLocaleLowerCase()}&nat=${nationality?.isoCode || ''}&res=${residency?.isoCode || ''}`;
     const path = "/explore/visa-mode" + buildQuery;
     const url = `${window.location.origin}${path}`;
