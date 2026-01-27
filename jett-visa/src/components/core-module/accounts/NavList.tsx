@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import type { NavLink } from "@/utils/types/account/Accounts";
+import type { NavLink } from "@/utils/types/account/accounts";
 import RightArrowIcon from "@/assets/images/icons/arrowrighticon.webp";
 import { useTranslation } from "react-i18next";
 

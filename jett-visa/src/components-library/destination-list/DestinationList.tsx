@@ -46,7 +46,7 @@ const DestinationList = React.memo(({
 
       const updated = prev.map(saved => {
         const current = countryListData.response.find(
-          (c: ICountry) => c.isoCode === saved.isoCode
+          c => c.isoCode === saved.isoCode
         );
         return current ?? saved;
       });

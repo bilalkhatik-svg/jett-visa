@@ -172,7 +172,7 @@ const TopBar: React.FC<TopBarProps> = ({
 
   return (
     <header
-      className={`w-full transition-all duration-300 ${isFixed
+      className={`w-full max-w-[1120px] left-1/2 -translate-x-1/2 transition-all duration-300 ${isFixed
         ? 'fixed top-3 z-50 rounded-b-3xl shadow-sm bg-white backdrop-blur-sm'
         : 'absolute top-0 z-50  bg-opacity-95'
         }`}

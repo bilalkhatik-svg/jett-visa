@@ -108,7 +108,7 @@ const VisaCard: React.FC<VisaCardProps> = ({ destination, onClick, isCenter, sho
               className="absolute inset-0 max-md:hidden"
               style={{
                 background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.50) 48.78%)',
-                backdropFilter: 'blur(4px)',
+                backdropFilter: 'blur(1px)',
               }}
             />
             <div
@@ -120,7 +120,7 @@ const VisaCard: React.FC<VisaCardProps> = ({ destination, onClick, isCenter, sho
                   rgba(74, 129, 253, 0.18) 100%
                 )`,
                 mixBlendMode: 'soft-light',
-                backdropFilter: 'blur(4px)',
+                 backdropFilter: 'blur(1px)',
               }}
             />
           </figure>

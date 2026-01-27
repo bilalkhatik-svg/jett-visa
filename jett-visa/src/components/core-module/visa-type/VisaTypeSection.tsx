@@ -36,11 +36,11 @@ const VisaTypeSection: React.FC<VisaTypeSectionProps> = ({
   const isMobile = useMediaQuery("(max-width: 640px)");
   const visaTypes: VisaType[] =
     visaModesList?.response?.map((mode) => ({
-      Code: mode?.Code,
-      Name: mode?.Name,
-      Description: mode?.Description,
-      Icon: mode?.Icon,
-      Url: mode?.Url,
+      Code: mode?.code,
+      Name: mode?.name,
+      Description: mode?.description,
+      Icon: mode?.icon,
+      Url: mode?.url,
       Priority: mode?.Priority,
     })) || [];
 

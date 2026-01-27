@@ -1,12 +1,12 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { LocationResponse } from "@/store/locationApi";
-import type { ICountry } from '@/utils/types/nationality-residency/Country';
+import type { Country } from '@/utils/types/nationality-residency/Country';
 
 interface LocationState {
   ip: string;
-  country: ICountry | null;
-  residency: ICountry | null;  
-  nationality: ICountry | null;
+  country: Country | null;
+  residency: Country | null;  
+  nationality: Country | null;
   countryIsoCode: string;
   locationResponse: any;
 }
@@ -24,10 +24,10 @@ export const locationSlice = createSlice({
   name: "location",
   initialState,
   reducers: {
-    setNationality: (state, action: PayloadAction<ICountry | null>) => {
+    setNationality: (state, action: PayloadAction<Country | null>) => {
       state.nationality = action.payload;
     },
-    setResidency: (state, action: PayloadAction<ICountry | null>) => {
+    setResidency: (state, action: PayloadAction<Country | null>) => {
       state.residency = action.payload;
     },
     setLocationData: (state, action: PayloadAction<LocationResponse>) => {
