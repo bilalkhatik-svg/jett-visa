@@ -718,7 +718,8 @@ const HomeScreen = () => {
                   className="absolute bottom-0 right-0 w-[50%] h-full pointer-events-none opacity-90"
                   style={{
                     backgroundImage: `url(${scrollBgImageSrc})`,
-                    backgroundSize: "cover",
+                    // backgroundSize: "cover",
+                    // objectFit: "cover",
                     backgroundPosition: "center right",
                     backgroundRepeat: "no-repeat",
                     zIndex: 1,
