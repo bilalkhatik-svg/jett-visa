@@ -19,6 +19,7 @@ import TopBar from "@/components/core-module/navbar/TopBar";
 import { i18n } from "@/utils/i18nStub";
 import { useFetchCountryListQuery } from "@/store/visaCountryListApi";
 import { useFetchIPQuery, useFetchGeoIPQuery } from "@/store/locationApi";
+import { useFetchTopDestinationQuery } from "@/store/visaTopDestinationApi";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import {
   setNationality,
@@ -223,6 +224,34 @@ const HomeScreen = () => {
   const countryListData = countryListResponse?.response
     ? { response: countryListResponse.response }
     : { response: [] };
+
+  // Fetch top destinations
+  const {
+    data: topDestinationResponse,
+    isLoading: isTopDestinationListPending,
+  } = useFetchTopDestinationQuery({
+    count: 20,
+    language: i18nInstance.language || "en-US",
+  });
+
+  // Map top destinations data
+  const topDestinations = useMemo(() => {
+    const topDestinationList = topDestinationResponse?.Response || [];
+    return topDestinationList.map((dest: any) => ({
+      VisaType: dest.VisaType || "E-Visa",
+      imageUrl: dest.Images?.[0]?.Filename || "",
+      name: dest.Name || "",
+      GetVisaDays:
+        typeof dest.GetVisaDays === "number"
+          ? dest.GetVisaDays
+          : Number(dest.GetVisaDays) || 0,
+      order: dest.Order || 0,
+      unit: dest.Unit || "days",
+      currencyCode: "",
+      CountryCode: dest.IsoCode2 || "",
+      StartingPrice: dest.StartingPrice || "0",
+    }));
+  }, [topDestinationResponse]);
 
   // Log API errors for debugging
   useEffect(() => {
@@ -1036,13 +1065,15 @@ const HomeScreen = () => {
         </div>
       )}
 
-      {isDestinationsLoading ? (
+      {isDestinationsLoading || isTopDestinationListPending ? (
         <TopDestinationsSkeleton numberOfItems={8} />
       ) : (
         <div className="w-full">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 pt-12 sm:pt-16 md:overflow-hidden">
             <TopDestinationSection
               onPreFlowNavigation={handlePreFlowNavigation}
+              destinations={topDestinations}
+              isLoading={isTopDestinationListPending}
             />
           </div>
         </div>

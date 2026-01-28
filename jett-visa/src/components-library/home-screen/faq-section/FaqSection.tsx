@@ -69,7 +69,7 @@ const FaqSection: React.FC = () => {
                 <span
                   className="
     font-poppins font-medium
-    text-[#003B71]
+    text-[#003669]
     text-[18px]
     leading-[1]
     tracking-normal
@@ -102,7 +102,7 @@ const FaqSection: React.FC = () => {
                   isExpanded ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
-                <p className="px-5 pb-4 font-poppins text-[#6B7280] text-sm leading-relaxed sm:px-4 sm:pb-3 sm:text-xs">
+                <p className="px-4 pb-4 font-poppins text-[#6B7280] text-[16px] leading-relaxed">
                   {faq.answer}
                 </p>
               </div>

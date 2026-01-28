@@ -178,7 +178,8 @@ const SearchTravelDate = ({
   };
 
   return (
-    <div className="relative z-10 mt-[1%] ml-[-20%] max-sm:ml-0 max-sm:flex max-sm:justify-center">
+    <div className="w-full">
+    <div className="relative z-10 mt-[1%] max-sm:ml-0 max-sm:flex max-sm:justify-center">
       {!isMobileView ? (
         /* ================= DESKTOP (UNCHANGED) ================= */
         <div className="relative z-10">
@@ -199,7 +200,7 @@ const SearchTravelDate = ({
         setDesktopCalendarOpen(true);
       }}
       className="flex items-center justify-between rounded-[14px] border-2 border-[#E0E0E0]
-        px-3 py-2 bg-white backdrop-blur cursor-pointer flex-shrink-0
+        px-4 py-4 bg-white backdrop-blur cursor-pointer flex-shrink-0
         relative z-10 w-[295px] max-w-[315px]"
     >
       {!isArabic ? (
@@ -215,16 +216,16 @@ const SearchTravelDate = ({
           {inputValue || t("select_travel_date")}
         </div>
       )}
-      <img src={calenderIconSrc} width={14} height={14} alt="calendar" />
+      <img src={calenderIconSrc} className="w-5 h-5" alt="calendar" />
     </div>
 
     {/* Instant */}
     <button
       onClick={() => handleQuickSelect("instant")}
       className="flex items-center gap-2 rounded-[10px] border border-[#E0E0E0]
-        bg-white px-3 py-2 shadow-sm hover:bg-gray-50 transition flex-shrink-0"
+        bg-white px-4 py-4 shadow-sm hover:bg-gray-50 transition flex-shrink-0"
     >
-      <img src={rightAwayIconSrc} className="w-4 h-4" />
+      <img src={rightAwayIconSrc} className="w-5 h-5" />
       <span className="text-sm text-[#003669] whitespace-nowrap">
         {"instant within 2 weeks"}
       </span>
@@ -234,9 +235,9 @@ const SearchTravelDate = ({
     <button
       onClick={() => handleQuickSelect("month")}
       className="flex items-center gap-2 rounded-[10px] border border-[#E0E0E0]
-        bg-white px-3 py-2 shadow-sm hover:bg-gray-50 transition flex-shrink-0"
+        bg-white px-4 py-4 shadow-sm hover:bg-gray-50 transition flex-shrink-0"
     >
-      <img src={monthIconSrc} className="w-4 h-4" />
+      <img src={monthIconSrc} className="w-5 h-5" />
       <span className="text-sm text-[#003669] whitespace-nowrap">
         {"within a month"}
       </span>
@@ -246,9 +247,9 @@ const SearchTravelDate = ({
     <button
       onClick={() => handleQuickSelect("moreThanMonth")}
       className="flex items-center gap-2 rounded-[10px] border border-[#E0E0E0]
-        bg-white px-3 py-2 shadow-sm hover:bg-gray-50 transition flex-shrink-0"
+        bg-white px-4 py-4 shadow-sm hover:bg-gray-50 transition flex-shrink-0"
     >
-      <img src={calenderIconSrc} className="w-4 h-4" />
+      <img src={calenderIconSrc} className="w-5 h-5" />
       <span className="text-sm text-[#003669] whitespace-nowrap">
         {"more than a month"}
       </span>
@@ -618,6 +619,7 @@ const SearchTravelDate = ({
           )}
         </div>
       )}
+    </div>
     </div>
   );
 };

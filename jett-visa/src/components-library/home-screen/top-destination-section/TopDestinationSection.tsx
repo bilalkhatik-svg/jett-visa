@@ -1,9 +1,8 @@
 "use client";
 
 import { useMemo, useRef } from "react";
-import { useFetchTopDestinationQuery } from "@/store/visaTopDestinationApi";
 import { useAppSelector } from "@/store/hooks";
-import { useTranslation } from "@/utils/i18nStub";
+import { useIsDesktop } from "@/utils/hooks/useDesktop";
 // import type { PendingAction } from "@features/home-screen/HomeScreen";
 // import type { TopDestinationItem } from "@/utility/types/top-destination/TopDestinationItem";
 
@@ -15,22 +14,7 @@ export type PendingAction = {
   [key: string]: any;
 };
 
-interface TopDestination {
-  VisaType?: string;
-  Images?: Array<{ Filename?: string }>;
-  Name?: string;
-  GetVisaDays?: string | number;
-  Order?: number;
-  Unit?: string;
-  IsoCode2?: string;
-  StartingPrice?: string | number;
-  Type?: "CITY" | "COUNTRY";
-  Status?: string;
-  Description?: string;
-  ApplyTo?: any[];
-}
-
-interface TopDestinationItem {
+export interface TopDestinationItem {
   VisaType?: string;
   imageUrl: string;
   name?: string;
@@ -44,51 +28,49 @@ interface TopDestinationItem {
 
 interface TopDestinationSectionProps {
   onPreFlowNavigation: (action: PendingAction) => boolean;
+  destinations: TopDestinationItem[];
+  isLoading: boolean;
+  hideViewAll?: boolean;
+  title?: string;
 }
 
 const TopDestinationSection = ({
   onPreFlowNavigation,
+  destinations,
+  isLoading,
+  hideViewAll = false,
+  title = "Top destinations",
 }: TopDestinationSectionProps) => {
-  const { i18n } = useTranslation();
   const residency = useAppSelector((state) => state.locationSlice.residency);
-
-  // Fetch top destinations
-  const {
-    data: topDestinationResponse,
-    isLoading: isTopDestinationListPending,
-  } = useFetchTopDestinationQuery({
-    count: 20,
-    language: i18n.language || "en-US",
-  });
-
-  const topDestinationList = topDestinationResponse?.Response;
-
+  const isDesktop  = useIsDesktop();
   const mappedDestinations: TopDestinationItem[] = useMemo(() => {
-    return (topDestinationList || []).map((dest: TopDestination) => ({
-      VisaType: dest.VisaType || "E-Visa",
-      imageUrl: dest.Images?.[0]?.Filename || "",
-      name: dest.Name || "",
-      GetVisaDays:
-        typeof dest.GetVisaDays === "number"
-          ? dest.GetVisaDays
-          : Number(dest.GetVisaDays) || 0,
-      order: dest.Order || 0,
-      unit: dest.Unit || "days",
-      currencyCode: "",
-      CountryCode: dest.IsoCode2 || "",
-      StartingPrice: dest.StartingPrice || "0",
-    }));
-  }, [topDestinationList]);
+    return destinations || [];
+  }, [destinations]);
 
-  const handleCardClick = () => {
-    const path = "/all-destinations";
+  const handleCardClick = (item?: TopDestinationItem) => {
+    if (item?.CountryCode) {
+      // Navigate to specific destination visa page
+      const residencyIso = (residency as any)?.isoCode || "";
+      const path = `/visa?res=${residencyIso}&dest=${item.CountryCode}`;
+      
+      const action: PendingAction = {
+        type: "navigate",
+        url: path,
+        destination: item,
+      };
 
-    const action: PendingAction = {
-      type: "navigate",
-      url: path,
-    };
+      onPreFlowNavigation(action);
+    } else {
+      // Navigate to all destinations page
+      const path = "/all-destinations";
 
-    onPreFlowNavigation(action);
+      const action: PendingAction = {
+        type: "navigate",
+        url: path,
+      };
+
+      onPreFlowNavigation(action);
+    }
   };
 
   const desktopScrollRef = useRef<HTMLDivElement>(null);
@@ -115,16 +97,18 @@ const TopDestinationSection = ({
   };
 
   // Simple TopDestinationList replacement - replace with component when available
-  if (isTopDestinationListPending) {
+  if (isLoading) {
     return (
       <div className="w-full">
         <div className="flex justify-between items-center mb-6">
           <h2 className="font-poppins font-semibold text-[#003B71] text-2xl sm:text-xl">
-            Top destinations
+            {title}
           </h2>
-          <button className="text-sm text-[#00366B] font-medium hover:underline">
-            View all
-          </button>
+          {!hideViewAll && (
+            <button className="text-sm text-[#00366B] font-medium hover:underline">
+              View all
+            </button>
+          )}
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-3">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
@@ -151,14 +135,16 @@ const TopDestinationSection = ({
     mb-8
   "
         >
-          Top destinations
+          {title}
         </h2>
-        <button
-          className="text-sm text-[#00366B] font-medium hover:underline transition-all sm:text-xs"
-          onClick={() => handleCardClick()}
-        >
-          View all
-        </button>
+        {isDesktop && (
+          <button
+            className="text-sm text-[#0087FA] font-medium transition-all sm:text-xs font-[16px]"
+            onClick={() => handleCardClick()}
+          >
+            View all
+          </button>
+        )}
       </div>
       <div className="hidden md:block relative pb-10">
         <div
@@ -173,7 +159,7 @@ const TopDestinationSection = ({
               {page.map((item, index) => (
                 <div
                   key={`${item.CountryCode}-${pageIndex}-${index}`}
-                  onClick={() => handleCardClick()}
+                  onClick={() => handleCardClick(item)}
                   className="relative h-60 rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl cursor-pointer transition-all duration-300"
                 >
                   <img
@@ -278,7 +264,7 @@ const TopDestinationSection = ({
         {mappedDestinations.map((item, index) => (
           <div
             key={`${item.CountryCode}-mobile-${index}`}
-            onClick={() => handleCardClick()}
+            onClick={() => handleCardClick(item)}
             className="relative min-w-[160px] h-48 rounded-xl overflow-hidden shadow-lg cursor-pointer snap-start flex-shrink-0"
           >
             <img

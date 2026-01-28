@@ -61,10 +61,10 @@ const DesktopSearchDropdown: React.FC<Props> = ({
 
   /* ------------------------------ Desktop view ------------------------------ */
   return (
-    <div ref={containerRef} className="relative w-full max-w-md">
+    <div ref={containerRef} className="relative">
       <input
         value={search}
-        placeholder={t("search_by_country_or_city")}
+        placeholder={t("Search by country or city")}
         onFocus={() => setIsOpen(true)}
         onChange={(e) => {
           setSearch(e.target.value);

@@ -23,11 +23,16 @@ const FooterSection: React.FC = React.memo(() => {
       {/* Background Images */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         <Image
-          src={BackgroundCloudImg}
-          alt="background"
-          className="absolute left-1/2 transform -translate-x-1/2 w-full object-cover"
-          style={{ top: `-${TOP_CROP_PX}px`, minHeight: `calc(100% + ${TOP_CROP_PX}px)` }}
-        />
+  src={BackgroundCloudImg}
+  alt="background"
+  quality={100}
+  sizes="100vw"
+  className="absolute left-1/2 -translate-x-1/2 w-full h-auto object-contain"
+  style={{
+    top: `-${TOP_CROP_PX}px`,
+    minHeight: `calc(100% + ${TOP_CROP_PX}px)`
+  }}
+/>
 
         <div
           className="absolute inset-0 z-1"
