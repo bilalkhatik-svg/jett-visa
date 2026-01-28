@@ -549,7 +549,7 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
         <div className={`flex flex-col items-center gap-[26px] relative z-[50] mx-auto ${isMobile ? 'w-full' : 'w-[448px]'}`}>
           <div className={`text-center flex flex-col items-center gap-2 ${isMobile ? 'gap-1' : ''}`}>
             <h1
-              className={`font-poppins font-semibold text-[#003669]] ${isMobile ? 'text-base' : 'text-[28px]'
+              className={` font-poppins font-semibold text-[#003669] ${isMobile ? 'text-base' : 'text-[28px]'
                 }`}
               style={{ height: '4px' }}
             >

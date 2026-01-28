@@ -121,7 +121,7 @@ const ScrollingDestinationImages: React.FC<ScrollingDestinationImagesProps> = ({
     <div
       className="
           absolute
-          top-[-178px]
+          top-[-194px]
           right-[-190px]
           flex
           p-[20px_20px_20px_10px]

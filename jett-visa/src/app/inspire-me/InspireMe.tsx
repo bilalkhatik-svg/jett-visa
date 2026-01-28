@@ -8,8 +8,8 @@ import sendIcon from "@/assets/images/icons/sendIcon.png";
 import inspireMeGif from "@/assets/images/gif/inspireMeGif.gif";
 import vectorIcon from "@/assets/images/icons/vectorIcon.png";
 import TopBar from "@/components/core-module/navbar/TopBar";
-import { ROUTES } from "@/utility/constant";
-import { MOCK_HISTORY_OPTIONS, MOCK_HISTORY_OPTIONS_AR } from "@/utility/mock/historyOptions";
+import { ROUTES } from "@/utils/constant";
+// import { MOCK_HISTORY_OPTIONS, MOCK_HISTORY_OPTIONS_AR } from "@/utility/mock/historyOptions";
 import { useTranslation } from "react-i18next";
 
   interface Message {
@@ -25,7 +25,7 @@ const InspireMe: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [hasSentInitial, setHasSentInitial] = useState(false);
-  const history = isArabic ? MOCK_HISTORY_OPTIONS_AR : MOCK_HISTORY_OPTIONS;
+  // const history = isArabic ? MOCK_HISTORY_OPTIONS_AR : MOCK_HISTORY_OPTIONS;
 
   // Set initial value to "inspire me" when component mounts
   useEffect(() => {
@@ -142,25 +142,7 @@ const InspireMe: React.FC = () => {
             </div>
 
             {/* History options */}
-            {history.map((option) => (
-              <button
-                key={option.code}
-                onClick={() => handleSend(option?.name)}
-                className="font-normal justify-between rounded-full text-xs text-[#565656] bg-white px-4 py-2.5 min-w-0 inline-flex items-center gap-2 hover:shadow-md transition-shadow w-auto"
-              >
-                <span>{option?.name}</span>
-                <Image
-                  src={vectorIcon}
-                  alt="Arrow"
-                  width={13}
-                  height={13}
-                  className="mb-0.5"
-                  style={{
-                    transform: isArabic ? "scaleX(-1)" : "none",
-                  }}
-                />
-              </button>
-            ))}
+           
           </div>
         ) : (
           <div className="flex flex-col gap-3">

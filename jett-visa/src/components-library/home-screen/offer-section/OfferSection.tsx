@@ -153,7 +153,7 @@ const OfferSection = () => {
           >
             {enhancedSlides.map((item, index) => (
               <div key={index} className="flex-shrink-0" style={{ width: `${100 / enhancedSlides.length}%`, height: '100%' }}>
-                <img src={item.image} alt={`Offer ${index + 1}`} className="w-full h-full object-contain rounded-[20px]" />
+                <img src={item.image} alt={`Offer ${index + 1}`} className="w-full h-full object-cover" />
               </div>
             ))}
           </div>

@@ -101,7 +101,7 @@ const TopDestinationSection = ({
           <h2 className="font-poppins font-semibold text-[#003B71] text-2xl sm:text-xl">
             Top destinations
           </h2>
-          <button className="text-sm text-[#00366B] font-medium hover:underline">
+          <button className="text-sm text-[#0087FA] font-medium ">
             View all
           </button>
         </div>
@@ -132,7 +132,7 @@ const TopDestinationSection = ({
         >
           Top destinations
         </h2>
-        <button className="text-sm text-[#00366B] font-medium hover:underline transition-all sm:text-xs">
+        <button className="text-sm text-[#0087FA] font-medium transition-all sm:text-xs">
           View all
         </button>
       </div>
@@ -141,7 +141,7 @@ const TopDestinationSection = ({
           <div
             key={`${item.CountryCode}-${index}`}
             onClick={() => handleCardClick(item)}
-            className="relative h-60 rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl cursor-pointer transition-all duration-300"
+            className="relative h-[316px] w-[256px] rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl cursor-pointer transition-all duration-300"
           >
             <img
               src={item.imageUrl || "https://via.placeholder.com/300"}

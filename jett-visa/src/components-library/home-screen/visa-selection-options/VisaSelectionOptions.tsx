@@ -68,27 +68,28 @@ const VisaMode = ({ showDestinationModal }: VisaModeProps) => {
         //   </div>
         // </div>
         <div key={index} className="text-center flex flex-col items-center gap-2">
-          <button
-            onClick={() => handleButtonClick(item?.key)}
-            className={`flex items-center justify-center rounded-[12px] transition-all duration-200
-      ${activeKey === item.key
-                ? 'bg-[#E8F4F8] shadow-lg border-2 border-transparent'
-                : 'bg-[#E8F4F8] hover:bg-[#D0E8F5] border-2 border-transparent'
-              }
+  <button
+    onClick={() => handleButtonClick(item?.key)}
+    className={`flex items-center justify-center rounded-[12px] transition-all duration-200
+      ${
+        activeKey === item.key
+          ? 'bg-[#E8F4F8] shadow-lg border-2 border-[#1976d2]'
+          : 'bg-[#E8F4F8] hover:bg-[#D0E8F5] border-2 border-transparent'
+      }
       w-[80px] h-[80px] sm:w-[80px] sm:h-[80px] md:w-20 md:h-20
     `}
-          >
-            <img
-              src={item.img}
-              alt={item.label}
-              className="block object-contain sm:w-10 sm:h-10 md:w-80 md:h-80"
-            />
-          </button>
+  >
+    <img
+      src={item.img}
+      alt={item.label}
+      className="block object-contain  sm:w-10 sm:h-10 md:w-80 md:h-80"
+    />
+  </button>
 
-          <div className="font-poppins font-medium whitespace-nowrap text-xs sm:text-xs md:text-sm text-[#00366B]">
-            {item.label}
-          </div>
-        </div>
+  <div className="font-poppins font-medium whitespace-nowrap text-xs sm:text-xs md:text-sm text-[#00366B]">
+    {item.label}
+  </div>
+</div>
 
       ))}
     </div>

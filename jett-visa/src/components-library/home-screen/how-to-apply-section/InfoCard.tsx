@@ -74,7 +74,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
   // Default vertical variant
   return (
     <div className="bg-white border border-[#E5E7EB] rounded-2xl p-5 h-full hover:shadow-lg transition-all duration-300 sm:p-4">
-      <div className="flex flex-col items-start gap-4">
+      <div className="flex flex-col items-start gap-4 p-2">
         {/* Icon container */}
         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EBF2FF] to-[#F8FAFC] flex items-center justify-center shrink-0">
           <img

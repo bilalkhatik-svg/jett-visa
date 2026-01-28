@@ -60,7 +60,7 @@ const isDesktop = useIsDesktop();
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-fr gap-y-8 place-items-center md:place-items-stretch">
     {cards.map((item, index) => (
-      <div key={index} className={`h-full flex ${isDesktop ? 'w-[240px]' : 'w-full'} justify-center`}>
+      <div key={index} className={`h-full flex ${isDesktop ? 'w-[256px]' : 'w-full'} justify-center`}>
         <InfoCard
           imageSrc={item.imageSrc}
           imageAlt={item.imageAlt}

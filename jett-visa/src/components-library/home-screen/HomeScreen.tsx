@@ -1062,7 +1062,7 @@ const HomeScreen = () => {
       {isTestimonialsLoading ? (
         <TestimonialsSectionSkeleton />
       ) : (
-        <div className="w-full pt-12 sm:pt-16 bg-[#F8FAFC] ">
+        <div className="w-full pt-12 sm:pt-16 ">
           <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
             <TestimonialsSection />
           </div>
