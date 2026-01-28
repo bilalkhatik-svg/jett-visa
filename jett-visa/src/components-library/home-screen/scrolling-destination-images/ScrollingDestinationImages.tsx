@@ -131,8 +131,10 @@ const ScrollingDestinationImages: React.FC<ScrollingDestinationImagesProps> = ({
         "
       style={{
         height: "auto",
-        background:
-          "linear-gradient(transparent 0%, transparent 85%, rgba(160, 224, 227, 0.3) 100%)",
+        zIndex: -1,
+        background:"linear-gradient(178deg, rgba(198=, 221, 249, 0.00) 1.87%, #BFE6FD 87.84%)"
+        // background:
+        //   "linear-gradient(transparent 0%, transparent 85%, rgba(160, 224, 227, 0.3) 100%)",
       }}
     >
       {columns.map((columnItems, columnIndex) =>
