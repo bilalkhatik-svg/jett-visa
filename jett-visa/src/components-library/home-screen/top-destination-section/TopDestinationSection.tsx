@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { useFetchTopDestinationQuery } from "@/store/visaTopDestinationApi";
 import { useAppSelector } from "@/store/hooks";
 import { useTranslation } from "@/utils/i18nStub";
@@ -57,7 +57,7 @@ const TopDestinationSection = ({
     data: topDestinationResponse,
     isLoading: isTopDestinationListPending,
   } = useFetchTopDestinationQuery({
-    count: 8,
+    count: 20,
     language: i18n.language || "en-US",
   });
 
@@ -80,10 +80,8 @@ const TopDestinationSection = ({
     }));
   }, [topDestinationList]);
 
-  const handleCardClick = (item: TopDestinationItem) => {
-    // const path = getCountryVisaUrl(residency?.isoCode || "", item.CountryCode || "");
-    // Simple path generation for testing
-    const path = `/visa/${item.CountryCode || ""}`;
+  const handleCardClick = () => {
+    const path = "/all-destinations";
 
     const action: PendingAction = {
       type: "navigate",
@@ -91,6 +89,29 @@ const TopDestinationSection = ({
     };
 
     onPreFlowNavigation(action);
+  };
+
+  const desktopScrollRef = useRef<HTMLDivElement>(null);
+  const desktopPageSize = 8;
+  const desktopPages = useMemo(() => {
+    const pages: TopDestinationItem[][] = [];
+    for (let i = 0; i < mappedDestinations.length; i += desktopPageSize) {
+      pages.push(mappedDestinations.slice(i, i + desktopPageSize));
+    }
+    return pages;
+  }, [mappedDestinations]);
+  const shouldDesktopScroll = desktopPages.length > 1;
+
+  const handleDesktopScroll = (direction: "left" | "right") => {
+    const container = desktopScrollRef.current;
+    if (!container) {
+      return;
+    }
+    const scrollAmount = container.clientWidth;
+    container.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
   };
 
   // Simple TopDestinationList replacement - replace with component when available
@@ -101,7 +122,7 @@ const TopDestinationSection = ({
           <h2 className="font-poppins font-semibold text-[#003B71] text-2xl sm:text-xl">
             Top destinations
           </h2>
-          <button className="text-sm text-[#0087FA] font-medium ">
+          <button className="text-sm text-[#00366B] font-medium hover:underline">
             View all
           </button>
         </div>
@@ -132,65 +153,124 @@ const TopDestinationSection = ({
         >
           Top destinations
         </h2>
-        <button className="text-sm text-[#0087FA] font-medium transition-all sm:text-xs">
+        <button
+          className="text-sm text-[#00366B] font-medium hover:underline transition-all sm:text-xs"
+          onClick={() => handleCardClick()}
+        >
           View all
         </button>
       </div>
-      <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {mappedDestinations.map((item, index) => (
-          <div
-            key={`${item.CountryCode}-${index}`}
-            onClick={() => handleCardClick(item)}
-            className="relative h-[316px] w-[256px] rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl cursor-pointer transition-all duration-300"
-          >
-            <img
-              src={item.imageUrl || "https://via.placeholder.com/300"}
-              alt={item.name || "Destination"}
-              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+      <div className="hidden md:block relative pb-10">
+        <div
+          ref={desktopScrollRef}
+          className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide"
+        >
+          {desktopPages.map((page, pageIndex) => (
             <div
-              className="
-    absolute top-0 left-0
-    bg-white/25 backdrop-blur-sm
-    border border-white/40
-    text-[#3F6B96] text-[10px] font-medium
-    rounded-tl-[20px] rounded-br-[9px]
-    pt-[6px] pr-[16px] pb-[6px] pl-[20px]
-    gap-[10px]
-    opacity-100
-    inline-flex items-center whitespace-nowrap
-    min-h-[33px]
-  "
+              key={`desktop-page-${pageIndex}`}
+              className="grid grid-cols-4 gap-4 min-w-[1120px] snap-start"
             >
-              {item.VisaType || "E-Visa"}
-            </div>
-            <div className="absolute bottom-4 left-3 right-3 text-white">
-              <h3 className="font-bold text-lg mb-1">{item.name}</h3>
-              <div className="flex justify-between items-center">
-                <p className="text-xs font-medium opacity-90">
-                  Starts ₹{item.StartingPrice || "N/A"}
-                </p>
-                <span
-                  className="
-    absolute top-3 right-[-12px]
-    bg-white/25 backdrop-blur-sm
-    border border-white/30
-    text-[#FFFFFF] text-[10px] font-medium
-    rounded-tl-[20px] rounded-bl-[20px]
-    pt-[6px] pr-[10px] pb-[6px] pl-[14px]
-    
-    inline-flex items-center whitespace-nowrap
-    min-h-[32px]
-    opacity-100
-  "
+              {page.map((item, index) => (
+                <div
+                  key={`${item.CountryCode}-${pageIndex}-${index}`}
+                  onClick={() => handleCardClick()}
+                  className="relative h-60 rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl cursor-pointer transition-all duration-300"
                 >
-                  {item.GetVisaDays} {item.unit || "days"}
-                </span>
-              </div>
+                  <img
+                    src={item.imageUrl || "https://via.placeholder.com/300"}
+                    alt={item.name || "Destination"}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+                  <div
+                    className="
+      absolute top-0 left-0
+      bg-white/25 backdrop-blur-sm
+      border border-white/40
+      text-[#3F6B96] text-[10px] font-medium
+      rounded-tl-[20px] rounded-br-[9px]
+      pt-[6px] pr-[16px] pb-[6px] pl-[20px]
+      gap-[10px]
+      opacity-100
+      inline-flex items-center whitespace-nowrap
+      min-h-[33px]
+    "
+                  >
+                    {item.VisaType || "E-Visa"}
+                  </div>
+                  <div className="absolute bottom-4 left-3 right-3 text-white">
+                    <h3 className="font-bold text-lg mb-1">{item.name}</h3>
+                    <div className="flex justify-between items-center">
+                      <p className="text-xs font-medium opacity-90">
+                        Starts ₹{item.StartingPrice || "N/A"}
+                      </p>
+                      <span
+                        className="
+        absolute top-3 right-[-12px]
+        bg-white/25 backdrop-blur-sm
+        border border-white/30
+        text-[#FFFFFF] text-[10px] font-medium
+        rounded-tl-[20px] rounded-bl-[20px]
+        pt-[6px] pr-[10px] pb-[6px] pl-[14px]
+        
+        inline-flex items-center whitespace-nowrap
+        min-h-[32px]
+        opacity-100
+      "
+                      >
+                        {item.GetVisaDays} {item.unit || "days"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
+          ))}
+        </div>
+        {shouldDesktopScroll && (
+          <div className="absolute bottom-0 right-0 flex gap-2 z-10">
+            <button
+              type="button"
+              onClick={() => handleDesktopScroll("left")}
+              className="w-10 h-10 bg-[#F2F2F8] text-[#003669] rounded-full border border-[#DBE9F8] flex items-center justify-center hover:bg-[#EDEFF5]"
+              aria-label="Scroll left"
+            >
+               <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="text-[#00366B]"
+                        >
+                          <path
+                            d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+                            fill="currentColor"
+                          />
+                        </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDesktopScroll("right")}
+              className="w-10 h-10 bg-[#F2F2F8] text-[#003669] rounded-full border border-[#DBE9F8] flex items-center justify-center hover:bg-[#EDEFF5]"
+              aria-label="Scroll right"
+            >
+              <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="text-[#00366B]"
+                        >
+                          <path
+                            d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+                            fill="currentColor"
+                          />
+                        </svg>
+            </button>
           </div>
-        ))}
+        )}
       </div>
 
       {/* Mobile Horizontal Scroll */}
@@ -198,7 +278,7 @@ const TopDestinationSection = ({
         {mappedDestinations.map((item, index) => (
           <div
             key={`${item.CountryCode}-mobile-${index}`}
-            onClick={() => handleCardClick(item)}
+            onClick={() => handleCardClick()}
             className="relative min-w-[160px] h-48 rounded-xl overflow-hidden shadow-lg cursor-pointer snap-start flex-shrink-0"
           >
             <img

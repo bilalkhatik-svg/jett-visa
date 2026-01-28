@@ -127,7 +127,7 @@ const OfferSection = () => {
   const arrowRightIconSrc = typeof arrowRightIcon === 'string' ? arrowRightIcon : (arrowRightIcon as any)?.src || arrowRightIcon;
 
   return (
-    <section className="px-8 py-5 bg-white max-w-[1120px] mx-auto md:px-8 md:py-5 sm:px-4 sm:py-5">
+    <section className=" bg-white max-w-[1120px] mx-auto md:py-5  sm:py-5">
        <h2
   className="
     font-poppins font-semibold

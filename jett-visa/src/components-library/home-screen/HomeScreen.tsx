@@ -100,7 +100,6 @@ const MobileBottomDrawerSkeleton = () => (
   <div className="h-96 bg-gray-200 animate-pulse"></div>
 );
 
-
 // const VisaTypeSection = ({
 //   showOthers,
 //   setShowOthers,
@@ -122,7 +121,6 @@ const BottomConfirmBar = ({
     </button>
   </div>
 );
-
 
 const TravelDateCalender = ({
   selectedDate,
@@ -183,7 +181,6 @@ export interface PendingAction {
 
 // Simple SearchField component using Tailwind
 
-
 const HomeScreen = () => {
   const [isTopBarLoading, setIsTopBarLoading] = useState(true);
   const [isHeroLoading, setIsHeroLoading] = useState(true);
@@ -216,7 +213,7 @@ const HomeScreen = () => {
 
   const { t, i18n: i18nInstance } = useTranslation();
   const dispatch = useAppDispatch();
-  const { data, isLoading, } = useFetchCountryListQuery("en-US");
+  const { data, isLoading } = useFetchCountryListQuery("en-US");
   // Fetch country list
   const {
     data: countryListResponse,
@@ -349,7 +346,7 @@ const HomeScreen = () => {
   const handleUpdateResidency = useCallback(
     (country: ICountry) => {
       dispatch(setResidency(country));
-    },   
+    },
     [dispatch],
   );
 
@@ -484,7 +481,7 @@ const HomeScreen = () => {
     toggleModal(true, "searchDestination");
   }, [toggleModal]);
 
-  const handleMenuClick = useCallback(() => { }, []);
+  const handleMenuClick = useCallback(() => {}, []);
 
   const executePendingAction = useCallback(
     (action: PendingAction) => {
@@ -566,7 +563,7 @@ const HomeScreen = () => {
               }
 
               finalUrl = `${urlObj.origin}${urlObj.pathname}?${params.toString()}`;
-            } catch (error) { }
+            } catch (error) {}
 
             window.location.href = finalUrl;
           } else if (
@@ -656,8 +653,8 @@ const HomeScreen = () => {
 
   return (
     <div
-      className="w-full flex flex-col items-center bg-gradient-to-b from-[#F8FAFC] to-white min-h-screen md:overflow-x-hidden"
-      style={{ borderBottom: '2px solid transparent' }}
+      className="w-full flex flex-col items-center from-[#F8FAFC] to-white min-h-screen md:overflow-x-hidden"
+      style={{ borderBottom: "2px solid transparent" }}
     >
       <div
         className="relative w-full bg-white shadow-sm"
@@ -665,14 +662,13 @@ const HomeScreen = () => {
       >
         {isTopBarLoading ? (
           <TopBarSkeleton />
-
         ) : (
           <TopBar
             variant="home"
             flagIcon={(residency as ICountry | null)?.flag}
             isLoggedIn={false}
             onFlagClick={handleFlagClick}
-            onLogoClick={() => { }}
+            onLogoClick={() => {}}
             onSearchClick={handleSearchClick}
             nationality={nationality}
             residency={residency}
@@ -683,17 +679,12 @@ const HomeScreen = () => {
         )}
       </div>
 
-      {isTopBarFixed && (
-        <div className="h-[72px]" />
-      )}
+      {isTopBarFixed && <div className="h-[72px]" />}
 
       {isHeroLoading ? (
         <HeroSectionSkeleton />
       ) : (
-        <div
-          ref={heroSectionRef}
-          className="w-full bg-white"
-        >
+        <div ref={heroSectionRef} className="w-full bg-white">
           <div
             className={`relative w-full flex flex-col rounded-b-3xl ${isMobile
               ? 'pb-10 pt-6 px-5 min-h-[auto] justify-start'
@@ -725,14 +716,18 @@ const HomeScreen = () => {
                   }}
                 />
                 <div className="pointer-events-auto">
-                  <ScrollingDestinationImages isMobile={isMobile} isTablet={isTablet} />
+                  <ScrollingDestinationImages
+                    isMobile={isMobile}
+                    isTablet={isTablet}
+                  />
                 </div>
               </div>
             )}
             {/* ===== Header ===== */}
             <div
-              className={`flex items-center gap-2 relative ${isMobile ? 'w-full mt-8 mb-6 justify-center' : 'self-start mb-4'
-                }`}
+              className={`flex items-center gap-2 relative ${
+                isMobile ? "w-full mt-8 mb-6 justify-center" : "self-start mb-4"
+              }`}
               style={{
                 zIndex: 2,
                 width: isMobile ? "100%" : isTablet ? "85%" : "560px",
@@ -751,28 +746,41 @@ const HomeScreen = () => {
                     transform: isRTL ? "scaleX(-1)" : "none",
                   }}
                 />
-                <div className={`
+                <div
+                  className={`
     absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
     w-full flex justify-center
-    ${isMobile ? 'flex-col items-center gap-0' : 'items-center gap-1'}
-  `}>
+    ${isMobile ? "flex-col items-center gap-0" : "items-center gap-1"}
+  `}
+                >
                   {isMobile ? (
                     <>
                       <img
-                        src={typeof SearchImage === 'string' ? SearchImage : (SearchImage as any)?.src || SearchImage}
+                        src={
+                          typeof SearchImage === "string"
+                            ? SearchImage
+                            : (SearchImage as any)?.src || SearchImage
+                        }
                         alt="Search"
                         className="block w-[97px] h-[39px] object-contain"
                       />
                       <img
-                        src={typeof VisaImage === 'string' ? VisaImage : (VisaImage as any)?.src || VisaImage}
+                        src={
+                          typeof VisaImage === "string"
+                            ? VisaImage
+                            : (VisaImage as any)?.src || VisaImage
+                        }
                         alt="Visa Go"
                         className="block w-[115px] h-[39px] object-contain mt-[-6%]"
                       />
-
                     </>
                   ) : (
                     <img
-                      src={typeof VectorImage === 'string' ? VectorImage : (VectorImage as any)?.src || VectorImage}
+                      src={
+                        typeof VectorImage === "string"
+                          ? VectorImage
+                          : (VectorImage as any)?.src || VectorImage
+                      }
                       alt="Search Visa Go"
                       className="h-auto max-w-full object-contain max-h-[40px] ml-[20%]"
                     />
@@ -782,12 +790,15 @@ const HomeScreen = () => {
               <img
                 src={planeImageSrc}
                 alt="plane"
-                className={isMobile ? "block w-[60px] mb-8 -ml-5" : "block w-[100px] mb-12 -ml-8 md:w-[100px] md:mb-12 md:-ml-8 lg:w-[85px]"}
+                className={
+                  isMobile
+                    ? "block w-[60px] mb-8 -ml-5"
+                    : "block w-[100px] mb-12 -ml-8 md:w-[100px] md:mb-12 md:-ml-8 lg:w-[85px]"
+                }
                 style={{
                   transform: isRTL ? "scaleX(-1)" : "none",
                 }}
               />
-
             </div>
             <div className="flex justify-center">
               {isMobile && (
@@ -796,9 +807,10 @@ const HomeScreen = () => {
                     <>
                       <img
                         src={
-                          typeof (nationality as ICountry).flag === 'string'
+                          typeof (nationality as ICountry).flag === "string"
                             ? (nationality as ICountry).flag
-                            : ((nationality as ICountry).flag as any)?.src || (nationality as ICountry).flag
+                            : ((nationality as ICountry).flag as any)?.src ||
+                              (nationality as ICountry).flag
                         }
                         alt="Nationality flag"
                         className="w-[10px] h-[10px] shrink-0 aspect-square rounded-[10px] object-cover"
@@ -806,50 +818,62 @@ const HomeScreen = () => {
                       <span className="text-[#00366B] font-poppins text-[10px] font-normal leading-[16px]">
                         {(nationality as ICountry).name ||
                           (nationality as ICountry).nationality ||
-                          ''}{' '}
+                          ""}{" "}
                         passport
                       </span>
                     </>
-
                   )}
                   {nationality && residency && (
                     <div className="w-[3px] h-[3px] aspect-square">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="3" height="3" viewBox="0 0 3 3" fill="none">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="3"
+                        height="3"
+                        viewBox="0 0 3 3"
+                        fill="none"
+                      >
                         <circle cx="1.5" cy="1.5" r="1.5" fill="#00366B" />
                       </svg>
                     </div>
                   )}
                   {residency && (residency as ICountry).flag && (
-                    < >
+                    <>
                       <img
                         src={
-                          typeof (residency as ICountry).flag === 'string'
+                          typeof (residency as ICountry).flag === "string"
                             ? (residency as ICountry).flag
-                            : ((residency as ICountry).flag as any)?.src || (residency as ICountry).flag
+                            : ((residency as ICountry).flag as any)?.src ||
+                              (residency as ICountry).flag
                         }
                         alt="Residency flag"
                         className="w-[10px] h-[10px] shrink-0 aspect-square rounded-[10px] object-cover"
                       />
                       <span className="text-[#00366B] font-poppins text-[10px] font-normal leading-[16px]">
-                        Resident of{' '}
+                        Resident of{" "}
                         {(residency as ICountry).name ||
                           (residency as ICountry).residency ||
-                          ''}
+                          ""}
                       </span>
 
-                      <div className="w-[10.582px] h-[10.582px] shrink-0 "><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        <path d="M0.5 11.0817L0.00680304 10.9995C-0.0197434 11.1588 0.0322662 11.3211 0.146447 11.4353C0.260627 11.5495 0.422921 11.6015 0.5822 11.5749L0.5 11.0817ZM0.927886 8.51443L0.434689 8.43223H0.434689L0.927886 8.51443ZM1.53106 7.34236L1.1775 6.9888V6.9888L1.53106 7.34236ZM7.8125 1.06091L8.16605 1.41447V1.41447L7.8125 1.06091ZM3.06732 10.6539L3.14952 11.1471V11.1471L3.06732 10.6539ZM4.23939 10.0507L3.88584 9.69714L3.88584 9.69714L4.23939 10.0507ZM3.72324 10.4928L3.95114 10.9379L3.95201 10.9374L3.72324 10.4928ZM3.72709 10.4908L3.95587 10.9354L3.95677 10.935L3.72709 10.4908ZM1.08893 7.85851L0.644344 7.62972L0.64389 7.63061L1.08893 7.85851ZM1.09091 7.85465L0.646789 7.62497L0.646328 7.62587L1.09091 7.85465ZM0.5 11.0817L0.993197 11.1639L1.42108 8.59663L0.927886 8.51443L0.434689 8.43223L0.00680304 10.9995L0.5 11.0817ZM1.53106 7.34236L1.88461 7.69591L8.16605 1.41447L7.8125 1.06091L7.45895 0.707362L1.1775 6.9888L1.53106 7.34236ZM0.5 11.0817L0.5822 11.5749L3.14952 11.1471L3.06732 10.6539L2.98512 10.1607L0.4178 10.5885L0.5 11.0817ZM4.23939 10.0507L4.59294 10.4042L10.8744 4.1228L10.5208 3.76925L10.1673 3.41569L3.88584 9.69714L4.23939 10.0507ZM3.06732 10.6539L3.14952 11.1471C3.45664 11.0959 3.71637 11.0581 3.95114 10.9379L3.72324 10.4928L3.49534 10.0478C3.43062 10.0809 3.3529 10.0994 2.98512 10.1607L3.06732 10.6539ZM4.23939 10.0507L3.88584 9.69714C3.62219 9.96079 3.562 10.0133 3.49741 10.0467L3.72709 10.4908L3.95677 10.935C4.19106 10.8138 4.37278 10.6244 4.59294 10.4042L4.23939 10.0507ZM3.72324 10.4928L3.95201 10.9374L3.95587 10.9354L3.72709 10.4908L3.49832 10.0462L3.49446 10.0482L3.72324 10.4928ZM10.5208 1.06091L10.1673 1.41447C10.7199 1.96709 10.7199 2.86307 10.1673 3.41569L10.5208 3.76925L10.8744 4.1228C11.8175 3.17965 11.8175 1.65051 10.8744 0.70736L10.5208 1.06091ZM7.8125 1.06091L8.16605 1.41447C8.71868 0.861844 9.61466 0.861844 10.1673 1.41447L10.5208 1.06091L10.8744 0.70736C9.93124 -0.235788 8.40209 -0.235786 7.45895 0.707362L7.8125 1.06091ZM0.927886 8.51443L1.42108 8.59663C1.48238 8.22885 1.50083 8.15112 1.53397 8.08641L1.08893 7.85851L0.64389 7.63061C0.523667 7.86538 0.485876 8.12511 0.434689 8.43223L0.927886 8.51443ZM1.53106 7.34236L1.1775 6.9888C0.957337 7.20897 0.76795 7.39069 0.646789 7.62497L1.09091 7.85465L1.53504 8.08433C1.56844 8.01975 1.62096 7.95956 1.88461 7.69591L1.53106 7.34236ZM1.08893 7.85851L1.53352 8.08729L1.5355 8.08344L1.09091 7.85465L0.646328 7.62587L0.644345 7.62972L1.08893 7.85851ZM9.16667 5.12341L9.52022 4.76986L6.81189 2.06153L6.45833 2.41508L6.10478 2.76863L8.81311 5.47697L9.16667 5.12341Z" fill="#0087FA" />
-                      </svg></div>
-
+                      <div className="w-[10.582px] h-[10.582px] shrink-0 ">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="12"
+                          height="12"
+                          viewBox="0 0 12 12"
+                          fill="none"
+                        >
+                          <path
+                            d="M0.5 11.0817L0.00680304 10.9995C-0.0197434 11.1588 0.0322662 11.3211 0.146447 11.4353C0.260627 11.5495 0.422921 11.6015 0.5822 11.5749L0.5 11.0817ZM0.927886 8.51443L0.434689 8.43223H0.434689L0.927886 8.51443ZM1.53106 7.34236L1.1775 6.9888V6.9888L1.53106 7.34236ZM7.8125 1.06091L8.16605 1.41447V1.41447L7.8125 1.06091ZM3.06732 10.6539L3.14952 11.1471V11.1471L3.06732 10.6539ZM4.23939 10.0507L3.88584 9.69714L3.88584 9.69714L4.23939 10.0507ZM3.72324 10.4928L3.95114 10.9379L3.95201 10.9374L3.72324 10.4928ZM3.72709 10.4908L3.95587 10.9354L3.95677 10.935L3.72709 10.4908ZM1.08893 7.85851L0.644344 7.62972L0.64389 7.63061L1.08893 7.85851ZM1.09091 7.85465L0.646789 7.62497L0.646328 7.62587L1.09091 7.85465ZM0.5 11.0817L0.993197 11.1639L1.42108 8.59663L0.927886 8.51443L0.434689 8.43223L0.00680304 10.9995L0.5 11.0817ZM1.53106 7.34236L1.88461 7.69591L8.16605 1.41447L7.8125 1.06091L7.45895 0.707362L1.1775 6.9888L1.53106 7.34236ZM0.5 11.0817L0.5822 11.5749L3.14952 11.1471L3.06732 10.6539L2.98512 10.1607L0.4178 10.5885L0.5 11.0817ZM4.23939 10.0507L4.59294 10.4042L10.8744 4.1228L10.5208 3.76925L10.1673 3.41569L3.88584 9.69714L4.23939 10.0507ZM3.06732 10.6539L3.14952 11.1471C3.45664 11.0959 3.71637 11.0581 3.95114 10.9379L3.72324 10.4928L3.49534 10.0478C3.43062 10.0809 3.3529 10.0994 2.98512 10.1607L3.06732 10.6539ZM4.23939 10.0507L3.88584 9.69714C3.62219 9.96079 3.562 10.0133 3.49741 10.0467L3.72709 10.4908L3.95677 10.935C4.19106 10.8138 4.37278 10.6244 4.59294 10.4042L4.23939 10.0507ZM3.72324 10.4928L3.95201 10.9374L3.95587 10.9354L3.72709 10.4908L3.49832 10.0462L3.49446 10.0482L3.72324 10.4928ZM10.5208 1.06091L10.1673 1.41447C10.7199 1.96709 10.7199 2.86307 10.1673 3.41569L10.5208 3.76925L10.8744 4.1228C11.8175 3.17965 11.8175 1.65051 10.8744 0.70736L10.5208 1.06091ZM7.8125 1.06091L8.16605 1.41447C8.71868 0.861844 9.61466 0.861844 10.1673 1.41447L10.5208 1.06091L10.8744 0.70736C9.93124 -0.235788 8.40209 -0.235786 7.45895 0.707362L7.8125 1.06091ZM0.927886 8.51443L1.42108 8.59663C1.48238 8.22885 1.50083 8.15112 1.53397 8.08641L1.08893 7.85851L0.64389 7.63061C0.523667 7.86538 0.485876 8.12511 0.434689 8.43223L0.927886 8.51443ZM1.53106 7.34236L1.1775 6.9888C0.957337 7.20897 0.76795 7.39069 0.646789 7.62497L1.09091 7.85465L1.53504 8.08433C1.56844 8.01975 1.62096 7.95956 1.88461 7.69591L1.53106 7.34236ZM1.08893 7.85851L1.53352 8.08729L1.5355 8.08344L1.09091 7.85465L0.646328 7.62587L0.644345 7.62972L1.08893 7.85851ZM9.16667 5.12341L9.52022 4.76986L6.81189 2.06153L6.45833 2.41508L6.10478 2.76863L8.81311 5.47697L9.16667 5.12341Z"
+                            fill="#0087FA"
+                          />
+                        </svg>
+                      </div>
                     </>
-
-
                   )}
                 </div>
               )}
-
             </div>
-
 
             {/* Nationality & Residency Selector - Desktop/Tablet Only */}
             {countryListData?.response && !isMobile && (
@@ -880,19 +904,6 @@ const HomeScreen = () => {
               </div>
             )}
 
-            {/* Search by country or city - Mobile Only - Always visible */}
-            {isMobile && (
-              <div className="relative w-full" style={{ zIndex: 2 }}>
-                <SearchField
-                  // isMobile={isMobile}
-                  placeholder={"Search by country or city"}
-                  value=""
-                  onChange={()=>{}}
-                  onClick={() => toggleModal(true, "searchDestination")}
-                />
-              </div>
-            )}
-
             {/* Desktop/Tablet VisaMode */}
             {!isMobile && (
               <div
@@ -905,24 +916,31 @@ const HomeScreen = () => {
               </div>
             )}
 
-            {/* Desktop/Tablet Search Destination */}
-            {!isMobile && modalType === "searchDestination" && (
-              <div
-                className="relative flex justify-start z-[2] mb-4 self-start"
-                style={{
-                  width: isTablet ? "85%" : "560px",
-                }}
-              >
-                <DesktopSearchDropdown
-                  isMobile={isMobile}
-                  t={t}
-                  onPreFlowNavigation={handlePreFlowNavigation}
-                  countryList={countryListData?.response || []}
-                // widthByBreakpoint={{ md: "400px", lg: "500px", xl: "590px" }}
-                // dropdownWidth="391px"
-                />
-              </div>
-            )}
+            {/* Desktop/Mobile/Tablet Search Destination */}
+            {modalType === "searchDestination" &&
+              (isMobile ? (
+                <div className="relative w-full z-[2]">
+                  <SearchField
+                    placeholder="Search by country or city"
+                    value=""
+                    onChange={() => {}}
+                    onClick={() => toggleModal(true, "searchDestination")}
+                  />
+                </div>
+              ) : (
+                <div
+                  className="relative flex justify-start z-[2] mb-4 self-start"
+                  style={{ width: isTablet ? "85%" : "560px" }}
+                >
+                  <DesktopSearchDropdown
+                    isMobile={isMobile}
+                    t={t}
+                    onPreFlowNavigation={handlePreFlowNavigation}
+                    countryList={countryListData?.response || []}
+                  />
+                </div>
+              ))}
+
             {modalType === "visaMode" && (
               <VisaTypeSection
                 showOthers={showModal}
@@ -941,7 +959,7 @@ const HomeScreen = () => {
             {/* ===== Inspire Me Button ===== */}
             <div
               onClick={handleInspireMeClick}
-              className="absolute bottom-[-30px] left-1/2 -translate-x-1/2 rounded-full p-[2px] cursor-pointer inline-block transition-all duration-300 hover:shadow-xl hover:scale-105 md:bottom-[-30px] sm:bottom-[-25px] z-0"
+              className="absolute bottom-[-25px] left-1/2 -translate-x-1/2 rounded-full p-[2px] cursor-pointer inline-block transition-all duration-300 hover:shadow-xl hover:scale-105 md:bottom-[-25px] sm:bottom-[-25px] z-0"
               style={{
                 background: "linear-gradient(135deg, #D536F6 0%, #75ECF3 100%)",
               }}
@@ -961,7 +979,9 @@ const HomeScreen = () => {
                   }}
                 >
                   {/* {isMobile ? t("inspire_me") : t("inspire_me_for_desktopView")} */}
-                  {isMobile ? "inspire me" : "Plan your next adventure, and let AI simplify your visa"}
+                  {isMobile
+                    ? "inspire me"
+                    : "Plan your next adventure, and let AI simplify your visa"}
                 </span>
                 {!isMobile && (
                   <img
@@ -979,7 +999,6 @@ const HomeScreen = () => {
         </div>
       )}
 
-      
       {isTopBarFixed && showFloatingInspireMe && !isMobile && (
         <div className="fixed inset-x-0 bottom-6 z-[9999]">
           <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8">
@@ -988,7 +1007,8 @@ const HomeScreen = () => {
                 onClick={handleInspireMeClick}
                 className="rounded-full p-[2px] shadow-lg transition-all duration-300 hover:shadow-xl"
                 style={{
-                  background: "linear-gradient(135deg, #D536F6 0%, #75ECF3 100%)",
+                  background:
+                    "linear-gradient(135deg, #D536F6 0%, #75ECF3 100%)",
                 }}
                 aria-label="Inspire me"
               >
@@ -1015,23 +1035,22 @@ const HomeScreen = () => {
         </div>
       )}
 
-
       {isDestinationsLoading ? (
         <TopDestinationsSkeleton numberOfItems={8} />
       ) : (
         <div className="w-full">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 pt-12 sm:pt-16 md:overflow-hidden">
-            <TopDestinationSection onPreFlowNavigation={handlePreFlowNavigation} />
+            <TopDestinationSection
+              onPreFlowNavigation={handlePreFlowNavigation}
+            />
           </div>
         </div>
       )}
-      {
-        !isMobile && (
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-            <OfferSection />
-          </div>
-        )
-      }
+      {!isMobile && (
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+          <OfferSection />
+        </div>
+      )}
       {isFindVisaLoading ? (
         <FindVisaWidgetSkeleton />
       ) : (
@@ -1072,7 +1091,7 @@ const HomeScreen = () => {
         <FaqSectionSkeleton />
       ) : (
         <div className="w-full pt-6 sm:pt-8 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
             <FaqSection />
           </div>
         </div>
@@ -1091,7 +1110,11 @@ const HomeScreen = () => {
       >
         {modalType === "searchDestination" && showModal && (
           <Suspense fallback={<MobileBottomDrawerSkeleton />}>
-            <SearchDestination label="Search Destination" onPreFlowNavigation={handlePreFlowNavigation} countryList={countryListData?.response} />
+            <SearchDestination
+              label="Search Destination"
+              onPreFlowNavigation={handlePreFlowNavigation}
+              countryList={countryListData?.response}
+            />
             {/* <div>Search destination</div> */}
           </Suspense>
         )}
@@ -1117,8 +1140,8 @@ const HomeScreen = () => {
               residency={
                 residency
                   ? (residency as unknown as ICountry).residency ||
-                  (residency as unknown as ICountry).name ||
-                  ""
+                    (residency as unknown as ICountry).name ||
+                    ""
                   : ""
               }
               flagUrl={
@@ -1142,7 +1165,7 @@ const HomeScreen = () => {
         modalOpen={isDialogOpen}
         setModalOpen={handleDialogClose}
         height="75%"
-      // children={null}
+        // children={null}
       >
         {/* <SearchDestination
           onPreFlowNavigation={handlePreFlowNavigation}
@@ -1153,7 +1176,6 @@ const HomeScreen = () => {
           // isForUpdateDialog={true}
         /> */}
         <ResidencyDialogContent />
-
       </MobileBottomDrawer>
     </div>
   );

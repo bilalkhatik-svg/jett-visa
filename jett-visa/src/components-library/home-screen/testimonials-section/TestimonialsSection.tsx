@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import TestimonialCard from './TestimonialCard';
 import StarIcon from '@/assets/images/icons/ratingStarIcon.png';
 // import { testimonialsArabicMock, testimonialsMock } from '@utility/mock/testimonialsMock';
@@ -74,9 +74,51 @@ const TestimonialsSection = React.memo(() => {
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language;
     const testimonials = currentLang === 'ar' ? testimonialsArabicMock : testimonialsMock;
+    const scrollRef = useRef<HTMLDivElement>(null);
 
     // Convert StaticImageData to string for img src
     const starIconSrc = typeof StarIcon === 'string' ? StarIcon : (StarIcon as any)?.src || StarIcon;
+
+    useEffect(() => {
+        const container = scrollRef.current;
+        if (!container) {
+            return;
+        }
+
+        let isPaused = false;
+        const speed = 1;
+
+        const intervalId = window.setInterval(() => {
+            if (isPaused) {
+                return;
+            }
+            const maxScrollLeft = container.scrollWidth - container.clientWidth;
+            if (maxScrollLeft <= 0) {
+                return;
+            }
+            if (container.scrollLeft >= maxScrollLeft - 1) {
+                container.scrollLeft = 0;
+            } else {
+                container.scrollLeft += speed;
+            }
+        }, 20);
+
+        const handleMouseEnter = () => {
+            isPaused = true;
+        };
+        const handleMouseLeave = () => {
+            isPaused = false;
+        };
+
+        container.addEventListener('mouseenter', handleMouseEnter);
+        container.addEventListener('mouseleave', handleMouseLeave);
+
+        return () => {
+            window.clearInterval(intervalId);
+            container.removeEventListener('mouseenter', handleMouseEnter);
+            container.removeEventListener('mouseleave', handleMouseLeave);
+        };
+    }, [testimonials]);
 
     return (
         <section className="w-full max-w-[1120px] mx-auto opacity-100" >
@@ -91,13 +133,16 @@ const TestimonialsSection = React.memo(() => {
   "
 >{"Testimonials"}</h2>
 
-            <div className="flex overflow-x-auto gap-6 pb-4 pr-4 scrollbar-hide md:gap-6 sm:gap-4 snap-x snap-mandatory">
+            <div
+                ref={scrollRef}
+                className="flex overflow-x-auto gap-6 pb-4 pr-4 scrollbar-hide md:gap-6 sm:gap-4"
+            >
                 {testimonials.map((testimonial: Testimonial, index: number) => {
                     const isLast = index === testimonials.length - 1;
                     return (
                         <div 
                             key={index} 
-                            className="snap-start flex-shrink-0"
+                            className="flex-shrink-0"
                             style={isLast ? { marginRight: '4px' } : {}}
                         >
                             <TestimonialCard

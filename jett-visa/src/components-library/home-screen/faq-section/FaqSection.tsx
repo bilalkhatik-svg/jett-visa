@@ -106,7 +106,7 @@ const FaqSection: React.FC = () => {
                   {faq.answer}
                 </p>
               </div>
-              <hr />
+              <span className="block w-auto h-px bg-[#F2F2F2] mx-auto"></span>
             </div>
           );
         })}
