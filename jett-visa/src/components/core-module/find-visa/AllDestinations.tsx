@@ -1,126 +1,229 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "@/utils/i18nStub";
-import { useFetchDestinationsQuery, type Destination as ApiDestination } from "@/store/visaDestinationsApi";
 import { useAppSelector } from "@/store/hooks";
 import { getApiLanguageCode } from "@/utils/helper";
 import SearchIcon from "@/assets/images/icons/search.png";
-import TopDestinationSection, { type PendingAction } from "@/components-library/home-screen/top-destination-section/TopDestinationSection";
-import { useRouter } from "next/navigation";
+import TopDestinationSection, {
+  type PendingAction,
+} from "@/components-library/home-screen/top-destination-section/TopDestinationSection";
+import { useFetchTopDestinationQuery } from "@/store/visaTopDestinationApi";
+import { ICountry } from "@/utils/types/nationality-residency/Country";
+import TopBar from "../navbar/TopBar";
+import Image from "next/image";
+import { useDesktopDestinationSearch } from "@/utils/hooks/useDestinationSearch";
+import SearchIcon2 from "@/assets/images/icons/search.png";
+import curveDownLeftIcon from "@/assets/images/icons/curveDownLeftIcon.webp";
 
 const AllDestinationsPage = () => {
   const { t, i18n } = useTranslation();
-  const router = useRouter();
-  const nationality = useAppSelector((state) => state.locationSlice.nationality);
-  const residency = useAppSelector((state) => state.locationSlice.residency);
-  const [searchTerm, setSearchTerm] = useState("");
 
-  const nationalityIsoCode = (nationality as any)?.isoCode || "";
- 
+  const nationality = useAppSelector(
+    (state) => state.locationSlice.nationality,
+  );
+  const residency = useAppSelector(
+    (state) => state.locationSlice.residency,
+  );
 
-  const [selectedContinent, setSelectedContinent] = useState<string>("Asia");
-    
-    // Get API language
-    const currentLanguage = i18n.language || "en";
-    const apiLanguage = getApiLanguageCode(currentLanguage);
-  
-    // Fetch destinations from API
-    const { data: destinationsResponse, isLoading, isError } = useFetchDestinationsQuery(
-      {
-        continent: selectedContinent,
-        isoCode2: nationalityIsoCode || (nationality as any)?.isoCode || "",
-        language: apiLanguage,
-      },
-      {
-        skip: !nationalityIsoCode && !(nationality as any)?.isoCode,
-      });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [pendingAction, setPendingAction] =
+    useState<PendingAction | null>(null);
 
-  const destinations = destinationsResponse?.response ?? [];
-  const filteredDestinations = useMemo(() => {
-    if (!searchTerm) return destinations;
-    return destinations.filter((item: ApiDestination) =>
-      item.countryName?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [destinations, searchTerm]);
+  // Language
+  const currentLanguage = i18n.language || "en";
+  const apiLanguage = getApiLanguageCode(currentLanguage);
 
-  // Map Destination to TopDestinationItem format
-  const mappedDestinations = useMemo(() => {
-    return filteredDestinations.map((item: ApiDestination) => ({
-      VisaType: item.visaModeName || item.visaMode || "E-Visa",
-      imageUrl: item.images?.[0]?.filename || "",
-      name: item.countryName || "",
-      GetVisaDays: item.getVisaDays || 0,
-      order: 0,
-      unit: "days",
-      currencyCode: item.currencyCode || "",
-      CountryCode: item.isoCode2 || "",
-      StartingPrice: item.startingPrice || 0,
+  // API
+  const { data: topDestinationResponse, isLoading } =
+    useFetchTopDestinationQuery({
+      count: 20,
+      language: "en-US",
+    });
+
+  // Map API response
+  const topDestinations = useMemo(() => {
+    const list = topDestinationResponse?.Response || [];
+    return list.map((dest: any) => ({
+      VisaType: dest.VisaType || "E-Visa",
+      imageUrl: dest.Images?.[0]?.Filename || "",
+      name: dest.Name || "",
+      GetVisaDays: Number(dest.GetVisaDays) || 0,
+      order: dest.Order || 0,
+      unit: dest.Unit || "days",
+      currencyCode: "",
+      CountryCode: dest.IsoCode2 || "",
+      StartingPrice: dest.StartingPrice || "0",
     }));
-  }, [filteredDestinations]);
+  }, [topDestinationResponse]);
 
-  const handlePreFlowNavigation = (action: PendingAction): boolean => {
-    if (action.type === "navigate" && action.url) {
-      router.push(action.url);
+  // 🔍 Search hook (SINGLE SOURCE OF TRUTH)
+  const {
+    search,
+    setSearch,
+    isOpen,
+    setIsOpen,
+    containerRef,
+    results,
+    hasMatchingCountry,
+    saveRecent,
+  } = useDesktopDestinationSearch(topDestinations);
+
+  // 🔍 Filtered destinations
+  const filteredDestinations = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    if (!term) return topDestinations;
+
+    return topDestinations.filter((item: any) =>
+      item.name.toLowerCase().includes(term),
+    );
+  }, [topDestinations, search]);
+
+  const destinationCount = filteredDestinations.length;
+
+  const handlePreFlowNavigation = useCallback(
+    (action: PendingAction): boolean => {
+      const currentNationality = nationality as ICountry | null;
+      const currentResidency = residency as ICountry | null;
+
+      if (!currentNationality?.isoCode || !currentResidency?.isoCode) {
+        setPendingAction(action);
+        setIsDialogOpen(true);
+        return false;
+      }
       return true;
-    }
-    return false;
-  };
+    },
+    [nationality, residency],
+  );
 
   const searchIconSrc =
-    typeof SearchIcon === "string" ? SearchIcon : (SearchIcon as any)?.src || SearchIcon;
+    typeof SearchIcon === "string"
+      ? SearchIcon
+      : (SearchIcon as any)?.src || SearchIcon;
 
   return (
     <div className="w-full bg-white min-h-screen">
+      <TopBar
+        variant="home"
+        flagIcon={(residency as ICountry | null)?.flag}
+        isLoggedIn={false}
+        onFlagClick={() => setIsDialogOpen(true)}
+        onLogoClick={() => {}}
+        onSearchClick={() => {}}
+        nationality={nationality}
+        residency={residency}
+        onMenuClick={() => {}}
+        isFixed
+      />
+
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 pt-24 pb-12">
-
-        <div className="flex justify-center mb-6">
-          <div className="relative w-full max-w-[600px]">
+        {/* Title */}
+        <h1 className="text-center text-[32px] font-semibold text-[#003669] mb-6">
+          All destinations
+        </h1>
+        
+        {/* 🔍 Search Field */}
+        <div className="flex justify-center mb-8">
+          <div ref={containerRef} className="relative w-full max-w-[520px]">
             <input
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder={t("Search by country or city") || "Search by country or city"}
-              className="w-full h-[46px] rounded-full border border-[#E7ECF2] bg-white px-5 pr-12 text-sm text-[#667085] focus:outline-none focus:border-[#003669]"
+              value={search}
+              placeholder={t("Search by country or city")}
+              onFocus={() => setIsOpen(true)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setIsOpen(true);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && results.length === 1) {
+                  saveRecent(results[0]);
+                  setIsOpen(false);
+                }
+              }}
+              className="
+                w-full h-[52px] rounded-xl border border-gray-200
+                bg-white px-4 pr-12 text-sm sm:text-base
+                focus:border-blue-500 focus:outline-none
+                focus:ring-2 focus:ring-blue-100
+                transition
+              "
             />
-            <img
-              src={searchIconSrc}
-              alt=""
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-70"
-            />
+
+            {/* Right icon */}
+            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+              {search ? (
+                <div className="flex items-center gap-2 text-xs text-gray-400">
+                  <span className="hidden sm:inline">
+                    {t("press_enter_to_search")}
+                  </span>
+                  <Image
+                    src={curveDownLeftIcon}
+                    alt="hint"
+                    width={16}
+                    height={16}
+                  />
+                </div>
+              ) : (
+                <Image
+                  src={SearchIcon2}
+                  width={14}
+                  height={14}
+                  alt="searchIcon"
+                />
+              )}
+            </div>
+
+            
           </div>
         </div>
 
-        <div className="mb-6 text-sm text-[#003669] font-medium">
-          {t("based_on_nationality_and_residency") || "Based on your nationality & residency"}
-          <span className="text-[#6B7280] font-normal">
-            {" "}
-            • {filteredDestinations.length}{" "}
-            {filteredDestinations.length === 1 ? "destination" : "destinations"}
+        {/* Empty State */}
+        {!isLoading && filteredDestinations.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="w-20 h-20 mb-4 rounded-full bg-[#F2F4F7] flex items-center justify-center">
+              <img
+                src={searchIconSrc}
+                alt="No results"
+                className="w-6 h-6 opacity-50"
+              />
+            </div>
+
+            <p className="text-base font-medium text-[#101828]">
+              No destinations found
+            </p>
+
+            <p className="text-sm text-[#667085] mt-1 text-center max-w-[320px]">
+              Try searching with a different country name or clear the search to
+              see all destinations.
+            </p>
+
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                className="mt-4 text-sm font-medium text-[#003669] hover:underline"
+              >
+                Clear search
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Count */}
+        <span className="block text-start text-[14px] text-[#00366B] ps-28">
+          Based on your nationality & residency:&nbsp;
+          <span className="text-[#707478]">
+            {destinationCount} destinations
           </span>
-        </div>
+        </span>
 
-        {isError && (
-          <div className="text-center text-sm text-gray-500 py-10">
-            {t("error_loading_destinations") || "Error loading destinations"}
-          </div>
-        )}
-
-        {!isError && !isLoading && filteredDestinations.length === 0 && (
-          <div className="text-center text-sm text-gray-500 py-10">
-            {t("no_results") || "No results found"}
-          </div>
-        )}
-
-        {!isError && (
-          <div className="w-full">
-            <TopDestinationSection
-              onPreFlowNavigation={handlePreFlowNavigation}
-              destinations={mappedDestinations}
-              isLoading={isLoading}
-              hideViewAll={true}
-              title={t("all_destinations") || "All destinations"}
-            />
-          </div>
+        {/* Destinations */}
+        {filteredDestinations.length > 0 && (
+          <TopDestinationSection
+            title=""
+            destinations={filteredDestinations}
+            isLoading={isLoading}
+            enableHorizontalScroll={false}
+            onPreFlowNavigation={handlePreFlowNavigation}
+          />
         )}
       </div>
     </div>
