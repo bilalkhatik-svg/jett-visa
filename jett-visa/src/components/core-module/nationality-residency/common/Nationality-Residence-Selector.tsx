@@ -117,8 +117,8 @@ const NationalityResidencySelector = ({
             />
           )}
           <div className="flex flex-col min-w-0">
-            <span className="text-gray-400 text-xs">Nationality</span>
-            <span className="font-semibold text-blue-900 truncate">
+            <span className="text-[#707478] font-poppins text-[14px] font-normal leading-[16px]">Nationality</span>
+            <span className="text-[#00366B] font-poppins text-[18px] font-normal leading-[16px]">
               {nationality?.nationality ?? 'Select'}
             </span>
           </div>
@@ -138,7 +138,7 @@ const NationalityResidencySelector = ({
           {isNationalityOpen && (
             <div className="absolute mt-3 w-[250px] rounded-2xl bg-white shadow-xl border z-[9999]">
               <div className="px-4 pt-4 pb-2">
-                <h3 className="font-semibold text-[#0B3C6F] text-lg">Search nationality</h3>
+                <h3 className="text-lg w-[254px] h-[24px] font-poppins text-[16px] font-semibold leading-normal text-[#003669]">Search nationality</h3>
               </div>
 
               <div className="px-4 pb-3">
@@ -169,7 +169,7 @@ const NationalityResidencySelector = ({
                           className="w-5 h-5 rounded-full"
                         />
                       )}
-                      <span className="text-blue-700 font-medium">
+                      <span className="font-poppins text-[14px] font-normal leading-[22px] text-[#3F6B96]">
                         {item?.nationality}
                       </span>
                     </div>
@@ -210,8 +210,8 @@ const NationalityResidencySelector = ({
             />
           )}
           <div className="flex flex-col min-w-0">
-            <span className="text-gray-400 text-xs">Residency</span>
-            <span className="font-semibold text-blue-900 truncate">
+            <span className="text-[#707478] font-poppins text-[14px] font-normal leading-[16px]">Residency</span>
+            <span className="text-[#00366B] font-poppins text-[18px] font-normal leading-[16px]">
               {residency?.residency ?? 'Select'}
             </span>
           </div>
@@ -231,7 +231,7 @@ const NationalityResidencySelector = ({
           {isResidencyOpen && (
             <div className="absolute mt-3 w-full rounded-2xl bg-white shadow-xl border z-[9999]">
               <div className="px-4 pt-4 pb-2">
-                <h3 className="font-semibold text-[#0B3C6F] text-lg">Search residency</h3>
+                <h3 className=" text-lg w-[254px] h-[24px] font-poppins text-[16px] font-semibold leading-normal text-[#003669]">Search residency</h3>
               </div>
 
               <div className="px-4 pb-3">
@@ -262,7 +262,7 @@ const NationalityResidencySelector = ({
                           className="w-5 h-5 rounded-full"
                         />
                       )}
-                      <span className="text-blue-700 font-medium">
+                      <span className="font-poppins text-[14px] font-normal leading-[22px] text-[#3F6B96]">
                         {item?.residency}
                       </span>
                     </div>

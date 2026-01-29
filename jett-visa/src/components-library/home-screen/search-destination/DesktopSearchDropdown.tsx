@@ -65,6 +65,7 @@ const DesktopSearchDropdown: React.FC<Props> = ({
       <input
         value={search}
         placeholder={t("Search by country or city")}
+
         onFocus={() => setIsOpen(true)}
         onChange={(e) => {
           setSearch(e.target.value);
@@ -79,7 +80,7 @@ const DesktopSearchDropdown: React.FC<Props> = ({
           w-full h-[52px] rounded-xl border border-gray-200
           bg-white px-4 pr-12 text-sm sm:text-base
           focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100
-          transition
+          transition font-poppins text-[16px] font-normal leading-normal text-[#B5B5B5]
         "
         style={{ width: "505px" }}
       />
@@ -88,8 +89,9 @@ const DesktopSearchDropdown: React.FC<Props> = ({
       <div className="absolute right-3 top-1/2 -translate-y-1/2">
         {hasMatchingCountry ? (
           <div className="flex items-center gap-1 sm:gap-2 text-xs text-gray-400">
-            <span className="hidden sm:inline">
-              {t("press_enter_to_search")}
+            <span className="text-[#BDBFC1] font-poppins text-[14px] font-normal leading-[22px]
+ hidden sm:inline">
+              {t("Press Enter to search")}
             </span>
             <Image
               src={curveDownLeftIcon}
@@ -128,7 +130,8 @@ const DesktopSearchDropdown: React.FC<Props> = ({
                       className="h-4 w-4 sm:h-[18px] sm:w-[18px] rounded-full object-cover flex-shrink-0"
                     />
                   )}
-                  <div className="truncate text-xs sm:text-sm text-[#003669]">
+                  <div className="truncate text-xs sm:text-sm font-poppins text-[14px] font-normal leading-[22px] text-[#3F6B96]
+">
                     {c.displayName || c.residency || c.nationality || ""}
                   </div>
                 </div>

@@ -101,9 +101,9 @@ const TopDestinationSection = ({
     return (
       <div className="w-full">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="font-poppins font-semibold text-[#003B71] text-2xl sm:text-xl">
+          <div className="sm:text-xl font-poppins text-[28px] font-semibold leading-normal text-[#003669]">
             {title}
-          </h2>
+          </div>
           {!hideViewAll && (
             <button className="text-sm text-[#00366B] font-medium hover:underline">
               View all
@@ -139,7 +139,7 @@ const TopDestinationSection = ({
         </h2>
         {isDesktop && (
           <button
-            className="text-sm text-[#0087FA] font-medium transition-all sm:text-xs font-[16px]"
+            className=" sm:text-xs  text-right font-poppins text-[16px] font-medium leading-normal text-[#0087FA] transition-all"
             onClick={() => handleCardClick()}
           >
             View all
@@ -173,21 +173,20 @@ const TopDestinationSection = ({
       absolute top-0 left-0
       bg-white/25 backdrop-blur-sm
       border border-white/40
-      text-[#3F6B96] text-[10px] font-medium
       rounded-tl-[20px] rounded-br-[9px]
       pt-[6px] pr-[16px] pb-[6px] pl-[20px]
       gap-[10px]
       opacity-100
       inline-flex items-center whitespace-nowrap
-      min-h-[33px]
+      min-h-[33px] font-poppins text-[14px] font-normal leading-normal text-[#3F6B96]
     "
                   >
                     {item.VisaType || "E-Visa"}
                   </div>
                   <div className="absolute bottom-4 left-3 right-3 text-white">
-                    <h3 className="font-bold text-lg mb-1">{item.name}</h3>
+                    <h3 className="mb-1 font-poppins text-[20px] font-semibold leading-normal text-[#FFF]">{item.name}</h3>
                     <div className="flex justify-between items-center">
-                      <p className="text-xs font-medium opacity-90">
+                      <p className="opacity-90 font-poppins text-[16px] font-normal leading-normal text-[#FFF]">
                         Starts ₹{item.StartingPrice || "N/A"}
                       </p>
                       <span
@@ -195,13 +194,11 @@ const TopDestinationSection = ({
         absolute top-3 right-[-12px]
         bg-white/25 backdrop-blur-sm
         border border-white/30
-        text-[#FFFFFF] text-[10px] font-medium
         rounded-tl-[20px] rounded-bl-[20px]
-        pt-[6px] pr-[10px] pb-[6px] pl-[14px]
-        
+        pt-[6px] pr-[10px] pb-[6px] pl-[14px] 
         inline-flex items-center whitespace-nowrap
         min-h-[32px]
-        opacity-100
+        opacity-100 font-poppins text-[14px] font-normal leading-normal text-[#FFF]
       "
                       >
                         {item.GetVisaDays} {item.unit || "days"}

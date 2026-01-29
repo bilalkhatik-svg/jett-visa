@@ -86,7 +86,7 @@ const VisaMode = ({ showDestinationModal }: VisaModeProps) => {
     />
   </button>
 
-  <div className="font-poppins font-medium whitespace-nowrap text-xs sm:text-xs md:text-sm text-[#00366B]">
+  <div className="text-center font-poppins text-[16px] font-normal leading-normal text-[#00366B]">
     {item.label}
   </div>
 </div>
