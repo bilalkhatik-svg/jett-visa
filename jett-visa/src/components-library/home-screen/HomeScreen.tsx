@@ -1001,12 +1001,12 @@ const HomeScreen = () => {
                   className="w-[32px] h-[28px] md:w-[32px] md:h-[28px] sm:w-7 sm:h-6"
                 />
                 <span
-                  className="text-sm font-semibold whitespace-nowrap md:text-sm sm:text-xs"
-                  style={{
-                    background: "linear-gradient(135deg, #D536F6, #0AB1BA)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
+                  className="text-sm whitespace-nowrap md:text-sm sm:text-xs text-center font-poppins text-[18px] font-medium leading-normal bg-[linear-gradient(93deg,#D536F6_-4.23%,#0AB1BA_139.66%)] bg-clip-text text-transparent"
+                  // style={{
+                  //   background: "linear-gradient(135deg, #D536F6, #0AB1BA)",
+                  //   WebkitBackgroundClip: "text",
+                  //   WebkitTextFillColor: "transparent",
+                  // }}
                 >
                   {/* {isMobile ? t("inspire_me") : t("inspire_me_for_desktopView")} */}
                   {isMobile

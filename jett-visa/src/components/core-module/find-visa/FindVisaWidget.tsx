@@ -547,9 +547,9 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
         }}
       >
         <div className={`flex flex-col items-center gap-[26px] relative z-[50] mx-auto ${isMobile ? 'w-full' : 'w-[448px]'}`}>
-          <div className={`text-center flex flex-col items-center gap-2 ${isMobile ? 'gap-1' : ''}`}>
+          <div className={`text-center flex flex-col items-center gap-[6px] ${isMobile ? 'gap-1' : ''}`}>
             <h1
-              className={` font-poppins font-semibold text-[#003669] ${isMobile ? 'text-base' : 'text-[28px]'
+              className={`self-stretch text-[#003669] text-center font-poppins text-[28px] font-semibold leading-normal ${isMobile ? 'text-base' : 'text-[28px]'
                 }`}
               style={{ height: '4px' }}
             >
@@ -567,7 +567,9 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
                   }`}
               />
               <span
-                className={`font-poppins font-normal text-[#003669] text-center whitespace-nowrap ${isMobile
+                className={`font-poppins  text-center whitespace-nowrap
+                  text-[#003669] text-[18px] font-normal leading-normal
+ ${isMobile
                     ? 'w-[154px] h-[18px] text-xs mt-10'
                     : 'w-[238px] h-[18px] text-lg mt-[30px]'
                   }`}
@@ -631,7 +633,7 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
                 selected={selectedContinent}
                 onChange={handleContinentChange}
               />
-            
+
             </div>
 
             <div className="absolute left-0 right-0 bottom-[35px] z-[3] flex flex-col gap-2">
