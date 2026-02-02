@@ -129,7 +129,7 @@ const OfferSection = () => {
   return (
     <section className=" bg-white max-w-[1120px] mx-auto md:py-5  sm:py-5">
       <div
-        className="tracking-normalmb-8 font-poppins text-[28px] font-semibold leading-normal text-[#003669]"
+        className="tracking-normal mb-8 font-poppins text-[28px] font-semibold leading-normal text-[#003669]"
       >{"Offers"}</div>
 
       <div

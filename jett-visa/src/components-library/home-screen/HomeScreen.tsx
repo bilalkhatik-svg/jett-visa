@@ -715,10 +715,11 @@ const HomeScreen = () => {
       ) : (
         <div ref={heroSectionRef} className="w-full bg-white">
           <div
-            className={`relative w-full flex flex-col rounded-b-3xl ${isMobile
-              ? 'pb-10 pt-6 px-5 min-h-[auto] justify-start'
-              : 'pb-12 pt-16 px-12 min-h-[600px] justify-center items-center lg:px-20 xl:px-32 2xl:px-40'
-              }`}
+            className={`relative w-full flex flex-col rounded-b-3xl ${
+              isMobile
+                ? "pb-10 pt-6 px-5 min-h-[auto] justify-start"
+                : "pt-16 px-12 min-h-[600px] justify-center items-center lg:px-20 xl:px-32 2xl:px-40"
+            }`}
             style={{
               backgroundImage: isMobile
                 ? `linear-gradient(200deg, rgb(231, 192, 238), rgb(160, 224, 227) 100%), linear-gradient(to right top, rgb(219, 214, 143) 0%, transparent 50%)`
@@ -909,10 +910,7 @@ const HomeScreen = () => {
             {countryListData?.response && !isMobile && (
               <div
                 className="relative block mb-3 self-start"
-                style={{
-                  zIndex: 100,
-                  width: isTablet ? "85%" : "560px",
-                }}
+               
               >
                 <div className="w-full">
                   <NationalityResidencySelector
@@ -989,35 +987,51 @@ const HomeScreen = () => {
             {/* ===== Inspire Me Button ===== */}
             <div
               onClick={handleInspireMeClick}
-              className="absolute bottom-[-25px] left-1/2 -translate-x-1/2 rounded-full p-[2px] cursor-pointer inline-block transition-all duration-300 hover:shadow-xl hover:scale-105 md:bottom-[-25px] sm:bottom-[-25px] z-0"
+              className="absolute bottom-[-28px] left-1/2 -translate-x-1/2 rounded-full p-[2px] cursor-pointer inline-block transition-all duration-300 hover:shadow-xl hover:scale-105 md:bottom-[-25px] sm:bottom-[-25px] z-0"
               style={{
                 background: "linear-gradient(135deg, #D536F6 0%, #75ECF3 100%)",
               }}
             >
               <div className="rounded-full px-4 py-2 flex items-center justify-center gap-2 bg-white md:px-4 md:py-2 sm:px-3 sm:py-1.5">
-                <img
-                  src={inspireMeGifSrc}
-                  alt="Inspire Me Gif"
-                  className="w-[32px] h-[28px] md:w-[32px] md:h-[28px] sm:w-7 sm:h-6"
-                />
+                <div
+                    className="
+                      w-[33px] h-[32px]
+                      rounded-[100px]
+                      bg-[white]
+                      bg-no-repeat
+                      bg-[length:204.545%_153.409%]
+                      bg-[-17.524px_-8.548px]
+                    "
+                    style={{
+                      backgroundImage: `url(${inspireMeGifSrc})`,
+                    }}
+                  />
                 <span
-                  className="text-sm whitespace-nowrap md:text-sm sm:text-xs text-center font-poppins text-[18px] font-medium leading-normal bg-[linear-gradient(93deg,#D536F6_-4.23%,#0AB1BA_139.66%)] bg-clip-text text-transparent"
-                  // style={{
-                  //   background: "linear-gradient(135deg, #D536F6, #0AB1BA)",
-                  //   WebkitBackgroundClip: "text",
-                  //   WebkitTextFillColor: "transparent",
-                  // }}
-                >
-                  {/* {isMobile ? t("inspire_me") : t("inspire_me_for_desktopView")} */}
-                  {isMobile
-                    ? "inspire me"
-                    : "Plan your next adventure, and let AI simplify your visa"}
-                </span>
+    className="
+      flex items-center
+      text-center
+      whitespace-nowrap
+      font-poppins
+      font-medium
+      text-[18px]
+      leading-[1]
+      
+      bg-[linear-gradient(93deg,#D536F6_-4.23%,#0AB1BA_139.66%)]
+      bg-clip-text
+      text-transparent
+    "
+  >
+    {isMobile
+      ? "inspire me"
+      : "Plan your next adventure, and let AI simplify your visa"}
+  </span>
+
+
                 {!isMobile && (
                   <img
                     src={arrowLeftSrc}
                     alt="arrowLeft"
-                    className="w-5 h-5 md:block sm:hidden"
+                    className="w-[24px] h-[24px] md:block sm:hidden"
                     style={{
                       transform: isRTL ? "scaleX(-1)" : "none",
                     }}
@@ -1043,10 +1057,18 @@ const HomeScreen = () => {
                 aria-label="Inspire me"
               >
                 <span className="rounded-full px-4 py-2 flex items-center justify-center gap-2 bg-white">
-                  <img
-                    src={inspireMeGifSrc}
-                    alt=""
-                    className="w-[24px] h-[20px] object-contain"
+                  <div
+                    className="
+                      w-[33px] h-[32px]
+                      rounded-[100px]
+                      bg-[white]
+                      bg-no-repeat
+                      bg-[length:204.545%_153.409%]
+                      bg-[-17.524px_-8.548px]
+                    "
+                    style={{
+                      backgroundImage: `url(${inspireMeGifSrc})`,
+                    }}
                   />
                   <span
                     className="text-sm font-semibold whitespace-nowrap"
@@ -1086,7 +1108,7 @@ const HomeScreen = () => {
       {isFindVisaLoading ? (
         <FindVisaWidgetSkeleton />
       ) : (
-        <div className="w-full bg-gradient-to-b from-white to-[#F8FAFC] pt-12 sm:pt-16">
+        <div className="w-full bg-gradient-to-b from-white to-[#F8FAFC]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <FindVisaWidget onPreFlowNavigation={handlePreFlowNavigation} />
           </div>
@@ -1131,7 +1153,7 @@ const HomeScreen = () => {
       {isFooterLoading ? (
         <FooterSkeleton />
       ) : (
-        <div className="w-full bg-gradient-to-b from-white to-[#F8FAFC] pt-12">
+        <div className="w-full bg-gradient-to-b from-white to-[#F8FAFC] pt-4">
           <FooterSection />
         </div>
       )}

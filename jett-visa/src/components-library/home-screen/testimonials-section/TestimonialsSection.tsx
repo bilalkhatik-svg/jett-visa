@@ -122,7 +122,7 @@ const TestimonialsSection = React.memo(() => {
 
     return (
         <section className="w-full max-w-[1120px] mx-auto opacity-100" >
-            <h2
+            <p
   className="
     font-poppins font-semibold
     text-[#003B71]
@@ -131,7 +131,7 @@ const TestimonialsSection = React.memo(() => {
     tracking-normal
     mb-8
   "
->{"Testimonials"}</h2>
+>{"Testimonials"}</p>
 
             <div
                 ref={scrollRef}

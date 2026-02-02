@@ -87,7 +87,7 @@ const NationalityResidencySelector = ({
   }, [isNationalityOpen, isResidencyOpen]);
 
   return (
-    <div className="relative z-50 w-[505px]" ref={containerRef}>
+    <div className="relative w-[505px]" ref={containerRef}>
 
       {/* ================= Trigger Bar ================= */}
       <div

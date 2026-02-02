@@ -24,8 +24,8 @@ const DestinationCard = ({ item, onClick, onVisaBadgeClick, variant = "desktop" 
       onClick={() => onClick(item)}
       className={
         isMobile
-          ? "relative min-w-[160px] h-48 rounded-xl overflow-hidden shadow-lg cursor-pointer snap-start flex-shrink-0"
-          : "relative h-60 rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl cursor-pointer transition-all duration-300"
+          ? "relative min-w-[160px] h-48 rounded-[20px] overflow-hidden shadow-lg cursor-pointer snap-start flex-shrink-0"
+          : "relative h-80 rounded-[20px] overflow-hidden group shadow-lg hover:shadow-xl cursor-pointer transition-all duration-300"
       }
     >
       <img
@@ -45,9 +45,9 @@ const DestinationCard = ({ item, onClick, onVisaBadgeClick, variant = "desktop" 
         className={
           isMobile
             ? `absolute top-0 left-0
-                bg-white/25 backdrop-blur-sm
+                bg-[#FFFFFF99] backdrop-blur-sm
                 border border-white/40
-                text-white text-xs font-medium
+                text-[#3F6B96] text-xs font-medium
                 rounded-tl-[20px] rounded-br-[9px]
                 pt-[6px] pr-[16px] pb-[6px] pl-[20px]
                 gap-[10px]
@@ -57,9 +57,9 @@ const DestinationCard = ({ item, onClick, onVisaBadgeClick, variant = "desktop" 
                 cursor-pointer
                 hover:bg-white/35
                 transition-colors
-                z-10`
-            : `absolute top-0 left-0
-                bg-white/25 backdrop-blur-sm
+                `
+            : `absolute top-[-3px] left-0
+                bg-[#FFFFFF99] backdrop-blur-sm
                 border border-white/40
                 text-[#3F6B96] text-[10px] font-medium
                 rounded-tl-[20px] rounded-br-[9px]
@@ -71,7 +71,7 @@ const DestinationCard = ({ item, onClick, onVisaBadgeClick, variant = "desktop" 
                 cursor-pointer
                 hover:bg-white/35
                 transition-colors
-                z-10`
+                `
         }
       >
         {item.VisaType || "E-Visa"}

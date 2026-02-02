@@ -18,28 +18,29 @@ const FooterSection: React.FC = React.memo(() => {
     <div
       className="relative px-[30px] w-full min-w-screen flex flex-col items-center overflow-hidden"
       dir={isRTL ? "rtl" : "ltr"}
-      style={{ minHeight: isMobile ? 314 : 240 }}
+      style={{ minHeight: isMobile ? 220 : 156 }}
     >
       {/* Background Images */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         <Image
-  src={BackgroundCloudImg}
-  alt="background"
-  quality={100}
-  sizes="100vw"
-  className="absolute left-1/2 -translate-x-1/2 w-full h-auto object-contain"
-  style={{
-    top: `-${TOP_CROP_PX}px`,
-    minHeight: `calc(100% + ${TOP_CROP_PX}px)`
-  }}
-/>
-
-        <div
-          className="absolute inset-0 z-1"
+          src={BackgroundCloudImg}
+          alt="background"
+          sizes="100vw"
+          className="absolute left-1/2 -translate-x-1/2 object-contain"
           style={{
-            background: "linear-gradient(180deg, rgba(250, 250, 250, 1) 50%, rgba(163, 38, 247, 0.1) 100%)",
+            top: `-${TOP_CROP_PX}px`,
+            width: '100%',
+            height: 'auto',
+            minWidth: '100%',
+            objectFit: 'contain',
+            objectPosition: 'center bottom'
           }}
         />
+
+        <div
+    className="absolute inset-0 opacity-60 mix-blend-color-burn
+      bg-[linear-gradient(180deg,rgba(74,129,253,0.36)_-4.09%,rgba(162,38,247,0.24)_100%)]"
+  />
       </div>
 
       {/* Content */}

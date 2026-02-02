@@ -64,7 +64,7 @@ const FaqSection: React.FC = () => {
                 type="button"
                 onClick={() => toggleExpand(index)}
                 aria-expanded={isExpanded}
-                className="w-full h-[52px] flex items-center justify-between px-5 text-left focus:outline-none hover:bg-gray-50 transition-colors sm:px-4 sm:py-3"
+                className="w-full h-[52px] flex items-center justify-between text-left focus:outline-none hover:bg-gray-50 transition-colors sm:py-3"
               >
                 <span
                   className="
@@ -102,7 +102,7 @@ const FaqSection: React.FC = () => {
                   isExpanded ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
-                <p className="px-4 pb-4 font-poppins text-[#6B7280] text-[16px] leading-relaxed">
+                <p className=" pb-4 font-poppins text-[#6B7280] text-[16px] leading-relaxed">
                   {faq.answer}
                 </p>
               </div>

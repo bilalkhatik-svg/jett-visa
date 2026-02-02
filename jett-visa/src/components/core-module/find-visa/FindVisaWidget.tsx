@@ -533,7 +533,7 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
 
   return (
     <div
-      className="w-full  max-w-7xl mx-auto px-4 py-8 flex justify-center items-center"
+      className="w-full  max-w-7xl mx-auto px-4 flex justify-center items-center"
       role="region"
       aria-label="Find visa widget"
     >

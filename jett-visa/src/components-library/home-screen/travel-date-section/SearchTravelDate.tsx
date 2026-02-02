@@ -205,18 +205,18 @@ const SearchTravelDate = ({
     >
       {!isArabic ? (
         <input
-          placeholder={"select travel date"}
+          placeholder={"Select travel date or range"}
           value={inputValue}
           readOnly
           onMouseDown={(e) => e.preventDefault()}
-          className="text-sm bg-transparent outline-none w-full cursor-pointer"
+          className="bg-transparent outline-none w-full cursor-pointer text-[16px]"
         />
       ) : (
         <div className="text-sm flex-1 truncate" dir="rtl">
           {inputValue || t("select_travel_date")}
         </div>
       )}
-      <img src={calenderIconSrc} className="w-5 h-5" alt="calendar" />
+      <img src={calenderIconSrc} className="w-4 h-4" alt="calendar" />
     </div>
 
     {/* Instant */}
@@ -225,8 +225,8 @@ const SearchTravelDate = ({
       className="flex items-center gap-2 rounded-[10px] border border-[#E0E0E0]
         bg-white px-4 py-4 shadow-sm hover:bg-gray-50 transition flex-shrink-0"
     >
-      <img src={rightAwayIconSrc} className="w-5 h-5" />
-      <span className="text-sm text-[#003669] whitespace-nowrap">
+      <img src={rightAwayIconSrc} className="w-4 h-5" />
+      <span className="text-[16px] text-[#003669] whitespace-nowrap">
         {"instant within 2 weeks"}
       </span>
     </button>
@@ -238,7 +238,7 @@ const SearchTravelDate = ({
         bg-white px-4 py-4 shadow-sm hover:bg-gray-50 transition flex-shrink-0"
     >
       <img src={monthIconSrc} className="w-5 h-5" />
-      <span className="text-sm text-[#003669] whitespace-nowrap">
+      <span className="text-[16px] text-[#003669] whitespace-nowrap">
         {"within a month"}
       </span>
     </button>
@@ -250,7 +250,7 @@ const SearchTravelDate = ({
         bg-white px-4 py-4 shadow-sm hover:bg-gray-50 transition flex-shrink-0"
     >
       <img src={calenderIconSrc} className="w-5 h-5" />
-      <span className="text-sm text-[#003669] whitespace-nowrap">
+      <span className="text-[16px] text-[#003669] whitespace-nowrap">
         {"more than a month"}
       </span>
     </button>
@@ -269,7 +269,7 @@ const SearchTravelDate = ({
       <div
         className={`
           absolute z-[99999] flex flex-col bg-white shadow-xl rounded-[30px]
-          w-[375px] h-[442px]
+          w-[375px] h-[400px]
           p-[30px] pt-[10px] pb-[20px]
           ${calendarPlacement === "bottom" ? "top-full mt-2" : "bottom-full mb-2"}
         `}
@@ -356,14 +356,7 @@ const SearchTravelDate = ({
           })()}
         </div>
 
-        <div className="flex justify-end mt-4">
-          <button
-            onClick={() => setDesktopCalendarOpen(false)}
-            className="px-4 py-2 rounded-lg hover:bg-gray-100"
-          >
-            Close
-          </button>
-        </div>
+        
       </div>
     </>
   )}
@@ -405,10 +398,10 @@ const SearchTravelDate = ({
                   className="flex items-center gap-2 rounded-[10px] border
                   border-[#E0E0E0] bg-white px-3 py-2 shadow-sm"
                 >
-                  <img src={rightAwayIconSrc} className="w-3 h-3" />
-                  <span className="text-xs text-[#003669]">
-                    {"instant within 2 weeks"}
-                  </span>
+                  <img src={rightAwayIconSrc} className="w-3 h-3 mb-1" />
+  <span className="text-xs text-[#003669] text-center leading-tight">
+    instant within 2 weeks
+  </span>
                 </button>
               </div>
 

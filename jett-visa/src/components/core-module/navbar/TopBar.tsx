@@ -157,7 +157,7 @@ const TopBar: React.FC<TopBarProps> = ({
         <button
           onClick={handleMenuClick}
           aria-label="Menu"
-          className={`p-0 ${isMobile ? 'w-[32px] h-[32px]' : 'w-[48px] h-[48px]'} hover:bg-gray-50 rounded-full bg-white flex items-center justify-center relative transition-all`}
+          className={`p-0 ${isMobile ? 'w-[32px] h-[32px]' : 'w-[48px] h-[48px]'} bg-[#EFEFEF] rounded-full bg- flex items-center justify-center relative transition-all`}
         >
           <img
             src={menuIconSrc}
@@ -173,11 +173,11 @@ const TopBar: React.FC<TopBarProps> = ({
   return (
     <header
       className={`w-full  transition-all duration-300 ${isFixed
-        ? 'fixed max-w-[1120px] left-1/2 -translate-x-1/2 top-3 z-50 rounded-b-3xl shadow-sm bg-white backdrop-blur-sm'
+        ? 'fixed max-w-[1120px] left-1/2 -translate-x-1/2 top-3 z-50 rounded-[16px] shadow-sm bg-white backdrop-blur-sm'
         : 'absolute top-0 z-50  bg-opacity-95'
         }`}
     >
-      <nav className={`min-h-[72px] py-4 px-6 sm:px-8 md:px-12 lg:px-20 xl:px-32 2xl:px-40 flex items-center ${isRTL ? 'flex-row-reverse' : 'flex-row'} max-w-[1920px] mx-auto`}>
+      <nav className={`min-h-[72px] py-4 px-6  flex items-center ${isRTL ? 'flex-row-reverse' : 'flex-row'} max-w-[1920px] mx-auto ${isFixed ? '' : 'sm:px-8 md:px-12 lg:px-20 xl:px-32 2xl:px-40'}`}>
         {variant === "inner" ? (
           <>
             {isRTL ? (

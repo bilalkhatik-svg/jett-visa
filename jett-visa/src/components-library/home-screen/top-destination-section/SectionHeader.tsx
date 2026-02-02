@@ -14,22 +14,21 @@ const SectionHeader = ({
   isDesktop = false 
 }: SectionHeaderProps) => {
   return (
-    <div className="flex justify-between items-center mb-6 sm:mb-5">
-      <h2
+    <div className="flex justify-between items-center mb-8">
+      <div
         className="
           font-poppins font-semibold
           text-[#003B71]
           text-[28px]
           leading-[1]
           tracking-normal
-          mb-8
         "
       >
         {title}
-      </h2>
+      </div>
       {isDesktop && showViewAll && (
         <button
-          className="text-sm text-[#0087FA] font-medium transition-all sm:text-xs font-[16px]"
+          className="text-[#0087FA] font-medium transition-all font-[16px]"
           onClick={onViewAllClick}
         >
           View all

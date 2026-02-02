@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import type { PendingAction } from "@/components-library/home-screen/HomeScreen";
 import { useMediaQuery } from "@/utils/hooks/useMediaQuery";
 import DesktopOtherVisaDropdown from "@/components/core-module/visa-type/DesktopOtherVisaDropdown";
+import MobileBottomDrawer from "@/components-library/bottom-drawer/BottomDrawer";
 
 interface VisaType {
   Code: string;
@@ -106,7 +107,7 @@ const VisaTypeSection: React.FC<VisaTypeSectionProps> = ({
   return (
     <div className="w-full z-[1]">
       {/* Title */}
-      <div className={`mt-4 mb-1 ${isMobile ? "text-center -mt-[3%] px-4" : "text-left"}`}>
+      {/* <div className={`mt-4 mb-1 ${isMobile ? "text-center -mt-[3%] px-4" : "text-left"}`}>
       <p
           className={`font-normal leading-[100%] font-[Poppins,sans-serif] text-[#003669]
             ${isMobile ? "text-xs" : "text-base"}
@@ -114,7 +115,7 @@ const VisaTypeSection: React.FC<VisaTypeSectionProps> = ({
         >
           Find destinations by how their visas are issued
         </p>
-      </div>
+      </div> */}
 
       {/* Visa buttons */}
       <div
@@ -211,7 +212,7 @@ const VisaTypeSection: React.FC<VisaTypeSectionProps> = ({
           />
 
           {/* Close Button - Outside Drawer, Top Center */}
-          <div className="fixed top-120 left-1/2 -translate-x-1/2 z-[10001]">
+          <div className="fixed top-120 left-1/2 -translate-x-1/2 z-[10000]">
             <button
               onClick={() => setShowMobileDrawer(false)}
               className="w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-lg hover:bg-gray-50 transition-colors"
@@ -221,10 +222,10 @@ const VisaTypeSection: React.FC<VisaTypeSectionProps> = ({
               </svg>
             </button>
           </div>
-
+      
           {/* Bottom Drawer */}
           <div
-            className="fixed bottom-0 left-0 right-0 bg-white rounded-t-[30px] z-[10000] 
+            className="fixed bottom-0 left-0 right-0 bg-white rounded-t-[30px] z-[99999] 
               shadow-2xl overflow-y-auto max-h-[85vh]"
             onClick={(e) => e.stopPropagation()}
           >

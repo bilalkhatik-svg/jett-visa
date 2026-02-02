@@ -80,7 +80,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
           <img
             src={imageSrc}
             alt={imageAlt}
-            className="w-7 h-7 object-contain"
+            className="w-12 h-12 object-contain"
           />
         </div>
 
