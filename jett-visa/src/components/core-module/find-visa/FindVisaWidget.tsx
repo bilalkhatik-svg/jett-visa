@@ -477,8 +477,6 @@ const FindVisaWidget: React.FC<FindVisaWidgetProps> = ({ onPreFlowNavigation }) 
           ...selectedNationalityData
         };
         dispatch(setNationality(nationalityPayload));
-      } else {
-        console.warn('[FindVisaWidget] Country not found for id:', nationalityId);
       }
     },
     [countryListData, dispatch]

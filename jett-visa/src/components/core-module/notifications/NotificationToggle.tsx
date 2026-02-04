@@ -99,7 +99,6 @@ export const NotificationToggle: React.FC<NotificationToggleProps> = ({
 
       setOptimisticState(null);
     } catch (error) {
-      console.error('Error enabling notifications:', error);
       setOptimisticState(null);
       setShowMessage({ text: TEXT_CONSTANTS.ERROR_ENABLE, type: 'error' });
     }
@@ -120,7 +119,6 @@ export const NotificationToggle: React.FC<NotificationToggleProps> = ({
 
       setOptimisticState(null);
     } catch (error) {
-      console.error('Error disabling notifications:', error);
       setOptimisticState(null);
       setShowMessage({ text: TEXT_CONSTANTS.ERROR_SAVE, type: 'error' });
     }

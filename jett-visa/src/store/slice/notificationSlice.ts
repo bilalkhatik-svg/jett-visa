@@ -34,7 +34,6 @@ export const requestNotificationPermission = async (): Promise<NotificationPermi
     const permission = await Notification.requestPermission();
     return permission as NotificationPermissionState;
   } catch (error) {
-    console.error('Error requesting notification permission:', error);
     return Notification.permission as NotificationPermissionState;
   }
 };

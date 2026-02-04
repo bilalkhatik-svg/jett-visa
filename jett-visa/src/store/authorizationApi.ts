@@ -109,7 +109,6 @@ export const authorizationApi = createApi({
           },
           Request: encryptedRequest,
         };
-        console.log("Authorization Request Body:", requestBody);
 
         return {
           url: "/token/authorize",

@@ -18,7 +18,6 @@ const ResidencyDialogContent = () => {
   const getSrc = (img: any) => (typeof img === "string" ? img : (img?.src ?? ""));
   const [selectedNationality, setSelectedNationality] = useState<any>(null);
   const [selectedResidency, setSelectedResidency] = useState<any>(null);
-  console.log("selectedNationality", selectedNationality);
   const { data, isLoading } = useFetchCountryListQuery("en-US");
 
   const [drawerOpen, setDrawerOpen] = useState(false);

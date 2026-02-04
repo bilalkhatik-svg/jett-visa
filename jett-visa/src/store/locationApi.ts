@@ -27,7 +27,6 @@ const getIPBaseUrl = () => {
     }
 
     if (!IPFetchURL) {
-        console.warn("IPFetchURL is not defined",);
         return '';
     }
 
@@ -35,7 +34,6 @@ const getIPBaseUrl = () => {
         const url = new URL(IPFetchURL);
         return url.origin;
     } catch (error) {
-        console.error("Invalid IPFetchURL:",);
         return '';
     }
 };

@@ -28,10 +28,8 @@ export const useAuthorization = () => {
         dispatch(setAuthorizationTokens(tokens));
         saveAuthTokens(tokens);
       }
-       console.log("Authorization Result:", result);
       return result;
     } catch (err) {
-      console.error('Authorization failed:', err);
       throw err;
     }
   }, [authorize, dispatch]);

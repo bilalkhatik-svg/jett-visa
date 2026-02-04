@@ -106,22 +106,22 @@ const MobileBottomDrawerSkeleton = () => (
 //   setShowOthers,
 //   onPreFlowNavigation,
 // }: any) => <div className="p-4">Visa Type Section</div>;
-const BottomConfirmBar = ({
-  residency,
-  flagUrl,
-  onConfirmClick,
-  nationalitySelectorRef,
-}: any) => (
-  <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex items-center justify-between">
-    <span>{residency}</span>
-    <button
-      onClick={onConfirmClick}
-      className="bg-blue-500 text-white px-4 py-2 rounded"
-    >
-      Confirm
-    </button>
-  </div>
-);
+// const BottomConfirmBar = ({
+//   residency,
+//   flagUrl,
+//   onConfirmClick,
+//   nationalitySelectorRef,
+// }: any) => (
+//   <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex items-center justify-between">
+//     <span>{residency}</span>
+//     <button
+//       onClick={onConfirmClick}
+//       className="bg-blue-500 text-white px-4 py-2 rounded"
+//     >
+//       Confirm
+//     </button>
+//   </div>
+// );
 
 const TravelDateCalender = ({
   selectedDate,
@@ -289,13 +289,9 @@ const HomeScreen = () => {
         }
         if (error?.data?.url) errorDetails.url = error.data.url;
 
-        // console.error('[HomeScreen] Country list API error:', errorDetails);
-
-        // If it's a 401, log a helpful message
+        // If it's a 401, silently handle it
         if (status === 401) {
-          console.warn(
-            "[HomeScreen] 401 Unauthorized - OAuth tokens are missing. Please authorize first.",
-          );
+          // 401 Unauthorized - OAuth tokens are missing
         }
       }
       // Silently ignore empty error objects - they're likely from RTK Query's internal state management
@@ -318,7 +314,6 @@ const HomeScreen = () => {
         originalStatus: (ipError as any)?.originalStatus,
         fullError: ipError,
       };
-      // console.error('[HomeScreen] IP fetch error:', errorDetails);
     }
   }, [ipError]);
 
@@ -344,16 +339,13 @@ const HomeScreen = () => {
         originalStatus: (geoIPError as any)?.originalStatus,
         fullError: geoIPError,
       };
-      // console.error('[HomeScreen] GeoIP API error:', errorDetails);
 
-      // If it's a 401, log a helpful message
+      // If it's a 401, silently handle it
       if (
         (geoIPError as any)?.status === 401 ||
         (geoIPError as any)?.originalStatus === 401
       ) {
-        console.warn(
-          "[HomeScreen] 401 Unauthorized - OAuth tokens are missing. Please authorize first.",
-        );
+        // 401 Unauthorized - OAuth tokens are missing
       }
     }
   }, [geoIPError]);
@@ -1190,7 +1182,7 @@ const HomeScreen = () => {
           <BottomConfirmBarSkeleton />
         ) : (
           <div className="w-full">
-            <BottomConfirmBar
+            {/* <BottomConfirmBar
               residency={
                 residency
                   ? (residency as unknown as ICountry).residency ||
@@ -1203,7 +1195,7 @@ const HomeScreen = () => {
               }
               onConfirmClick={handleConfirmBarClick}
               nationalitySelectorRef={nationalitySelectorRef}
-            />
+            /> */}
           </div>
         ))}
 

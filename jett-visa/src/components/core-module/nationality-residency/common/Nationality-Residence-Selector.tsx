@@ -87,7 +87,7 @@ const NationalityResidencySelector = ({
   }, [isNationalityOpen, isResidencyOpen]);
 
   return (
-    <div className="relative w-[505px]" ref={containerRef}>
+    <div className="relative w-[505px] z-[99999]" ref={containerRef}>
 
       {/* ================= Trigger Bar ================= */}
       <div
@@ -96,7 +96,7 @@ const NationalityResidencySelector = ({
         }`}
       >
         {/* ===== Nationality ===== */}
-        <div className="relative flex-1 min-w-0">
+        <div className="relative flex-1 min-w-0 z-[100000]">
           <div
             className="flex items-center gap-3 cursor-pointer min-w-0"
             onClick={() => {
@@ -136,7 +136,7 @@ const NationalityResidencySelector = ({
           </div>
 
           {isNationalityOpen && (
-            <div className="absolute mt-3 w-[250px] rounded-2xl bg-white shadow-xl border z-[9999]">
+            <div className="absolute mt-3 w-[250px] rounded-2xl bg-white shadow-xl border z-[99999]">
               <div className="px-4 pt-4 pb-2">
                 <h3 className="text-lg w-[254px] h-[24px] font-poppins text-[16px] font-semibold leading-normal text-[#003669]">Search nationality</h3>
               </div>
@@ -189,7 +189,7 @@ const NationalityResidencySelector = ({
         <div className="mx-4 h-8 w-px bg-gray-200" />
 
         {/* ===== Residency ===== */}
-        <div className="relative flex-1 min-w-0">
+        <div className="relative flex-1 min-w-0 z-[100000]">
           <div
             className="flex items-center gap-3 cursor-pointer min-w-0"
             onClick={() => {
@@ -229,7 +229,7 @@ const NationalityResidencySelector = ({
           </div>
 
           {isResidencyOpen && (
-            <div className="absolute mt-3 w-full rounded-2xl bg-white shadow-xl border z-[9999]">
+            <div className="absolute mt-3 w-full rounded-2xl bg-white shadow-xl border z-[99999]">
               <div className="px-4 pt-4 pb-2">
                 <h3 className=" text-lg w-[254px] h-[24px] font-poppins text-[16px] font-semibold leading-normal text-[#003669]">Search residency</h3>
               </div>

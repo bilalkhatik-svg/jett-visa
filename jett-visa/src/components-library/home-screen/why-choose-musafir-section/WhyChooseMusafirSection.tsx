@@ -25,9 +25,7 @@ const WhyChooseMusafirSection = React.memo(() => {
    });
  
    const apiContent = data?.response?.[0];
-   console.log("uniqueValuePropositions apiContent", apiContent);
    const uniqueValuePropositions = apiContent?.uniqueValuePropositions ?? [];
-   console.log("uniqueValuePropositions", uniqueValuePropositions);
  
    if (isLoading || !uniqueValuePropositions.length) return null;
  

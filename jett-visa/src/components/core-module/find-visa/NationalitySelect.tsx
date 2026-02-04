@@ -92,14 +92,14 @@ const NationalitySelect: React.FC<NationalitySelectProps> = React.memo(
     const selectedNationality = nationalities?.find((n: ICountry) => n.id === value);
 
     return (
-      <div className="w-full relative" ref={dropdownRef}>
+      <div className="w-full relative z-[99999]" ref={dropdownRef}>
         <button
           type="button"
           onClick={handleSelectClick}
           aria-label={t("Select nationality") || "Select nationality"}
           className={`${
             isMobileView ? 'w-[275px] h-[42px]' : 'w-[448px] h-[56px]'
-          } bg-white rounded-[14px] border-2 border-[#E9EDEF] hover:border-[#D0D0D0] focus:border-[#B0B0B0] px-4 py-2.5 flex items-center justify-between transition-colors`}
+          } bg-white rounded-[14px] border-2 border-[#E9EDEF] hover:border-[#D0D0D0] focus:border-[#B0B0B0] px-4 py-2.5 flex items-center justify-between transition-colors relative z-[100000]`}
         >
           {!value || !selectedNationality ? (
             <span className="text-sm font-medium font-[Poppins,sans-serif] leading-[22px] text-[#999]">
@@ -133,7 +133,7 @@ const NationalitySelect: React.FC<NationalitySelectProps> = React.memo(
             {/* Backdrop for mobile */}
             {isMobileView && (
               <div
-                className="fixed inset-0 bg-black/20 z-40"
+                className="fixed inset-0 bg-black/20 z-[99998]"
                 onClick={() => {
                   setIsOpen(false);
                   setSearch('');
@@ -143,7 +143,7 @@ const NationalitySelect: React.FC<NationalitySelectProps> = React.memo(
             
             <div className={`absolute top-full left-0 ${
               isMobileView ? 'left-1/2 -translate-x-1/2 w-[90vw] max-w-md' : 'right-0'
-            } mt-2 bg-white rounded-[14px] border-2 border-[#E9EDEF] shadow-lg z-50 max-h-80 overflow-hidden flex flex-col`}>
+            } mt-2 bg-white rounded-[14px] border-2 border-[#E9EDEF] shadow-lg z-[99999] max-h-80 overflow-hidden flex flex-col`}>
               {/* Search Input */}
               <div className="p-3 border-b border-gray-200">
                 <input

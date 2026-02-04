@@ -28,7 +28,6 @@ export const NotificationSettingsPage: React.FC<NotificationSettingsPageProps> =
                 try {
                     await dispatch(syncNotificationFromBackend(userId)).unwrap();
                 } catch (error) {
-                    console.error('Failed to sync from backend, falling back to local storage:', error);
                     await dispatch(loadNotificationFromStorage()).unwrap();
                 }
             } else {

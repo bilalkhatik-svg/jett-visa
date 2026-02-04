@@ -16,7 +16,6 @@ export const loadAuthTokens = (): AuthTokens | null => {
     const stored = localStorage.getItem(AUTH_STORAGE_KEY);
     return stored ? (JSON.parse(stored) as AuthTokens) : null;
   } catch (error) {
-    console.warn("[Auth] Failed to read tokens from storage", error);
     return null;
   }
 };
@@ -29,7 +28,7 @@ export const saveAuthTokens = (tokens: AuthTokens) => {
   try {
     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(tokens));
   } catch (error) {
-    console.warn("[Auth] Failed to save tokens to storage", error);
+    // Failed to save tokens to storage
   }
 };
 
@@ -41,6 +40,6 @@ export const clearAuthTokens = () => {
   try {
     localStorage.removeItem(AUTH_STORAGE_KEY);
   } catch (error) {
-    console.warn("[Auth] Failed to clear tokens from storage", error);
+    // Failed to clear tokens from storage
   }
 };

@@ -13,7 +13,7 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
     try {
       initializeAuthFromEnv();
     } catch (error) {
-      console.error('[StoreProvider] Error initializing auth:', error);
+      // Error initializing auth
     }
   }
 

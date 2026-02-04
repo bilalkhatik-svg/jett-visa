@@ -1,11 +1,50 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from '@/utils/i18nStub';
 
-const ErrorBanner: React.FC = () => {
-  const { t } = useTranslation();
+interface ErrorBannerProps {
+  isLoading?: boolean;
+  loadingTimeout?: number; // Timeout in milliseconds before showing error
+}
 
+const ErrorBanner: React.FC<ErrorBannerProps> = ({ 
+  isLoading = true, 
+  loadingTimeout = 3000 
+}) => {
+  const { t } = useTranslation();
+  const [showError, setShowError] = useState(false);
+
+  useEffect(() => {
+    if (isLoading) {
+      setShowError(false);
+      // Show spinner for the loading timeout duration, then show error
+      const timer = setTimeout(() => {
+        setShowError(true);
+      }, loadingTimeout);
+
+      return () => clearTimeout(timer);
+    } else {
+      // If not loading, show error immediately
+      setShowError(true);
+    }
+  }, [isLoading, loadingTimeout]);
+
+  // Show spinner while loading
+  if (isLoading && !showError) {
+    return (
+      <div className="alert alert-warning mb-[100px] rounded-lg bg-transparent flex items-center justify-center py-4">
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#003669]"></div>
+          <div className="text-sm text-gray-600">
+            {t("loading") || "Loading..."}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error message
   return (
     <div className="alert alert-warning mb-[100px] rounded-lg bg-transparent">
       <svg

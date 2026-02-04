@@ -21,7 +21,7 @@ export const storage = {
         } else if (storageType === 'cookie') {
             setCookie(key, value, expiresInDays);
         } else {
-            console.error('Invalid storage type');
+            // Invalid storage type
         }
     },
 
@@ -38,7 +38,6 @@ export const storage = {
         } else if (storageType === 'cookie') {
             return getCookie<T>(key);
         } else {
-            console.error('Invalid storage type');
             return null;
         }
     },
@@ -55,7 +54,7 @@ export const storage = {
         } else if (storageType === 'cookie') {
             removeCookie(key);
         } else {
-            console.error('Invalid storage type');
+            // Invalid storage type
         }
     },
 
@@ -68,7 +67,7 @@ export const storage = {
         if (storageType === 'localStorage') {
             clearLocalStorage();
         } else {
-            console.error('Clearing cookies is not supported via this function');
+            // Clearing cookies is not supported via this function
         }
     }
 };
@@ -84,7 +83,7 @@ const setLocalStorage = (key: string, value: any): void => {
         try {
             localStorage.setItem(key, JSON.stringify(value));
         } catch (error) {
-            console.error('Error setting to localStorage:', error);
+            // Error setting to localStorage
         }
     }
 };
@@ -101,7 +100,6 @@ const getLocalStorage = <T>(key: string): T | null => {
             const value = localStorage.getItem(key);
             return value ? (JSON.parse(value) as T) : null;
         } catch (error) {
-            console.error('Error getting from localStorage:', error);
             return null;
         }
     }
@@ -118,7 +116,7 @@ const removeLocalStorage = (key: string): void => {
         try {
             localStorage.removeItem(key);
         } catch (error) {
-            console.error('Error removing from localStorage:', error);
+            // Error removing from localStorage
         }
     }
 };
@@ -131,7 +129,7 @@ const clearLocalStorage = (): void => {
         try {
             localStorage.clear();
         } catch (error) {
-            console.error('Error clearing localStorage:', error);
+            // Error clearing localStorage
         }
     }
 };

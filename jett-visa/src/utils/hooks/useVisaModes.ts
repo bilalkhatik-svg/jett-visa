@@ -17,7 +17,6 @@ export const useVisaModes = () => {
   refetchOnMountOrArgChange: false,
   refetchOnReconnect: false,
 });
-console.log(data,'data**')
   return {
     refetchVisaModesList: refetch,
     visaModesList: data,

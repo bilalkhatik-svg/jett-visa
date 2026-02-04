@@ -14,12 +14,10 @@ export const cookieStorage: PersistStorage<any> = {
       if (["en", "ar", "hi"].includes(value)) return value as any;
       return JSON.parse(decodeURIComponent(value));
     } catch (e) {
-      console.error("Failed to parse i18n cookie:", e);
       return null;
     }
   },
   setItem: (name: string, value: StorageValue<any>): void => {
-    console.log("setItem Cookie: ", value?.state?.language);
     // const stringifiedValue = JSON.stringify(value);
     // Store the value as a URI-encoded string
     Cookies.set(name, encodeURIComponent(value?.state?.language), {

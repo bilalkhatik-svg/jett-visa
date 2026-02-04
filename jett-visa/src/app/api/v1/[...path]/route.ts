@@ -67,8 +67,6 @@ async function handleRequest(
     // Construct the full API URL
     const apiUrl = `${API_BASE_URL}/api/v1/${path}${queryString ? `?${queryString}` : ''}`;
     
-    console.log(`[API Proxy] ${method} ${apiUrl}`);
-    
     // Get headers from the request
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -93,14 +91,6 @@ async function handleRequest(
     headers['ConsumerSecret'] = finalConsumerSecret;
     headers['AccessToken'] = finalAccessToken;
     
-    console.log(`[API Proxy] Using ConsumerKey: ${finalConsumerKey.substring(0, 20)}...`);
-    console.log(`[API Proxy] Using ConsumerSecret: ${finalConsumerSecret.substring(0, 20)}...`);
-    console.log(`[API Proxy] Using AccessToken: ${finalAccessToken.substring(0, 20)}...`);
-    
-    if (!consumerKey || !consumerSecret || !accessToken) {
-      console.warn('[API Proxy] OAuth headers not provided in request, using default credentials');
-    }
-    
     if (acceptLanguage) headers['Accept-Language'] = acceptLanguage;
     
     // Prepare request options
@@ -123,7 +113,6 @@ async function handleRequest(
           }
         } catch (textError) {
           // No body or error reading body
-          console.warn('[API Proxy] Could not read request body');
         }
       }
     }
@@ -133,7 +122,6 @@ async function handleRequest(
     try {
       response = await fetch(apiUrl, requestOptions);
     } catch (fetchError: any) {
-      console.error('[API Proxy] Fetch error:', fetchError.message);
       return NextResponse.json(
         {
           error: 'Network error',
@@ -151,36 +139,6 @@ async function handleRequest(
     } catch (parseError) {
       // If parsing fails, return the raw data
       jsonData = data;
-      console.warn('[API Proxy] Failed to parse JSON response:', parseError);
-      console.warn('[API Proxy] Raw response:', data.substring(0, 200));
-    }
-    
-    console.log(`[API Proxy] Response status: ${response.status}`);
-    console.log(`[API Proxy] Response headers:`, Object.fromEntries(response.headers.entries()));
-    
-    // Log error responses for debugging
-    if (!response.ok) {
-      console.error('[API Proxy] Error response:', {
-        status: response.status,
-        statusText: response.statusText,
-        data: typeof jsonData === 'object' ? jsonData : { raw: jsonData },
-        headers: Object.fromEntries(response.headers.entries()),
-      });
-      
-      // Log the actual request that was made
-      console.error('[API Proxy] Request details:', {
-        url: apiUrl,
-        method: method,
-        headers: Object.keys(headers),
-        hasConsumerKey: !!headers['ConsumerKey'],
-        hasConsumerSecret: !!headers['ConsumerSecret'],
-        hasAccessToken: !!headers['AccessToken'],
-      });
-    } else {
-      console.log('[API Proxy] Success response:', {
-        status: response.status,
-        dataKeys: typeof jsonData === 'object' && jsonData !== null ? Object.keys(jsonData) : 'not an object',
-      });
     }
     
     // Return the response with appropriate status
@@ -194,8 +152,6 @@ async function handleRequest(
       },
     });
   } catch (error: any) {
-    console.error('[API Proxy Error]:', error);
-    console.error('[API Proxy Error Stack]:', error.stack);
     return NextResponse.json(
       {
         error: 'Failed to proxy request',
