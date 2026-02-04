@@ -1,249 +1,232 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useState, Suspense } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "@/utils/i18nStub";
-import { useSearchParams } from "next/navigation";
+import { useAppSelector } from "@/store/hooks";
+import { getApiLanguageCode } from "@/utils/helper";
+import SearchIcon from "@/assets/images/icons/search.png";
+import TopDestinationSection, {
+  type PendingAction,
+} from "@/components-library/home-screen/top-destination-section/TopDestinationSection";
+import { useFetchTopDestinationQuery } from "@/store/visaTopDestinationApi";
+import { ICountry } from "@/utils/types/nationality-residency/Country";
+import TopBar from "../navbar/TopBar";
 import Image from "next/image";
-
-// Mock data
-const continents = ['Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'];
-
-// Types
-interface DestinationItem {
-  name: string;
-  image: string;
-  price?: number;
-  currency?: string;
-  time?: number;
-  isEarliest?: boolean;
-}
-
-interface NationalityResidency {
-  flag?: string;
-  text?: string;
-}
-
-// Simple ModeSelection placeholder component
-const ModeSelection = ({ 
-  title, 
-  nationality, 
-  residency, 
-  renderItems, 
-  isLoading 
-}: {
-  title: string;
-  nationality?: NationalityResidency;
-  residency?: NationalityResidency;
-  renderItems: DestinationItem[];
-  isLoading: boolean;
-}) => {
-  if (isLoading) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="skeleton h-8 w-64 mb-4"></div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="skeleton h-64 w-full rounded-lg"></div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-primary mb-6">{title}</h1>
-      
-      {(nationality || residency) && (
-        <div className="flex gap-4 mb-6">
-          {nationality && (
-            <div className="flex items-center gap-2">
-              {nationality.flag && (
-                <Image
-                  src={nationality.flag}
-                  alt={nationality.text || 'Nationality'}
-                  width={24}
-                  height={24}
-                  className="rounded-full"
-                />
-              )}
-              <span className="text-sm text-base-content">{nationality.text}</span>
-            </div>
-          )}
-          {residency && (
-            <div className="flex items-center gap-2">
-              {residency.flag && (
-                <Image
-                  src={residency.flag}
-                  alt={residency.text || 'Residency'}
-                  width={24}
-                  height={24}
-                  className="rounded-full"
-                />
-              )}
-              <span className="text-sm text-base-content">{residency.text}</span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {renderItems.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {renderItems.map((item, index) => (
-            <div key={`${item.name}-${index}`} className="card bg-base-100 shadow-xl">
-              <figure>
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={400}
-                  height={192}
-                  className="w-full h-48 object-cover"
-                />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title text-primary">{item.name}</h2>
-                <div className="flex gap-2 flex-wrap">
-                  {item.price && (
-                    <div className="badge badge-primary">
-                      {item.currency}{item.price}
-                    </div>
-                  )}
-                  {item.time && (
-                    <div className="badge badge-outline">
-                      {item.time} days
-                    </div>
-                  )}
-                  {item.isEarliest && (
-                    <div className="badge badge-success">Earliest</div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="alert alert-info">
-          <span>No destinations found</span>
-        </div>
-      )}
-    </div>
-  );
-};
-
-interface Country {
-  id?: string;
-  isoCode?: string;
-  name?: string;
-  nationality?: string;
-  residency?: string;
-  flag?: string;
-}
-
-interface ApiDestination {
-  id: string;
-  countryName: string;
-  images?: Array<{ filename: string }>;
-  startingPrice?: number;
-  symbol?: string;
-  getVisaDays?: number;
-  isEarliest?: boolean;
-}
-
-const AllDestinationsContent = () => {
-  const { t } = useTranslation();
-  const searchParams = useSearchParams();
-  const passedContinent = searchParams?.get('continent') || null;
-  const DEFAULT_CONTINENT = passedContinent || continents[0] || "Asia";
-  const [selectedContinent, setSelectedContinent] = useState<string>(DEFAULT_CONTINENT);
-  
-  // Local state for nationality and residency
-  const [nationality, setNationality] = useState<Country | null>(null);
-  const [residency, setResidency] = useState<Country | null>(null);
-  const [destinations, setDestinations] = useState<ApiDestination[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    if (passedContinent) {
-      setSelectedContinent(passedContinent);
-    }
-  }, [passedContinent]);
-
-  // Mock API call - replace with actual API call when available
-  useEffect(() => {
-    if (!nationality?.isoCode) return;
-    
-    setIsLoading(true);
-    setIsError(false);
-    
-    // Simulate API call
-    const fetchDestinations = async () => {
-      try {
-        // TODO: Replace with actual API call
-        // const response = await fetch(`/api/destinations?continent=${selectedContinent}&isoCode=${nationality.isoCode}`);
-        // const data = await response.json();
-        // setDestinations(data);
-        
-        // Mock data for now
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setDestinations([]);
-      } catch (error) {
-        console.error('Error fetching destinations:', error);
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDestinations();
-  }, [selectedContinent, nationality?.isoCode]);
-
-  // Convert API data → card items used by ModeSelection
-  const renderItems = useMemo<DestinationItem[]>(() => {
-    if (isError) return [];
-    if (!destinations || destinations.length === 0) return [];
-    
-    return destinations.map((item: ApiDestination) => ({
-      name: item.countryName,
-      image: item.images?.[0]?.filename || '/assets/images/germany-card-img.webp',
-      price: item.startingPrice,
-      currency: item.symbol,
-      time: item.getVisaDays,
-      isEarliest: item.isEarliest || false,
-    }));
-  }, [destinations, isError]);
-
-  return (
-    <ModeSelection
-      title={t("all_destinations") || "All Destinations"}
-      nationality={{
-        flag: nationality?.flag,
-        text: nationality?.nationality || nationality?.name,
-      }}
-      residency={{
-        flag: residency?.flag,
-        text: residency?.residency || residency?.name,
-      }}
-      renderItems={renderItems}
-      isLoading={isLoading}
-    />
-  );
-};
+import { useDesktopDestinationSearch } from "@/utils/hooks/useDestinationSearch";
+import SearchIcon2 from "@/assets/images/icons/search.png";
+import curveDownLeftIcon from "@/assets/images/icons/curveDownLeftIcon.webp";
 
 const AllDestinationsPage = () => {
+  const { t, i18n } = useTranslation();
+
+  const nationality = useAppSelector(
+    (state) => state.locationSlice.nationality,
+  );
+  const residency = useAppSelector(
+    (state) => state.locationSlice.residency,
+  );
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [pendingAction, setPendingAction] =
+    useState<PendingAction | null>(null);
+
+  // Language
+  const currentLanguage = i18n.language || "en";
+  const apiLanguage = getApiLanguageCode(currentLanguage);
+
+  // API
+  const { data: topDestinationResponse, isLoading } =
+    useFetchTopDestinationQuery({
+      count: 20,
+      language: "en-US",
+    });
+
+  // Map API response
+  const topDestinations = useMemo(() => {
+    const list = topDestinationResponse?.Response || [];
+    return list.map((dest: any) => ({
+      VisaType: dest.VisaType || "E-Visa",
+      imageUrl: dest.Images?.[0]?.Filename || "",
+      name: dest.Name || "",
+      GetVisaDays: Number(dest.GetVisaDays) || 0,
+      order: dest.Order || 0,
+      unit: dest.Unit || "days",
+      currencyCode: "",
+      CountryCode: dest.IsoCode2 || "",
+      StartingPrice: dest.StartingPrice || "0",
+    }));
+  }, [topDestinationResponse]);
+
+  // 🔍 Search hook (SINGLE SOURCE OF TRUTH)
+  const {
+    search,
+    setSearch,
+    isOpen,
+    setIsOpen,
+    containerRef,
+    results,
+    hasMatchingCountry,
+    saveRecent,
+  } = useDesktopDestinationSearch(topDestinations);
+
+  // 🔍 Filtered destinations
+  const filteredDestinations = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    if (!term) return topDestinations;
+
+    return topDestinations.filter((item: any) =>
+      item.name.toLowerCase().includes(term),
+    );
+  }, [topDestinations, search]);
+
+  const destinationCount = filteredDestinations.length;
+
+  const handlePreFlowNavigation = useCallback(
+    (action: PendingAction): boolean => {
+      const currentNationality = nationality as ICountry | null;
+      const currentResidency = residency as ICountry | null;
+
+      if (!currentNationality?.isoCode || !currentResidency?.isoCode) {
+        setPendingAction(action);
+        setIsDialogOpen(true);
+        return false;
+      }
+      return true;
+    },
+    [nationality, residency],
+  );
+
+  const searchIconSrc =
+    typeof SearchIcon === "string"
+      ? SearchIcon
+      : (SearchIcon as any)?.src || SearchIcon;
+
   return (
-    <Suspense fallback={
-      <div className="container mx-auto px-4 py-8">
-        <div className="skeleton h-8 w-64 mb-4"></div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="skeleton h-64 w-full rounded-lg"></div>
-          ))}
+    <div className="w-full bg-white min-h-screen">
+      <TopBar
+        variant="home"
+        flagIcon={(residency as ICountry | null)?.flag}
+        isLoggedIn={false}
+        onFlagClick={() => setIsDialogOpen(true)}
+        onLogoClick={() => {}}
+        onSearchClick={() => {}}
+        nationality={nationality}
+        residency={residency}
+        onMenuClick={() => {}}
+        isFixed
+      />
+
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 pt-24 pb-12">
+        {/* Title */}
+        <h1 className="text-center text-[32px] font-semibold text-[#003669] mb-6">
+          All destinations
+        </h1>
+        
+        {/* 🔍 Search Field */}
+        <div className="flex justify-center mb-8">
+          <div ref={containerRef} className="relative w-full max-w-[520px]">
+            <input
+              value={search}
+              placeholder={t("Search by country or city")}
+              onFocus={() => setIsOpen(true)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setIsOpen(true);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && results.length === 1) {
+                  saveRecent(results[0]);
+                  setIsOpen(false);
+                }
+              }}
+              className="
+                w-full h-[52px] rounded-xl border border-gray-200
+                bg-white px-4 pr-12 text-sm sm:text-base
+                focus:border-blue-500 focus:outline-none
+                focus:ring-2 focus:ring-blue-100
+                transition
+              "
+            />
+
+            {/* Right icon */}
+            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+              {search ? (
+                <div className="flex items-center gap-2 text-xs text-gray-400">
+                  <span className="hidden sm:inline">
+                    {t("press_enter_to_search")}
+                  </span>
+                  <Image
+                    src={curveDownLeftIcon}
+                    alt="hint"
+                    width={16}
+                    height={16}
+                  />
+                </div>
+              ) : (
+                <Image
+                  src={SearchIcon2}
+                  width={14}
+                  height={14}
+                  alt="searchIcon"
+                />
+              )}
+            </div>
+
+            
+          </div>
         </div>
+
+        {/* Empty State */}
+        {!isLoading && filteredDestinations.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="w-20 h-20 mb-4 rounded-full bg-[#F2F4F7] flex items-center justify-center">
+              <img
+                src={searchIconSrc}
+                alt="No results"
+                className="w-6 h-6 opacity-50"
+              />
+            </div>
+
+            <p className="text-base font-medium text-[#101828]">
+              No destinations found
+            </p>
+
+            <p className="text-sm text-[#667085] mt-1 text-center max-w-[320px]">
+              Try searching with a different country name or clear the search to
+              see all destinations.
+            </p>
+
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                className="mt-4 text-sm font-medium text-[#003669] hover:underline"
+              >
+                Clear search
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Count */}
+        <span className="block text-start text-[14px] text-[#00366B] ps-28">
+          Based on your nationality & residency:&nbsp;
+          <span className="text-[#707478]">
+            {destinationCount} destinations
+          </span>
+        </span>
+
+        {/* Destinations */}
+        {filteredDestinations.length > 0 && (
+          <TopDestinationSection
+            title=""
+            destinations={filteredDestinations}
+            isLoading={isLoading}
+            enableHorizontalScroll={false}
+            onPreFlowNavigation={handlePreFlowNavigation}
+          />
+        )}
       </div>
-    }>
-      <AllDestinationsContent />
-    </Suspense>
+    </div>
   );
 };
 

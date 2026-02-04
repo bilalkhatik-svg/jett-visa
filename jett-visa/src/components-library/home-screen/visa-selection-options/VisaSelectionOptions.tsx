@@ -73,7 +73,7 @@ const VisaMode = ({ showDestinationModal }: VisaModeProps) => {
     className={`flex items-center justify-center rounded-[12px] transition-all duration-200
       ${
         activeKey === item.key
-          ? 'bg-[#E8F4F8] shadow-lg border-2 border-transparent'
+          ? 'bg-[#E8F4F8] shadow-lg border-2 border-[#1976d2]'
           : 'bg-[#E8F4F8] hover:bg-[#D0E8F5] border-2 border-transparent'
       }
       w-[80px] h-[80px] sm:w-[80px] sm:h-[80px] md:w-20 md:h-20
@@ -82,11 +82,11 @@ const VisaMode = ({ showDestinationModal }: VisaModeProps) => {
     <img
       src={item.img}
       alt={item.label}
-      className="block object-contain  sm:w-10 sm:h-10 md:w-14 md:h-14"
+      className="block object-contain  sm:w-10 sm:h-10 md:w-80 md:h-80"
     />
   </button>
 
-  <div className="font-poppins font-medium whitespace-nowrap text-xs sm:text-xs md:text-sm text-[#00366B]">
+  <div className="text-center font-poppins text-[16px] font-normal leading-normal text-[#00366B]">
     {item.label}
   </div>
 </div>

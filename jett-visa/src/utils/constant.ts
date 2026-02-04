@@ -1,0 +1,21 @@
+export const ROUTES = Object.freeze({
+    HOME: "/",
+    LOGIN: "/login",
+    VERIFICATION: "/verification",
+    EMAIL_VERIFICATION: "/email-verification",
+    OTP_VERIFICATION: "/otp-verification",
+    SAVE_PROGRESS: "/save-progress",
+    REGISTER: "/register",
+    NOTFOUND: "/not-found",
+    NOTAUTHORIZED: "/not-authorized",
+    INSPIRE_ME: "/inspire-me",
+    ACCOUNTS: "/accounts",
+    REQUEST_CALLBACK: "/request-callback",
+    REQUEST_CALLBACK_OFFLINE: "/offline",
+    REQUEST_CALLBACK_NO_VISA: "/no-visa",
+    ALL_DESTINATIONS: "/all-destinations",
+    LANGUAGE: "/language",
+    NOTIFICATIONS: "/notifications",
+    GET_HELP: "/get-help",
+    CONTACT_FORM: "/contact-us"
+})

@@ -11,18 +11,18 @@ import { i18n } from "@/utils/i18nStub";
 const offerImageSrc = typeof offerImage === 'string' ? offerImage : (offerImage as any)?.src || offerImage;
 
 const offerImages = [
-    {
-        image: offerImageSrc,
-    },
-    {
-        image: offerImageSrc,
-    },
-    {
-        image: offerImageSrc,
-    },
-    {
-        image: offerImageSrc,
-    },
+  {
+    image: offerImageSrc,
+  },
+  {
+    image: offerImageSrc,
+  },
+  {
+    image: offerImageSrc,
+  },
+  {
+    image: offerImageSrc,
+  },
 ];
 
 const OfferSection = () => {
@@ -127,17 +127,10 @@ const OfferSection = () => {
   const arrowRightIconSrc = typeof arrowRightIcon === 'string' ? arrowRightIcon : (arrowRightIcon as any)?.src || arrowRightIcon;
 
   return (
-    <section className="px-8 py-5 bg-white max-w-[1120px] mx-auto md:px-8 md:py-5 sm:px-4 sm:py-5">
-       <h2
-  className="
-    font-poppins font-semibold
-    text-[#003B71]
-    text-[28px]
-    leading-[1]
-    tracking-normal
-    mb-8
-  "
->{"Offers"}</h2>
+    <section className=" bg-white max-w-[1120px] mx-auto md:py-5  sm:py-5">
+      <div
+        className="tracking-normal mb-8 font-poppins text-[28px] font-semibold leading-normal text-[#003669]"
+      >{"Offers"}</div>
 
       <div
         onMouseEnter={handleMouseEnter}
@@ -153,7 +146,7 @@ const OfferSection = () => {
           >
             {enhancedSlides.map((item, index) => (
               <div key={index} className="flex-shrink-0" style={{ width: `${100 / enhancedSlides.length}%`, height: '100%' }}>
-                <img src={item.image} alt={`Offer ${index + 1}`} className="w-full h-full object-contain rounded-[20px]" />
+                <img src={item.image} alt={`Offer ${index + 1}`} className="w-full h-full object-cover" />
               </div>
             ))}
           </div>
@@ -178,20 +171,20 @@ const OfferSection = () => {
             aria-label="previous"
             style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }}
           >
-              <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="text-[#00366B]"
-                        >
-                          <path
-                            d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
-                            fill="currentColor"
-                          />
-                        </svg>
-          {/* <img src={arrowLeftIconSrc} alt="previous" width={20} height={20} className="object-contain" /> */}
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-[#00366B]"
+            >
+              <path
+                d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+                fill="currentColor"
+              />
+            </svg>
+            {/* <img src={arrowLeftIconSrc} alt="previous" width={20} height={20} className="object-contain" /> */}
           </button>
           <button
             onClick={goToNext}
@@ -200,18 +193,18 @@ const OfferSection = () => {
             style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }}
           >
             <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="text-[#00366B]"
-                        >
-                          <path
-                            d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
-                            fill="currentColor"
-                          />
-                        </svg>
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-[#00366B]"
+            >
+              <path
+                d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+                fill="currentColor"
+              />
+            </svg>
             {/* <img src={arrowRightIconSrc} alt="next" width={20} height={20} className="object-contain" /> */}
           </button>
         </div>

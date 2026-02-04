@@ -7,12 +7,14 @@ import type {
   PendingAction,
   ExtendedCountry,
 } from "@/utils/types/nationality-residency/Country";
+import SearchIcon2 from "@/assets/images/icons/search.png";
 import { useTranslation } from "react-i18next";
+import SearchField from "@/components-library/search-field/SearchField";
 
 interface Props {
   countryList?: ICountry[];
-  initialNationality?:string;
-  initialResidency?:string;
+  initialNationality?: string;
+  initialResidency?: string;
   label: string | React.ReactNode;
   onPreFlowNavigation: (action: PendingAction) => boolean;
 }
@@ -24,16 +26,11 @@ const SearchDestination: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
-  const {
-    search,
-    setSearch,
-    results,
-    recent,
-    saveRecent,
-  } = useDesktopDestinationSearch(countryList, {
-    mode: "mobile",
-    minChars: 2,
-  });
+  const { search, setSearch, results, recent, saveRecent } =
+    useDesktopDestinationSearch(countryList, {
+      mode: "mobile",
+      minChars: 2,
+    });
 
   const handleSelect = (item: ExtendedCountry) => {
     saveRecent(item);
@@ -41,44 +38,41 @@ const SearchDestination: React.FC<Props> = ({
   };
 
   const showRecent = !search.trim() && recent.length > 0;
-
+  const searchIcon2Src =
+    typeof SearchIcon2 === "string"
+      ? SearchIcon2
+      : (SearchIcon2 as any)?.src || SearchIcon2;
   return (
     <div
       className="flex h-full flex-col bg-white"
-      onClick={e => e.stopPropagation()}
-      onMouseDown={e => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
     >
       {/* Search bar */}
-      <div>{label ? label : "Search Destination"}</div>
-      <div className="sticky top-0 z-10 bg-white p-2">
-        <input
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder={t("search_by_country")}
-          className="
-            w-full rounded-xl border border-gray-200
-            px-4 py-3 text-sm
-            focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100
-          "
-        />
+      <div className="text-[#00366B]">
+        {label ? label : "Search Destination"}
       </div>
+
+      <SearchField
+        placeholder={"Search by country"}
+        value={search}
+        onChange={(e: any) => setSearch(e.target.value)}
+      />
 
       {/* Results */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
-        {showRecent && (
+        {label !=="nationality" && label !== "residency" && showRecent && (
           <div className="py-3 text-xs font-medium text-gray-400">
             {t("Recent Searches")}
           </div>
         )}
 
         {results.map((item, idx) => {
-          const isFirstAll =
-            showRecent &&
-            idx === recent.length;
+          const isFirstAll = showRecent && idx === recent.length;
 
           return (
             <React.Fragment key={`${item.isoCode}-${idx}`}>
-              {isFirstAll && (
+              {label !=="nationality" && label !== "residency" && isFirstAll && (
                 <div className="py-3 text-xs font-medium text-gray-400">
                   {t("All Destinations")}
                 </div>

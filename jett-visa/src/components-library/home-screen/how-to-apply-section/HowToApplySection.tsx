@@ -9,6 +9,7 @@ import PencilIcon from "@/assets/images/icons/pencil.png";
 import OptionDoneIcon from "@/assets/images/icons/option-done.png";
 import FavoriteLocationIcon from "@/assets/images/icons/favorite-location.png";
 import BookMarkIcon from "@/assets/images/icons/bookmark.png";
+import { useIsDesktop } from "@/utils/hooks/useDesktop";
 
 const getSrc = (img: any) => (typeof img === "string" ? img : (img?.src ?? ""));
 
@@ -27,15 +28,13 @@ interface UniqueValueProposition {
 
 const HowToApplySection = React.memo(() => {
   const { t, i18n } = useTranslation();
-
+  const isDesktop = useIsDesktop();
   const { data, isLoading } = useFetchStaticContentQuery({
     language: i18n.language || "en-US",
   });
 
   const apiContent = data?.response?.[0];
-  console.log("uniqueValuePropositions apiContent", apiContent);
   const uniqueValuePropositions = apiContent?.howToApply ?? [];
-  console.log("uniqueValuePropositions", uniqueValuePropositions);
 
   if (isLoading || !uniqueValuePropositions.length) return null;
 
@@ -48,24 +47,27 @@ const HowToApplySection = React.memo(() => {
     }),
   );
 
-  console.log("uniqueValuePropositions cards", cards);
   return (
     <section
-      className="w-full max-w-[1120px] mx-auto opacity-100"
-      style={{ minHeight: "324px" }}
+      className="w-full max-w-[1120px] mx-auto opacity-100 min-h-[310px]"
     >
-      <h2 className="font-poppins font-semibold text-[#003B71] text-2xl mb-8 sm:text-xl sm:mb-6">
-        {t("how_to_apply")}
+      <h2 className="font-poppins font-semibold text-[#003B71] text-[28px] leading-[1] tracking-normal mb-8 my-2">
+        {/* {t("how_to_apply")} */}
+        How to apply
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center gap-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-fr gap-y-8 place-items-center md:place-items-stretch">
         {cards.map((item, index) => (
-          <div key={index} className="w-[256px] h-[240px]">
+          <div
+            key={index}
+            className={`h-full flex ${isDesktop ? "w-[256px]" : "w-full"} justify-center`}
+          >
             <InfoCard
               imageSrc={item.imageSrc}
               imageAlt={item.imageAlt}
               title={item.title}
               description={item.description}
+              // variant={isDesktop ? "horizontal" : "vertical"}
             />
           </div>
         ))}

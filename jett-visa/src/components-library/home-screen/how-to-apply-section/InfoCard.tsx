@@ -6,6 +6,7 @@ type InfoCardProps = {
   title: string;
   description: string;
   variant?: "vertical" | "horizontal";
+  chooseMusafir?: boolean;
 };
 
 const InfoCard: React.FC<InfoCardProps> = ({
@@ -13,6 +14,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
   imageAlt,
   title,
   description,
+  chooseMusafir,
   variant = "vertical",
 }) => {
   // Horizontal variant for Why Choose Musafir section
@@ -27,13 +29,13 @@ const InfoCard: React.FC<InfoCardProps> = ({
           maxWidth: '100%'
         }}
       >
-        <div className="flex flex-row items-start h-full" style={{ gap: '20px' }}>
+        <div className={`flex flex-row h-full ${chooseMusafir ? 'items-center' : 'items-start'}`} style={{ gap: '20px' }}>
           {/* Icon container */}
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EBF2FF] to-[#F8FAFC] flex items-center justify-center shrink-0">
+          <div className="w-[90px] h-[90px] rounded-full  flex items-center justify-center shrink-0">
             <img
               src={imageSrc}
               alt={imageAlt}
-              className="w-7 h-7 object-contain"
+              className="w-full h-full object-contain"
             />
           </div>
 
@@ -72,13 +74,13 @@ const InfoCard: React.FC<InfoCardProps> = ({
   // Default vertical variant
   return (
     <div className="bg-white border border-[#E5E7EB] rounded-2xl p-5 h-full hover:shadow-lg transition-all duration-300 sm:p-4">
-      <div className="flex flex-col items-start gap-4">
+      <div className="flex flex-col items-start gap-4 p-2">
         {/* Icon container */}
         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EBF2FF] to-[#F8FAFC] flex items-center justify-center shrink-0">
           <img
             src={imageSrc}
             alt={imageAlt}
-            className="w-7 h-7 object-contain"
+            className="w-12 h-12 object-contain"
           />
         </div>
 

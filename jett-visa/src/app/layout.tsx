@@ -68,7 +68,9 @@ export default function RootLayout({
         <StructuredData />
         <ReduxProvider>
           <AppInit />
-          {children}
+          <div className="mx-auto w-full max-w-[1600px]">
+            {children}
+          </div>
         </ReduxProvider>
       </body>
     </html>
